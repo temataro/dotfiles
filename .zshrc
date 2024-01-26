@@ -45,7 +45,7 @@ DISABLE_LS_COLORS="true"
 # DISABLE_AUTO_TITLE="true"
 
 # Uncomment the following line to enable command auto-correction.
-ENABLE_CORRECTION="true"
+# ENABLE_CORRECTION="true"
 
 # Uncomment the following line to display red dots whilst waiting for completion.
 # You can also set it to another string to have that shown instead of the default red dots.
@@ -113,4 +113,4 @@ alias dsp='cd ~/Desktop/DSP && clear && ls -lhat'
 alias sl='ls --color'
 alias yt-dlp="yt-dlp --list-formats"
 alias clera='clear'
-alias dotfiles = 'cd ~/Code/softwaretoolbelt/'
+alias dotfiles='cd ~/Code/softwaretoolbelt/'
