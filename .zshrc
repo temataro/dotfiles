@@ -114,3 +114,4 @@ alias sl='ls --color'
 alias yt-dlp="yt-dlp --list-formats"
 alias clera='clear'
 alias dotfiles='cd ~/Code/softwaretoolbelt/'
+alias lgg='lazygit'
