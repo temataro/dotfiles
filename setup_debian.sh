@@ -10,7 +10,7 @@ sudo apt install -y git vim build-essential gnome-tweaks ninja-build gettext cma
 
 # Install Python3
 sudo apt install -y python3 python3-pip ipython3 black
-# Install 3rd party Python modules
+# Install Python modules
 pip install -r requirements.txt
 
 # Install graphical monitor brightness controller
@@ -55,3 +55,8 @@ sudo apt install fastfetch btop vlc dictd # Fastfetch, VLC, process manager btop
 sudo apt install golang-go && git clone git@github.com:BetaPictoris/wiki.git ~/Code/wiki && \
 cd ~/Code/wiki && make && sudo make install && \
 
+# NOTES:
+# 1. SETUP TMUX GOODNESS:
+# Quit Kitty with LDR + D to detach your current tmux session and jump right
+# back in by having a keyboard shortcut for Kitty go to `/bin/kitty tmux
+# attach` instead of just Kitty.
