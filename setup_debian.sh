@@ -24,6 +24,9 @@ curl --proto '=https' --tlsv1.2 https://sh.rustup.rs -sSf | sh && \
 # Install Octave
 sudo apt install -y octave && \
 
+# Install Go
+sudo apt install -y golang-go
+
 # Copy all dotfiles into ~ or their respective config documents
 # ZSH, TMUX, Git, Vim, kitty
 git clone https://github.com/temataro/dotfiles ~/Code/dotfiles && cd ~/Code/dotfiles && \
@@ -63,7 +66,7 @@ git clone https://github.com/LazyVim/starter ~/.config/nvim && \
 # to not properly cloning the GitHub repos, add your keys to the ssh-agent
 
 # Install misc
-sudo apt install fastfetch btop vlc dictd && \  # Fastfetch, VLC, process manager btop, terminal dictionary
-sudo apt install golang-go && git clone git@github.com:BetaPictoris/wiki.git ~/Code/wiki && \
+sudo apt install neofetch btop vlc dictd && \  # Neofetch, VLC, process manager btop, terminal dictionary
+git clone git@github.com:BetaPictoris/wiki.git ~/Code/wiki && \
 cd ~/Code/wiki && make && sudo make install && \
 
