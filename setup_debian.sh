@@ -8,6 +8,9 @@
 sudo apt update -y && sudo apt upgrade -y && \
 sudo apt install -y git vim build-essential gnome-tweaks ninja-build gettext cmake unzip curl && \
 
+# Install RipGrep!
+sudo apt install ripgrep && \
+
 # Install Python3
 sudo apt install -y python3 python3-pip ipython3 black
 # Install 3rd party Python modules
@@ -56,11 +59,11 @@ sudo install lazygit /usr/local/bin && \
 # Install Neovim and Lazyvim
 # Think about backing up any previous config files if you're experimenting with
 # other plugin managers
-sudo apt install -y neovim && \
-mv ~/.config/nvim{,.bak} && \
-mv ~/.local/share/nvim{,.bak} && \
-mv ~/.local/state/nvim{,.bak} && \
-mv ~/.cache/nvim{,.bak} && \
+sudo snap install nvim --classic && \
+# mv ~/.config/nvim{,.bak} && \
+# mv ~/.local/share/nvim{,.bak} && \
+# mv ~/.local/state/nvim{,.bak} && \
+# mv ~/.cache/nvim{,.bak} && \
 git clone https://github.com/LazyVim/starter ~/.config/nvim && \
 # Starting nvim for the first time will install all plugins, if this fails due
 # to not properly cloning the GitHub repos, add your keys to the ssh-agent
