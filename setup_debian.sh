@@ -57,21 +57,10 @@ curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/lates
 tar xf lazygit.tar.gz lazygit
 sudo install lazygit /usr/local/bin && \
 
-# Install Neovim and Lazyvim
-# Think about backing up any previous config files if you're experimenting with
-# other plugin managers
-sudo snap install nvim --classic && \
-# mv ~/.config/nvim{,.bak} && \
-# mv ~/.local/share/nvim{,.bak} && \
-# mv ~/.local/state/nvim{,.bak} && \
-# mv ~/.cache/nvim{,.bak} && \
-git clone https://github.com/LazyVim/starter ~/.config/nvim && \
-# Starting nvim for the first time will install all plugins, if this fails due
-# to not properly cloning the GitHub repos, add your keys to the ssh-agent
-
 # Install misc
-sudo apt install neofetch btop vlc dictd && \  # Neofetch, VLC, process manager btop, terminal dictionary
-git clone git@github.com:BetaPictoris/wiki.git ~/Code/wiki && \
+sudo apt install fastfetch btop vlc dictd # Fastfetch, VLC, process manager btop, terminal dictionary
+sudo apt install golang-go && git clone git@github.com:BetaPictoris/wiki.git ~/Code/wiki && \
+>>>>>>> bdfd318 (bootstrap: add reminder to change default term to Kitty)
 cd ~/Code/wiki && make && sudo make install && \
 # NOTES:
 # 1. SETUP TMUX GOODNESS:
