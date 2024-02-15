@@ -40,6 +40,7 @@ sudo apt install -y kitty tmux && \
 kitty +kitten themes Mayukai && \  # Set theme for Kitty.
 tmux source ~/.tmux.conf && \
 git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && \  # Install Tmux Plugin Manager (TPM)
+# TODO: select Kitty as the default terminal by using `sudo update-alternatives --config x-terminal-emulator` and picking it out of the options.
 
 # Install other apps (Spotify, Microsoft Edge, ... VS Code)
 sudo snap install spotify glow && \
@@ -54,7 +55,6 @@ sudo install lazygit /usr/local/bin && \
 sudo apt install fastfetch btop vlc dictd # Fastfetch, VLC, process manager btop, terminal dictionary
 sudo apt install golang-go && git clone git@github.com:BetaPictoris/wiki.git ~/Code/wiki && \
 cd ~/Code/wiki && make && sudo make install && \
-
 # NOTES:
 # 1. SETUP TMUX GOODNESS:
 # Quit Kitty with LDR + D to detach your current tmux session and jump right
