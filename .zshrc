@@ -92,6 +92,30 @@ else
   export EDITOR='mvim'
 fi
 
+#
+# github.com/o2sh/onefetch
+# Run onefetch whenever you cd into a repo folder.
+# git repository greeter
+last_repository=
+check_directory_for_new_repository() {
+	current_repository=$(git rev-parse --show-toplevel 2> /dev/null)
+	
+	if [ "$current_repository" ] && \
+	   [ "$current_repository" != "$last_repository" ]; then
+		onefetch
+	fi
+	last_repository=$current_repository
+}
+cd() {
+	builtin cd "$@"
+	check_directory_for_new_repository
+}
+
+# optional, greet also when opening shell directly in repository directory
+# adds time to startup
+check_directory_for_new_repository
+
+#
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
@@ -103,6 +127,11 @@ fi
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+#  Use Zoxide
+eval "$(zoxide init zsh)"
+
+
 alias ll='ls -alF --color'
 alias la='ls -lha --color'
 alias l='ls -CF --color'
@@ -115,3 +144,17 @@ alias yt-dlp="yt-dlp --list-formats"
 alias clera='clear'
 alias dotfiles='cd ~/Code/softwaretoolbelt/'
 alias lgg='lazygit'
+alias vim='nvim'
+# WORK ALIASES
+alias brf='bladeRF-cli'
+alias grc='gnuradio-companion'
+alias blast='~/Code/repos/radioblast/build/src/radioblast'
+alias ls='ls -lhat --color'
+alias tmd='tmux detach'
+alias tma='tmux attach'
+alias celar='clear'
+alias repos='cd ~/Code/repos && clear && ls'
+export MODULAR_HOME="/home/tataro/.modular"
+export PATH="/home/tataro/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
+export PATH="/home/tataro/Code/repos/PocketSDR/bin:$PATH"
+alias open='xdg-open'
