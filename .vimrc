@@ -34,7 +34,7 @@ set encoding=utf-8
 " set sts=2 sw=2 ts=2
 
 syntax on
-colorscheme desert256
+colorscheme slate
 " set wildmenu
 
 " Highlight too-long lines (and optionally trailing whitespace).
