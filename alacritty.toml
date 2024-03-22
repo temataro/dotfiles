@@ -1,12 +1,10 @@
-"cursor.style" = "Beam"
-"debug.render_timer" = false
+# "cursor.style" = "Beam"
+# "debug.render_timer" = false
 live_config_reload = true
 
 [bell]
 animation = "EaseOutExpo"
-background_opacity = 0.75
 duration = 1
-"window.opacity" = 0.55
 
 [colors]
 draw_bold_text_with_bright_colors = true
@@ -22,7 +20,7 @@ white = "0xffffff"
 yellow = "0xe7c547"
 
 [colors.cursor]
-cursor = "0xE62CBA"
+cursor = "0x43444f"
 text = "0xffffff"
 
 [colors.dim]
@@ -46,7 +44,7 @@ white = "0xffffff"
 yellow = "0xe6c547"
 
 [colors.primary]
-background = "0x1d2d3d"
+background = "0x000000"
 foreground = "0xe3bfff"
 
 [env]
@@ -56,7 +54,7 @@ TERM = "xterm"
 size = 12
 
 [font.bold]
-family = "JetBrains Mono"
+family = "JetBrainsMono"
 style = "Bold"
 
 [font.glyph_offset]
@@ -64,11 +62,11 @@ x = 0
 y = 0
 
 [font.italic]
-family = "JetBrains Mono"
+family = "JetBrainsMono"
 style = "Italic"
 
 [font.normal]
-family = "JetBrains Mono"
+family = "JetBrainsMono"
 style = "Regular"
 
 [font.offset]
@@ -559,25 +557,25 @@ key = "F12"
 mods = "Alt"
 
 [mouse]
-faux_scrolling_lines = 1
+# faux_scrolling_lines = 1
 hide_when_typing = true
 
 [[mouse.bindings]]
 action = "PasteSelection"
 mouse = "Middle"
 
-[mouse.double_click]
-threshold = 300
+# [mouse.double_click]
+# threshold = 300
 
-[mouse.hints]
-launcher = "open"
+# [mouse.hints]
+# launcher = "open"
 
-[mouse.triple_click]
-threshold = 300
+# [mouse.triple_click]
+# threshold = 300
 
-[selection]
-semantic_escape_chars = ",│`|:\"' ()[]{}<>"
-"window.dynamic_title" = true
+# [selection]
+# semantic_escape_chars = ",│`|:\"' ()[]{}<>"
+# "window.dynamic_title" = true
 
 [window]
 decorations = "none"
