@@ -45,13 +45,13 @@ yellow = "0xe6c547"
 
 [colors.primary]
 background = "0x000000"
-foreground = "0xe3bfff"
+foreground = "0xffffff"
 
 [env]
 TERM = "xterm"
 
 [font]
-size = 12
+size = 17
 
 [font.bold]
 family = "JetBrainsMono"
@@ -106,7 +106,7 @@ mods = "Alt"
 [[keyboard.bindings]]
 action = "Paste"
 key = "V"
-mods = "Control"
+mods = "Alt"
 
 [[keyboard.bindings]]
 action = "ResetFontSize"
