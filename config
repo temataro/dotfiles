@@ -218,4 +218,6 @@ smart_borders on
 # finds out, if available)
 bar {
         status_command i3status
+        position top
+        font pango:JetBrainsMono 13
 }
