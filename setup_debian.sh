@@ -67,3 +67,6 @@ cd ~/Code/wiki && make && sudo make install && \
 # Quit Kitty with LDR + D to detach your current tmux session and jump right
 # back in by having a keyboard shortcut for Kitty go to `/bin/kitty tmux
 # attach` instead of just Kitty.
+#
+# Extras to install
+# The AppImage for Cura-Slicer can be goten from https://www.thingiverse.com/software/ultimaker-cura#downloads
