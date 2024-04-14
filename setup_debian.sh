@@ -11,6 +11,11 @@ sudo apt install -y git vim build-essential gnome-tweaks ninja-build gettext cma
 # Install RipGrep!
 sudo apt install ripgrep && \
 
+# Install arandr - a GUI for xrandr
+sudo apt install arandr -y && \
+mkdir ~/.screenlayout && \
+cp ./xrandr/* ~/.screenlayout/ && \
+
 # Install Python3
 sudo apt install -y python3 python3-pip ipython3 black
 # Install Python modules
