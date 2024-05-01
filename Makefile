@@ -8,7 +8,7 @@ COMMON_PKGS=git vim ripgrep gnome-tweaks ninja-build cmake unzip curl arandr \
 
 DEBIAN_PKGS=
 FEDORA_PKGS=
-ARCH_PKGS=
+ARCH_PKGS=	
 
 
 ifeq ($(DISTRO_TYPE),debian)
@@ -53,7 +53,8 @@ alacritty:
 neovim:
 
 i3:
-
+# Install rofi (dmenu replacement)
+	$(cmd) rofi
 rust:
 
 python:
