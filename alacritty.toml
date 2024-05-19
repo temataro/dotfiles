@@ -54,7 +54,8 @@ TERM = "xterm"
 size = 17
 
 [font.bold]
-family = "JetBrainsMono"
+family = "FiraCodeNerdFontMono"
+# family = "MartianMonoNerdFont"
 style = "Bold"
 
 [font.glyph_offset]
@@ -62,11 +63,14 @@ x = 0
 y = 0
 
 [font.italic]
-family = "JetBrainsMono"
+family = "FiraCodeNerdFontMono"
+# family = "JetBrainsMono"
+# family = "MartianMonoNerdFont"
 style = "Italic"
 
 [font.normal]
-family = "JetBrainsMono"
+# family = "MononokiNerdFontMono"
+family = "FiraCodeNerdFontMono"
 style = "Regular"
 
 [font.offset]
@@ -578,7 +582,9 @@ mouse = "Middle"
 # "window.dynamic_title" = true
 
 [window]
-decorations = "none"
+decorations = "Buttonless"
+opacity = 0.89
+blur = false
 
 [window.dimensions]
 columns = 130
