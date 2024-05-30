@@ -9,7 +9,7 @@
 #
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
-set $mod Mod4
+set $mod Mod1
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -22,7 +22,8 @@ font pango:monospace 14
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
-exec --no-startup-id setxkbmap -option ctrl:nocaps
+exec_always --no-startup-id setxkbmap -option ctrl:nocaps
+exec_always --no-startup-id picom
 # they are included here as an example. Modify as you see fit.
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
@@ -63,7 +64,7 @@ bindsym $mod+Shift+q kill
 
 # start dmenu (a program launcher)
 # vertically tiled 10 element prompt, pango font, lightgreen search background, blue search font, yellow list
-bindsym $mod+Shift+d exec --no-startup-id dmenu_run -l 10 -fn pango -sb lightgreen -sf blue -nf yellow
+# bindsym $mod+d exec --no-startup-id dmenu_run -l 10 -fn pango -sb lightgreen -sf blue -nf yellow
 # A more modern dmenu replacement is rofi:
 bindcode $mod+40 exec "rofi -modi drun,run -show drun"
 # There also is i3-dmenu-desktop which only displays applications shipping a
@@ -122,7 +123,7 @@ bindsym Mod1+Tab workspace back_and_forth
 bindsym $mod+a focus parent
 
 # focus the child container
-#bindsym $mod+d focus child
+#bindsym $mod+Shift+d focus child
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
@@ -197,11 +198,11 @@ bindsym $mod+r mode "resize"
 
 set $mode_system System (Shift+l) suspend, (Shift+e) lock, (Shift+h) hibernate, (Shift+s) shutdown
 mode "$mode_system"{
-  bindsym Shift+l exec --no-startup-id systemctl suspend
-  bindsym Shift+e exec --no-startup-id i3lock
+  bindsym Shift+l exec --no-startup-id i3lock
+  bindsym Shift+e exec --no-startup-id systemctl suspend
   bindsym Shift+s exec --no-startup-id shutdown now
   bindsym Shift+h exec --no-startup-id systemctl hibernate
-  bindsym Shift+d exec --no-startup-id systemctl shutdown
+  bindsym Shift+s exec --no-startup-id systemctl shutdown
 
   # back to normal: Enter or Escape
   bindsym Return mode "default"
@@ -219,5 +220,6 @@ smart_borders on
 bar {
         status_command i3status
         position top
-        font pango:JetBrainsMono 13
+        font pango:JetBrainsMono 18
+        # order += volume master
 }

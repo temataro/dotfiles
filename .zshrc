@@ -8,12 +8,13 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="fishy"
-
+# ZSH_THEME="blinks"
+ZSH_THEME="alanpeabody"
 # Launch tmux
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux attach
+  exec tmux
 fi
+
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
 # a theme from this variable instead of looking in $ZSH/themes/
@@ -117,8 +118,10 @@ check_directory_for_new_repository
 
 #
 # Compilation flags
-# export ARCHFLAGS="-arch x86_64"
+export ARCHFLAGS="-arch x86_64"
 
+# For iCESugar-nano FPGA
+export PATH=$PATH:"/home/Code/fpga_playground/icesugar/tools"
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -158,3 +161,13 @@ export MODULAR_HOME="/home/tataro/.modular"
 export PATH="/home/tataro/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
 export PATH="/home/tataro/Code/repos/PocketSDR/bin:$PATH"
 alias open='xdg-open'
+alias clera='clear'
+alias venv='source ./venv/bin/activate'
+alias grep='rg'
+export PATH="/home/tataro/Code/repos/PocketSDR/bin:/home/tataro/.modular/pkg/packages.modular.com_mojo/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/Code/fpga_playground/icesugar/tools:/opt/quarto/bin/quarto:$PATH"
+alias quarto=/opt/quarto/bin/quarto
+alias docker=podman
+alias heshevo='pactl set-sink-port alsa_output.pci-0000_05_00.6.analog-stereo analog-output-speaker'
+alias gits='git status --column=always,nodense,auto'
+
+alias ls=l

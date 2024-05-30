@@ -44,8 +44,14 @@ white = "0xffffff"
 yellow = "0xe6c547"
 
 [colors.primary]
-background = "0x000000"
-foreground = "0xffffff"
+background = "0x1e1e2e"
+foreground = "0xc0d0f0"
+
+# Catppuccin-mocha fg and bg colors
+#1e1e2e
+#cdd6f4
+# background = "0x1e1e2e"
+# foreground = "0xcdd6f4"
 
 [env]
 TERM = "xterm"
@@ -583,8 +589,8 @@ mouse = "Middle"
 
 [window]
 decorations = "Buttonless"
-opacity = 0.89
-blur = false
+opacity = 0.90
+blur = true
 
 [window.dimensions]
 columns = 130
