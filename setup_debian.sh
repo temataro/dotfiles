@@ -65,7 +65,6 @@ sudo install lazygit /usr/local/bin && \
 # Install misc
 sudo apt install fastfetch btop vlc dictd # Fastfetch, VLC, process manager btop, terminal dictionary
 sudo apt install golang-go && git clone git@github.com:BetaPictoris/wiki.git ~/Code/wiki && \
->>>>>>> bdfd318 (bootstrap: add reminder to change default term to Kitty)
 cd ~/Code/wiki && make && sudo make install && \
 # NOTES:
 # 1. SETUP TMUX GOODNESS:
