@@ -46,7 +46,7 @@ FEDORA_PKGS = fastfetch
 ARCH_PKGS   = glow fastfetch
 config_dir  = "$(HOME)/.config"
 
-.PHONY: init whoisthis install_common upgrade symlink_dotfiles_to_config
+.PHONY: init whoisthis install_common upgrade symlink_dotfiles_to_config lazygit tmux zsh alacritty vim neovim i3 python
 
 install_common:
 	$(cmd) $(COMMON_PKGS)
@@ -145,4 +145,4 @@ symlink_dotfiles_to_config:
 
 whoisthis:
 	$(fetcher)
-	cowsay $(DISTRO_TYPE)
+	cowsay -f dragon-and-cow $(DISTRO_TYPE)
