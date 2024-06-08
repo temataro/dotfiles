@@ -148,3 +148,4 @@ symlink_dotfiles_to_config:
 whoisthis:
 	$(fetcher)
 	cowsay -f dragon-and-cow $(DISTRO_TYPE)
+	$(cmd) cpufetch
