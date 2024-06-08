@@ -135,6 +135,8 @@ export PATH=$PATH:"/home/Code/fpga_playground/icesugar/tools"
 eval "$(zoxide init zsh)"
 
 
+# Run a random chapter of 97 Things Every Programmer Should Know
+$HOME/dev/dotfiles/97-things/qotd.sh
 alias ll='ls -alF --color'
 alias la='ls -lha --color'
 alias l='ls -CF --color'
