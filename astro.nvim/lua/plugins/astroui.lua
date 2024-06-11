@@ -18,7 +18,8 @@ return {
   ---@type AstroUIOpts
   opts = {
     -- change colorscheme
-    colorscheme = "gruvbox",
+    colorscheme = "desert256",
+    -- colorscheme = "gruvbox",
     -- AstroUI allows you to easily modify highlight groups easily for any and all colorschemes
     highlights = {
       init = { -- this table overrides highlights in all themes
