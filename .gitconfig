@@ -22,6 +22,7 @@
 	g = grep --break --heading --line-number
 	gi = grep --break --heading --line-number --ignore-case
 	vee = log --decorate --cherry-mark --oneline --graph --boundary
+	dh = diff HEAD
 [merge]
 	conflictstyle = diff3
 	summary = true
