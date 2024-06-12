@@ -49,10 +49,11 @@ exec_always --no-startup-id picom
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id arandr
 
 # Display wallpaper.
 # TODO: export your /Pictures/wallpapers directory in any future bootstraps you do.
-exec_always feh --bg-fill ~/Pictures/canyon-wren.jpg
+exec_always feh --bg-fill ~/Downloads/everwatch_forest.jpg
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
