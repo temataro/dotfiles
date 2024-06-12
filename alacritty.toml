@@ -44,8 +44,11 @@ white = "0xffffff"
 yellow = "0xe6c547"
 
 [colors.primary]
+# Catppuccin-mocha fg and bg colors
 background = "0x1e1e2e"
-foreground = "0xc0d0f0"
+foreground = "0xcdd6f4"
+# background = "0x001010"  #1a1a1a
+# foreground = "0xc0d0f0"
 
 # Catppuccin-mocha fg and bg colors
 #1e1e2e
@@ -60,7 +63,8 @@ TERM = "xterm"
 size = 17
 
 [font.bold]
-family = "FiraCodeNerdFontMono"
+family = "JetBrainsMono"
+# family = "FiraCodeNerdFontMono"
 # family = "MartianMonoNerdFont"
 style = "Bold"
 
@@ -69,14 +73,16 @@ x = 0
 y = 0
 
 [font.italic]
-family = "FiraCodeNerdFontMono"
-# family = "JetBrainsMono"
+# family = "FiraCodeNerdFontMono"
+family = "JetBrainsMono"
 # family = "MartianMonoNerdFont"
 style = "Italic"
 
 [font.normal]
+family = "JetBrainsMono"
 # family = "MononokiNerdFontMono"
-family = "FiraCodeNerdFontMono"
+# family = "MartianMonoNerdFont"
+# family = "FiraCodeNerdFontMono"
 style = "Regular"
 
 [font.offset]
@@ -583,18 +589,18 @@ mouse = "Middle"
 # [mouse.triple_click]
 # threshold = 300
 
-# [selection]
-# semantic_escape_chars = ",│`|:\"' ()[]{}<>"
+[selection]
+semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 # "window.dynamic_title" = true
 
 [window]
 decorations = "Buttonless"
-opacity = 0.90
+opacity = 0.8
 blur = true
 
 [window.dimensions]
-columns = 130
-lines = 32
+columns = 72
+lines = 24
 
 [window.padding]
 x = 2
