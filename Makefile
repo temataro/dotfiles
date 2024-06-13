@@ -34,7 +34,8 @@ endif
 
 COMMON_PKGS          = git vim ripgrep ninja-build cmake \
 								     	unzip curl arandr cowsay btop alacritty \
-								     	vlc kicad kicad-library kicad-library-3d
+								     	vlc kicad kicad-library kicad-library-3d \
+								     	bat
 
 COMMON_PKGS_LITE     = git vim ripgrep ninja-build cmake \
 								     	unzip curl btop

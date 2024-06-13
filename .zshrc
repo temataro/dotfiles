@@ -169,5 +169,5 @@ alias quarto=/opt/quarto/bin/quarto
 alias docker=podman
 alias heshevo='pactl set-sink-port alsa_output.pci-0000_05_00.6.analog-stereo analog-output-speaker'
 alias gits='git status --column=always,nodense,auto'
-
+alias cat=batcat
 alias ls=l
