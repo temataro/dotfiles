@@ -84,6 +84,10 @@ tiling_drag modifier titlebar
 # start a terminal
 #   Start Alacritty
 bindsym $mod+Return exec alacritty
+#   Start Alacritty in a floating window
+bindsym $mod+Shift+Return exec --no-startup-id alacritty --class floating
+
+for_window [class="floating"] floating enabled move position center
 
 # kill focused window
 bindsym $mod+Shift+q kill
