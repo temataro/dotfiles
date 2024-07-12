@@ -143,6 +143,7 @@ symlink_dotfiles_to_config:
 	ln ./.tmux.conf $(config_dir)/.tmux.conf
 	ln ./.vimrc $(HOME)/.vimrc
 	ln ./kitty.conf $(config_dir)/kitty/.kitty.conf
+	ln ./ipython_config.py ~/.ipython/profile_default/ipython_config.py
 
 whoisthis:
 	$(fetcher)
