@@ -88,6 +88,8 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+Return exec --no-startup-id alacritty --class floating
 
 for_window [class="floating"] floating enabled move position center
+#   Start Firefox in a floating window
+bindsym $mod+Shift+f exec --no-startup-id firefox --class floating
 
 # kill focused window
 bindsym $mod+Shift+q kill
