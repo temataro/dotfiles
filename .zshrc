@@ -171,3 +171,4 @@ alias heshevo='pactl set-sink-port alsa_output.pci-0000_05_00.6.analog-stereo an
 alias gits='git status --column=always,nodense,auto'
 alias cat=batcat
 alias ls=l
+alias hh='ls -lhat | head -n 6'
