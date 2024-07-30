@@ -48,7 +48,7 @@ exec_always --no-startup-id picom
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -i /home/tem/Pictures/canyon-wren.jpg
 exec --no-startup-id arandr
 
 # Display wallpaper.
@@ -230,11 +230,12 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-set $mode_system System (Shift+l) suspend, (Shift+e) lock, (Shift+h) hibernate, (Shift+s) shutdown
+set $mode_system System (Shift+l) suspend, (Shift+e) lock, (Shift+h) hibernate, (Shift+s) shutdown, (Shift+r) reboot
 mode "$mode_system"{
-  bindsym Shift+l exec --no-startup-id i3lock
-  bindsym Shift+e exec --no-startup-id i3lock
+  bindsym Shift+l exec --no-startup-id i3lock -i /home/tem/Pictures/canyon-wren.jpg
+  bindsym Shift+e exec --no-startup-id i3lock -i /home/tem/Pictures/canyon-wren.jpg
   bindsym Shift+s exec --no-startup-id shutdown now
+  bindsym Shift+r exec --no-startup-id reboot now
   bindsym Shift+h exec --no-startup-id systemctl hibernate
   bindsym Shift+s exec --no-startup-id systemctl shutdown
 
