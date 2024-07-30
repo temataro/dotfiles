@@ -255,9 +255,13 @@ smart_borders on
 
 # Requires i3blocks
 bar {
-    status_command i3blocks
-    position top
+    status_command i3status
     font pango:JetBrainsMono, MartianMono 13
+    tray_output             None
+    separator_symbol        "|"
+    workspace_buttons       yes
+    strip_workspace_numbers yes
+    position                top
 
     colors {
         separator #081419
@@ -272,10 +276,3 @@ bar {
         separator          $transparent
   }
 }
-#
-# bar {
-#         status_command i3status
-#         position top
-#         font pango:JetBrainsMono 18
-#         # order += volume master
-# }
