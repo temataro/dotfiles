@@ -53,11 +53,11 @@ exec --no-startup-id arandr
 
 # Display wallpaper.
 # TODO: export your /Pictures/wallpapers directory in any future bootstraps you do.
-# exec_always feh --bg-fill ~/Downloads/everwatch_forest.jpg
+exec_always feh --bg-fill ~/Pictures/canyon-wren.jpg
 #
 # Display A moving GIF as wallpaper:
-exec --no-startup-id killall back4.sh
-exec --no-startup-id $HOME/dev/dotfiles/extra/wallpapers/back4.sh $HOME/dev/dotfiles/extra/wallpapers/gifs/night-city.gif
+# exec --no-startup-id killall back4.sh
+# exec --no-startup-id $HOME/dev/dotfiles/extra/wallpapers/back4.sh $HOME/dev/dotfiles/extra/wallpapers/gifs/night-city.gif
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
