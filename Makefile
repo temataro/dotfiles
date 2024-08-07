@@ -135,6 +135,7 @@ fonts:
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip"
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/MartianMono.zip"
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/0xProto.zip"
 	pushd ./fonts
 		
 symlink_dotfiles_to_config:
