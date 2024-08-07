@@ -20,8 +20,8 @@ white = "0xffffff"
 yellow = "0xe7c547"
 
 [colors.cursor]
-cursor = "0x43444f"
-text = "0xffffff"
+cursor = "0xffffff"
+text = "0x101010"
 
 [colors.dim]
 black = "0x333333"
@@ -45,7 +45,7 @@ yellow = "0xe6c547"
 
 [colors.primary]
 # Catppuccin-mocha fg and bg colors
-background = "0x1e1e2e"
+background = "0x020202"
 foreground = "0xcdd6f4"
 # background = "0x001010"  #1a1a1a
 # foreground = "0xc0d0f0"
@@ -63,7 +63,8 @@ TERM = "xterm"
 size = 17
 
 [font.bold]
-family = "JetBrainsMono"
+family = "0xProtoNerdFont"
+# family = "JetBrainsMono"
 # family = "FiraCodeNerdFontMono"
 # family = "MartianMonoNerdFont"
 style = "Bold"
@@ -73,13 +74,15 @@ x = 0
 y = 0
 
 [font.italic]
+family = "0xProtoNerdFont"
 # family = "FiraCodeNerdFontMono"
-family = "JetBrainsMono"
+# family = "JetBrainsMono"
 # family = "MartianMonoNerdFont"
 style = "Italic"
 
 [font.normal]
-family = "JetBrainsMono"
+family = "0xProtoNerdFont"
+# family = "JetBrainsMono"
 # family = "MononokiNerdFontMono"
 # family = "MartianMonoNerdFont"
 # family = "FiraCodeNerdFontMono"
@@ -595,7 +598,7 @@ semantic_escape_chars = ",│`|:\"' ()[]{}<>"
 
 [window]
 decorations = "Buttonless"
-opacity = 0.8
+opacity = 0.80
 blur = true
 
 [window.dimensions]
