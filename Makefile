@@ -1,8 +1,10 @@
+# NOTE: THIS IS STILL IN DEVELOPMENT. IT WILL SURELY FAIL ON YOUR SYSTEM. DO
+# NOT USE!!! (Unless you wanna, idk)
 # Makefile Build Environment Functionality:
 # 	- Specify between a lite build or a normal build by using `make lite` for
 # 	small systems like SBCs or computers you won't use regularly.
-# 	- 
-# ! WARNING ! 
+# 	-
+# ! WARNING !
 # The commands here will have yes piped into them for minimal user
 # intervention, beware of what you're installing!
 #
@@ -34,18 +36,18 @@ endif
 
 COMMON_PKGS          = git vim ripgrep ninja-build cmake \
 								     	unzip curl arandr cowsay btop alacritty \
-								     	vlc kicad kicad-library kicad-library-3d \
 								     	bat
 
 COMMON_PKGS_LITE     = git vim ripgrep ninja-build cmake \
 								     	unzip curl btop
 
-COMMON_APPLICATIONS  = chromium spotiify
+COMMON_APPLICATIONS  = chromium spotify
 
-DEBIAN_PKGS = gnome-tweaks glow neofetch
-FEDORA_PKGS = fastfetch
-ARCH_PKGS   = glow fastfetch
-config_dir  = "$(HOME)/.config"
+DEBIAN_PKGS   = gnome-tweaks glow neofetch
+FEDORA_PKGS   = fastfetch
+ARCH_PKGS     = glow fastfetch
+config_dir    = "$(HOME)/.config"
+dotfiles_dir ?= "$(HOME)/dev/dotfiles"
 
 .PHONY: init whoisthis install_common upgrade symlink_dotfiles_to_config lazygit tmux zsh alacritty vim neovim i3 python
 
@@ -73,7 +75,7 @@ keyboard_tweaks:
 	setxkbmap -option ctrl:nocaps
 
 lazygit:
-	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') 
+	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
 	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
 	tar xf lazygit.tar.gz lazygit
 	sudo install lazygit /usr/local/bin
@@ -94,7 +96,7 @@ alacritty:
 vim:
 	cp -r ./.vim/ $(HOME)
 	# symlinking dotfile in a later recipe
-	
+
 neovim:
 	$(cmd) neovim
 	cp -r neovim $(config_dir)/nvim
@@ -129,15 +131,21 @@ kitty:
 
 arandr_screen_layout:
 	cp ~/dev/dotfiles/xrandr ~/.screenlayout
-	
+
 fonts:
-	mkdir ./fonts
-	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip"
-	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/MartianMono.zip"
-	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
-	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/0xProto.zip"
-	pushd ./fonts
-		
+	cd $(dotfiles_dir)
+	mkdir -p extra/fonts
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip" -O ./extra/fonts/JetBrainsMono.zip
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/MartianMono.zip" -O ./extra/fonts/MartianMono.zip
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip" -O ./extra/fonts/FiraCode.zip
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/0xProto.zip" -O ./extra/fonts/0xProto.zip
+	yes | unzip extra/fonts/JetBrainsMono.zip -d extra/fonts
+	yes | unzip extra/fonts/MartianMono.zip -d extra/fonts
+	yes | unzip extra/fonts/FiraCode.zip -d extra/fonts
+	yes | unzip extra/fonts/0xProto.zip -d extra/fonts
+	sudo mv ./extra/fonts/*.ttf ~/.local/share/fonts
+
+
 symlink_dotfiles_to_config:
 	ln ./alacritty.toml $(config_dir)/alacritty/alacritty.toml
 	ln ./config $(config_dir)/i3/config
