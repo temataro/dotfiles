@@ -136,7 +136,7 @@ eval "$(zoxide init zsh)"
 
 
 # Run a random chapter of 97 Things Every Programmer Should Know
-$HOME/dev/dotfiles/97-things/qotd.sh
+# $HOME/dev/dotfiles/97-things/qotd.sh
 alias ll='ls -alF --color'
 alias la='ls -lha --color'
 alias l='ls -CF --color'
@@ -174,3 +174,6 @@ alias gits='git status --column=always,nodense,auto'
 alias cat=batcat
 alias ls=l
 alias hh='ls -lhat | head -n 6'
+alias sduo=sudo
+alias zpool="sudo zpool"
+alias zfs="sudo zfs"
