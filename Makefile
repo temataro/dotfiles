@@ -1,8 +1,10 @@
+# NOTE: THIS IS STILL IN DEVELOPMENT. IT WILL SURELY FAIL ON YOUR SYSTEM. DO
+# NOT USE!!! (Unless you wanna, idk)
 # Makefile Build Environment Functionality:
 # 	- Specify between a lite build or a normal build by using `make lite` for
 # 	small systems like SBCs or computers you won't use regularly.
-# 	- 
-# ! WARNING ! 
+# 	-
+# ! WARNING !
 # The commands here will have yes piped into them for minimal user
 # intervention, beware of what you're installing!
 #
@@ -34,13 +36,12 @@ endif
 
 COMMON_PKGS          = git vim ripgrep ninja-build cmake \
 								     	unzip curl arandr cowsay btop alacritty \
-								     	vlc kicad kicad-library kicad-library-3d \
 								     	bat
 
 COMMON_PKGS_LITE     = git vim ripgrep ninja-build cmake \
 								     	unzip curl btop
 
-COMMON_APPLICATIONS  = chromium spotiify
+COMMON_APPLICATIONS  = chromium spotify
 
 DEBIAN_PKGS = gnome-tweaks glow neofetch
 FEDORA_PKGS = fastfetch
@@ -73,7 +74,7 @@ keyboard_tweaks:
 	setxkbmap -option ctrl:nocaps
 
 lazygit:
-	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') 
+	LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
 	curl -Lo lazygit.tar.gz "https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz"
 	tar xf lazygit.tar.gz lazygit
 	sudo install lazygit /usr/local/bin
@@ -94,7 +95,7 @@ alacritty:
 vim:
 	cp -r ./.vim/ $(HOME)
 	# symlinking dotfile in a later recipe
-	
+
 neovim:
 	$(cmd) neovim
 	cp -r neovim $(config_dir)/nvim
@@ -129,14 +130,19 @@ kitty:
 
 arandr_screen_layout:
 	cp ~/dev/dotfiles/xrandr ~/.screenlayout
-	
+
 fonts:
-	mkdir ./fonts
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip"
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/MartianMono.zip"
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip"
-	pushd ./fonts
-		
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/0xProto.zip"
+	unzip ./JetBrainsMono.zip
+	unzip ./MartianMono.zip
+	unzip ./FiraCode.zip
+	unzip ./0xProto.zip
+	sudo mv *.ttf /usr/local/share/fonts/
+	rm -fr fonts ./JetBrainsMono.zip ./MartianMono.zip ./FiraCode.zip ./0xProto.zip
+
 symlink_dotfiles_to_config:
 	ln ./alacritty.toml $(config_dir)/alacritty/alacritty.toml
 	ln ./config $(config_dir)/i3/config
