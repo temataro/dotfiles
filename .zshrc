@@ -112,6 +112,15 @@ cd() {
 	check_directory_for_new_repository
 }
 
+# Gem of a find from the kitty config doc monstrosity
+scroll-and-clear-screen() {
+    printf '\n%.0s' {1..$LINES}
+    zle clear-screen
+}
+
+zle -N scroll-and-clear-screen
+bindkey '^l' scroll-and-clear-screen
+
 # optional, greet also when opening shell directly in repository directory
 # adds time to startup
 check_directory_for_new_repository
