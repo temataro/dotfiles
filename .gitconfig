@@ -23,6 +23,8 @@
 	gi = grep --break --heading --line-number --ignore-case
 	vee = log --decorate --cherry-mark --oneline --graph --boundary
 	dh = diff HEAD
+	rhh = reset --hard HEAD
+	rc = rebase --continue
 [merge]
 	conflictstyle = diff3
 	summary = true
