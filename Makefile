@@ -145,6 +145,15 @@ fonts:
 	yes | unzip extra/fonts/0xProto.zip -d extra/fonts
 	sudo mv ./extra/fonts/*.ttf ~/.local/share/fonts
 
+sync:
+	# Temporary fix till i figure out how tf to ln -s files from here to my actual config directory
+	cp ./config ~/.config/i3/config
+	cp ./kitty.conf ~/.config/kitty/kitty.conf
+	cp .tmux.conf .zshrc .i3status.conf ~
+	cp ./alacritty.toml ~/.config/alacritty/alacritty.toml
+	rm -rf ~/.config/nvim
+	cp -r ./astro.nvim ~/.config/nvim
+	source ~/.zshrc
 
 symlink_dotfiles_to_config:
 	ln ./alacritty.toml $(config_dir)/alacritty/alacritty.toml
