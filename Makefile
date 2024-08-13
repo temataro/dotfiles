@@ -117,6 +117,7 @@ python:
 				 python3 \
 				 python3-pip \
 				 black \
+				 python3.12-venv \
 				 pip install -r requirements.txt
 
 octave:
