@@ -25,6 +25,7 @@
 	dh = diff HEAD
 	rhh = reset --hard HEAD
 	rc = rebase --continue
+	ca = commit --amend
 [merge]
 	conflictstyle = diff3
 	summary = true
