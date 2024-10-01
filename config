@@ -31,7 +31,7 @@ set_from_resource $white       color15 #000000
 
 set $mod Mod1
 # Color shemes for windows
-set $bgcolor    #aa307020
+set $bgcolor    #aa3070f0
 set $in-bgcolor #181818
 set $text       #ffffff
 set $u-bgcolor  #ff0000
@@ -256,7 +256,7 @@ mode "$mode_system"{
 bindsym $mod+Escape mode "$mode_system"
 
 gaps inner 5
-gaps outer 20
+gaps outer 30
 smart_gaps off
 smart_borders on
 
@@ -266,18 +266,18 @@ smart_borders on
 # Requires i3blocks
 bar {
     status_command i3status
-    font pango:JetBrainsMono, MartianMono 13
+    font pango:JetBrainsMonoNerdFont, MartianMono 13
     tray_output             None
-    separator_symbol        "|"
+    separator_symbol        " | "
     workspace_buttons       yes
     strip_workspace_numbers yes
     position                top
 
     colors {
         separator #081419
-        background #9faf9f
-        statusline #cdd6f4
-        focused_workspace #fdf6e3 #6c71c4 #fdf6e3
+        background #aa9faf9f
+        statusline #181818
+        focused_workspace #fdf6e3 #6a7aa4 #fdf6e3
         active_workspace #fdf6e3 #6c71c4 #fdf6e3
         inactive_workspace #002b36 #586e75 #002b36
         urgent_workspace #d33682 #d33682 #fdf6e3
