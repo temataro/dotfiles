@@ -144,7 +144,7 @@ fonts:
 	yes | unzip extra/fonts/MartianMono.zip -d extra/fonts
 	yes | unzip extra/fonts/FiraCode.zip -d extra/fonts
 	yes | unzip extra/fonts/0xProto.zip -d extra/fonts
-	sudo mv ./extra/fonts/*.ttf ~/.local/share/fonts
+	sudo mv ./extra/fonts/*.ttf /usr/local/share/fonts
 
 sync:
 	# Temporary fix till i figure out how tf to ln -s files from here to my actual config directory
