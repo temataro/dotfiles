@@ -95,8 +95,8 @@ tiling_drag modifier titlebar
 # start a terminal
 #   Start kitty
 bindsym $mod+Return exec kitty
-#   Start kitty in a floating window
-bindsym $mod+Shift+Return exec --no-startup-id kitty --class floating
+#   Start Kitty in a floating window (so it can be transparent)
+bindsym $mod+Shift+Return exec --no-startup-id kitty --override background_opacity=0.45 --class floating
 
 for_window [class="floating"] floating enabled move position center
 #   Start Firefox in a floating window
