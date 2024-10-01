@@ -6,7 +6,7 @@ random_file="${files[($RANDOM) % ${#files[@]}]}"
 echo "$RANDOM"
 echo "Meditations: $random_file"
 
-/usr/bin/glow --pager "$random_file"
+glow "$random_file"
 
 # Add this line to your .zshrc
 # `$HOME/dev/dotfiles/extra/meditations/qotd.sh`
