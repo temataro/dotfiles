@@ -140,10 +140,12 @@ fonts:
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/MartianMono.zip" -O ./extra/fonts/MartianMono.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip" -O ./extra/fonts/FiraCode.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/0xProto.zip" -O ./extra/fonts/0xProto.zip
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.zip" -O ./extra/fonts/Iosevka.zip
 	yes | unzip extra/fonts/JetBrainsMono.zip -d extra/fonts
 	yes | unzip extra/fonts/MartianMono.zip -d extra/fonts
 	yes | unzip extra/fonts/FiraCode.zip -d extra/fonts
 	yes | unzip extra/fonts/0xProto.zip -d extra/fonts
+	yes | unzip extra/fonts/Iosevka.zip -d extra/fonts
 	sudo mv ./extra/fonts/*.ttf /usr/local/share/fonts
 
 sync:
