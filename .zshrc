@@ -186,3 +186,4 @@ alias hh='ls -lhat | head -n 6'
 alias sduo=sudo
 alias zpool="sudo zpool"
 alias zfs="sudo zfs"
+alias gls="git ls-files | xargs ls -lhat --color=auto"
