@@ -245,7 +245,7 @@ set $mode_system System (Shift+l) suspend, (Shift+e) lock, (Shift+h) hibernate, 
 mode "$mode_system"{
   bindsym Shift+e exec --no-startup-id i3lock-fancy
   bindsym Shift+s exec --no-startup-id shutdown now
-  bindsym Shift+r exec --no-startup-id reboot
+  bindsym Shift+$mod+t exec --no-startup-id reboot
   bindsym Shift+h exec --no-startup-id systemctl hibernate
   bindsym Shift+s exec --no-startup-id systemctl shutdown
 
