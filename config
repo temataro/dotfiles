@@ -44,7 +44,7 @@ client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgco
 client.urgent           $u-bgcolor      $u-bgcolor      $text           $u-bgcolor
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:JetBrainsMonoNerdFont 13
+font pango:JetBrainsMonoNerdFont 0
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -59,12 +59,12 @@ exec_always --no-startup-id picom
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy -i /home/tem/Pictures/canyon-wren.jpg
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy
 exec --no-startup-id arandr
 
 # Display wallpaper.
 # TODO: export your /Pictures/wallpapers directory in any future bootstraps you do.
-exec_always feh --bg-fill ~/Pictures/oakland-zoo-otters.jpg
+exec_always feh --bg-scale ~/Pictures/blue-periwinkle.jpg
 #
 # Display A moving GIF as wallpaper:
 # exec --no-startup-id killall back4.sh
@@ -96,7 +96,7 @@ tiling_drag modifier titlebar
 #   Start kitty
 bindsym $mod+Return exec kitty
 #   Start Kitty in a floating window (so it can be transparent)
-bindsym $mod+Shift+Return exec --no-startup-id kitty --override background_opacity=0.45 --class floating
+bindsym $mod+Shift+Return exec --no-startup-id kitty --override background_opacity=0.75 --class floating
 
 for_window [class="floating"] floating enabled move position center
 #   Start Firefox in a floating window
@@ -265,24 +265,22 @@ smart_borders on
 
 # Requires i3blocks
 bar {
-    status_command i3status
-    font pango:JetBrainsMonoNerdFont, MartianMono 13
-    tray_output             None
-    separator_symbol        " | "
-    workspace_buttons       yes
+   font pango: JetBrainsMonoNerdFont 10
+    i3bar_command i3bar
+    output nonprimary
+    position top
     strip_workspace_numbers yes
-    position                top
+    tray_output DP-4
 
     colors {
-        separator #081419
-        background #aa9faf9f
-        statusline #181818
-        focused_workspace #fdf6e3 #6a7aa4 #fdf6e3
-        active_workspace #fdf6e3 #6c71c4 #fdf6e3
-        inactive_workspace #002b36 #586e75 #002b36
-        urgent_workspace #d33682 #d33682 #fdf6e3
+        background #282A36
+        statusline #F8F8F2
+        separator  #44475A
 
-        statusline         $white
-        separator          $black
-  }
+        focused_workspace  #44475A #44475A #F8F8F2
+        active_workspace   #282A36 #44475A #F8F8F2
+        inactive_workspace #282A36 #282A36 #BFBFBF
+        urgent_workspace   #FF5555 #FF5555 #F8F8F2
+        binding_mode       #FF5555 #FF5555 #F8F8F2
+    }    status_command i3status
 }
