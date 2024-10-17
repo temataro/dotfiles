@@ -81,7 +81,10 @@ lazygit:
 	sudo install lazygit /usr/local/bin
 
 tmux:
+	$(cmd) lm-sensors nvidia-smi
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+	# Changes the way the tmux-ip-address plugin gets its IP.
+	sed -i '8s/.*/  local ip_address=$(hostname -I)/' ~/.tmux/plugins/tmux-ip-address/scripts/ip_address.sh
 	$(cmd) tmux
 	# symlinking dotfile in a later recipe
 
