@@ -81,6 +81,7 @@ lazygit:
 	sudo install lazygit /usr/local/bin
 
 tmux:
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
 	$(cmd) tmux
 	# symlinking dotfile in a later recipe
 
