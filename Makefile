@@ -47,7 +47,7 @@ DEBIAN_PKGS   = gnome-tweaks glow neofetch
 FEDORA_PKGS   = fastfetch
 ARCH_PKGS     = glow fastfetch
 config_dir    = "$(HOME)/.config"
-dotfiles_dir ?= "$(HOME)/dev/dotfiles"
+dotfiles_dir ?= "$(HOME)/code/github.com/temataro/dotfiles"
 
 .PHONY: init whoisthis install_common upgrade symlink_dotfiles_to_config lazygit tmux zsh alacritty vim neovim i3 python
 
@@ -137,20 +137,23 @@ kitty:
 arandr_screen_layout:
 	cp ~/dev/dotfiles/xrandr ~/.screenlayout
 
+
 fonts:
 	cd $(dotfiles_dir)
 	mkdir -p extra/fonts
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/SpaceMono.zip" -O ./extra/fonts/SpaceMono.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip" -O ./extra/fonts/JetBrainsMono.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/MartianMono.zip" -O ./extra/fonts/MartianMono.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip" -O ./extra/fonts/FiraCode.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/0xProto.zip" -O ./extra/fonts/0xProto.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.zip" -O ./extra/fonts/Iosevka.zip
-	yes | unzip extra/fonts/JetBrainsMono.zip -d extra/fonts
-	yes | unzip extra/fonts/MartianMono.zip -d extra/fonts
-	yes | unzip extra/fonts/FiraCode.zip -d extra/fonts
-	yes | unzip extra/fonts/0xProto.zip -d extra/fonts
-	yes | unzip extra/fonts/Iosevka.zip -d extra/fonts
-	sudo mv ./extra/fonts/*.ttf /usr/local/share/fonts
+	yes | unzip extra/fonts/SpaceMono.zip -d extra/fonts/SpaceMono
+	yes | unzip extra/fonts/JetBrainsMono.zip -d extra/fonts/JetBrainsMono
+	yes | unzip extra/fonts/MartianMono.zip -d extra/fonts/MartianMono
+	yes | unzip extra/fonts/FiraCode.zip -d extra/fonts/FiraCode
+	yes | unzip extra/fonts/0xProto.zip -d extra/fonts/0xProto
+	yes | unzip extra/fonts/Iosevka.zip -d extra/fonts/Iosevka
+	sudo mv ./extra/fonts/* /usr/share/fonts
 
 sync:
 	# Temporary fix till i figure out how tf to ln -s files from here to my actual config directory
