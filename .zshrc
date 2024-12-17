@@ -143,6 +143,11 @@ export PATH=$PATH:"/home/Code/fpga_playground/icesugar/tools"
 #  Use Zoxide
 eval "$(zoxide init zsh)"
 
+# Add function to mkdir and cd into a dir at the same time
+function mkcd
+{
+	mkdir $1 && cd $1
+}
 
 # Run a random chapter of 97 Things Every Programmer Should Know
 # $HOME/dev/dotfiles/97-things/qotd.sh
