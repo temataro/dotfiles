@@ -132,7 +132,6 @@ else
     endif
 endif
 
-set printoptions=paper:letter
 
 fun! <SID>StripTrailingWhitespaces()
     " Save the cursor location
