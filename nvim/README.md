@@ -38,5 +38,7 @@ TODOs:
   - Floating C++ REPL program (TODO: Make C++ repl program for basic playground-ing)
   - File tabs that can be quickly toggled through using hjkl
   - Auto comment/uncomment leader key keymap
+  - Snippets for redundant code block generation: Quarto, Markdown (images, tables,...), Python, C, C++...
+
 
 Happy travels, space cowboys!
