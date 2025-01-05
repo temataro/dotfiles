@@ -151,6 +151,7 @@ function mkcd
 
 # Run a random chapter of 97 Things Every Programmer Should Know
 # $HOME/dev/dotfiles/97-things/qotd.sh
+$HOME/code/github.com/temataro/dotfiles/extra/lews-therin/humming.py
 alias ll='ls -alF --color'
 alias la='ls -lha --color'
 alias l='ls -CF --color'
