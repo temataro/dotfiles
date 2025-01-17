@@ -56,7 +56,7 @@ TEM                = '$(fetcher) spotify chromium'
 all: basic
 
 basic:
-
+	@echo "empty for now..."
 # `make basic_plus`
 # Congratulations, you also get some nice fonts and a terminal that looks nice
 basic_plus:
@@ -66,3 +66,11 @@ tmux:
 	# Changes the way the tmux-ip-address plugin gets its IP.
 	sed -i '8s/.*/  local ip_address=$(hostname -I)/' ~/.tmux/plugins/tmux-ip-address/scripts/ip_address.sh
 	cp .tmux.conf ~
+
+refresh:
+	@echo "Copying back your computers config to this repository"
+	cp ~/.config/kitty/kitty.conf .
+	cp ~/.config/i3/config .
+	cp ~/.tmux.conf .
+	cp ~/.vimrc .
+	cp ~/.zshrc .
