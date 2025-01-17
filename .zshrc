@@ -9,10 +9,11 @@ export ZSH="$HOME/.oh-my-zsh"
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
 # ZSH_THEME="blinks"
-ZSH_THEME="alanpeabody"
+# ZSH_THEME="alanpeabody"
+ZSH_THEME="ys"
 # Launch tmux
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  exec tmux
+  tmux
 fi
 
 # Set list of themes to pick from when loading at random
@@ -97,25 +98,28 @@ fi
 # github.com/o2sh/onefetch
 # Run onefetch whenever you cd into a repo folder.
 # git repository greeter
-last_repository=
-check_directory_for_new_repository() {
-	current_repository=$(git rev-parse --show-toplevel 2> /dev/null)
-	
-	if [ "$current_repository" ] && \
-	   [ "$current_repository" != "$last_repository" ]; then
-		onefetch
-	fi
-	last_repository=$current_repository
-}
-cd() {
-	builtin cd "$@"
-	check_directory_for_new_repository
-}
+# last_repository=
+# check_directory_for_new_repository() {
+# 	current_repository=$(git rev-parse --show-toplevel 2> /dev/null)
+#
+# 	if [ "$current_repository" ] && \
+# 	   [ "$current_repository" != "$last_repository" ]; then
+# 		onefetch
+# 	fi
+# 	last_repository=$current_repository
+# }
+# cd() {
+# 	builtin cd "$@"
+# 	check_directory_for_new_repository
+# }
 
 # Gem of a find from the kitty config doc monstrosity
 scroll-and-clear-screen() {
     printf '\n%.0s' {1..$LINES}
     zle clear-screen
+}
+gitwip() {
+    git commit -m "WIP: $1"
 }
 
 zle -N scroll-and-clear-screen
@@ -123,7 +127,7 @@ bindkey '^l' scroll-and-clear-screen
 
 # optional, greet also when opening shell directly in repository directory
 # adds time to startup
-check_directory_for_new_repository
+# check_directory_for_new_repository
 
 #
 # Compilation flags
@@ -164,6 +168,7 @@ alias yt-dlp="yt-dlp --list-formats"
 alias clera='clear'
 alias dotfiles='cd ~/Code/softwaretoolbelt/'
 alias lgg='lazygit'
+alias vi='\vim'
 alias vim='nvim'
 # WORK ALIASES
 alias brf='bladeRF-cli'
@@ -192,4 +197,14 @@ alias hh='ls -lhat | head -n 6'
 alias sduo=sudo
 alias zpool="sudo zpool"
 alias zfs="sudo zfs"
+alias ipy="ipython3"
+alias watchfast="watch -n 0.1 -d"
 alias gls="git ls-files | xargs ls -lhat --color=auto"
+alias Spike="/home/tem/Documents/Spike(Ubuntu22.04x64)_3_9_0/Spike"
+alias lg=lazygit
+
+. "$HOME/.cargo/env"
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
