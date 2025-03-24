@@ -147,11 +147,6 @@ export PATH=$PATH:"/home/Code/fpga_playground/icesugar/tools"
 #  Use Zoxide
 eval "$(zoxide init zsh)"
 
-# Add function to mkdir and cd into a dir at the same time
-function mkcd
-{
-	mkdir $1 && cd $1
-}
 
 # Run a random chapter of 97 Things Every Programmer Should Know
 # $HOME/dev/dotfiles/97-things/qotd.sh
@@ -184,9 +179,9 @@ export PATH="/home/tataro/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
 export PATH="/home/tataro/Code/repos/PocketSDR/bin:$PATH"
 alias open='xdg-open'
 alias clera='clear'
-alias venv='source ./venv/bin/activate'
+alias venv='source ./venv/bin/activate || source ./.venv/bin/activate'
 alias grep='rg'
-export PATH="/home/tataro/Code/repos/PocketSDR/bin:/home/tataro/.modular/pkg/packages.modular.com_mojo/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/Code/fpga_playground/icesugar/tools:/opt/quarto/bin/quarto:$PATH"
+export PATH="/home/tem/code/github.com/tiiuae/radioblast/build/src:/home/tataro/Code/repos/PocketSDR/bin:/home/tataro/.modular/pkg/packages.modular.com_mojo/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/Code/fpga_playground/icesugar/tools:/opt/quarto/bin/quarto:$PATH"
 alias quarto=/opt/quarto/bin/quarto
 alias docker=podman
 alias heshevo='pactl set-sink-port alsa_output.pci-0000_05_00.6.analog-stereo analog-output-speaker'
@@ -199,8 +194,9 @@ alias zpool="sudo zpool"
 alias zfs="sudo zfs"
 alias ipy="ipython3"
 alias watchfast="watch -n 0.1 -d"
+alias watchfastls="watch -n 0.1 -d ls -Shlat"
 alias gls="git ls-files | xargs ls -lhat --color=auto"
-alias Spike="/home/tem/Documents/Spike(Ubuntu22.04x64)_3_9_0/Spike"
+alias fzf="fzf --preview '/usr/bin/batcat --color=always {}' --height=50%"
 alias lg=lazygit
 
 . "$HOME/.cargo/env"
