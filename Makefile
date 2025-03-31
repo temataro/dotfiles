@@ -31,6 +31,8 @@ DISTRO_TYPE := $(shell cat /etc/os-release | grep ID_LIKE | cut -d'=' -f2)
 
 cmd = 'arch'
 fetcher = 'fastfetch'
+dotfiles_dir = '/home/tem/code/github.com/temataro/dotfiles'
+
 ifeq ($(DISTRO_TYPE),"debian")
 	cmd := 'sudo apt install -y'
 	update_cmd := 'yes | sudo apt update && sudo apt upgrade'
@@ -47,6 +49,7 @@ else ifeq ($(DISTRO_TYPE),"arch")
 	update_cmd := 'yes | sudo pacman -Syu'
 	distro_specific := 'bat brightnessctl blueman '
 endif
+
 
 # === __ === Packages === __ ===
 BASIC_COMMON       = 'git vim ripgrep cmake unzip curl arandr cowsay btop'
@@ -74,3 +77,21 @@ refresh:
 	cp ~/.tmux.conf .
 	cp ~/.vimrc .
 	cp ~/.zshrc .
+
+fonts:
+	cd $(dotfiles_dir)
+	mkdir -p extra/fonts
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/SpaceMono.zip" -O ./extra/fonts/SpaceMono.zip
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip" -O ./extra/fonts/JetBrainsMono.zip
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/MartianMono.zip" -O ./extra/fonts/MartianMono.zip
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip" -O ./extra/fonts/FiraCode.zip
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/0xProto.zip" -O ./extra/fonts/0xProto.zip
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.zip" -O ./extra/fonts/Iosevka.zip
+	yes | unzip extra/fonts/SpaceMono.zip -d extra/fonts/SpaceMono
+	yes | unzip extra/fonts/JetBrainsMono.zip -d extra/fonts/JetBrainsMono
+	yes | unzip extra/fonts/MartianMono.zip -d extra/fonts/MartianMono
+	yes | unzip extra/fonts/FiraCode.zip -d extra/fonts/FiraCode
+	yes | unzip extra/fonts/0xProto.zip -d extra/fonts/0xProto
+	yes | unzip extra/fonts/Iosevka.zip -d extra/fonts/Iosevka
+	git clone https://github.com/MarkGG8181/Clean-Fonts extra/fonts
+	sudo mv ./extra/fonts/* /usr/share/fonts
