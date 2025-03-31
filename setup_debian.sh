@@ -54,7 +54,7 @@ git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm && \  # Instal
 # TODO: select Kitty as the default terminal by using `sudo update-alternatives --config x-terminal-emulator` and picking it out of the options.
 
 # Install other apps (Spotify, Microsoft Edge, ... VS Code)
-sudo snap install spotify glow && \
+sudo snap install spotify glow onefetch && \
 
 # Install Lazygit
 LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*')
