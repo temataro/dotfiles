@@ -52,3 +52,10 @@ vim.keymap.set("n", "J", "mzJ`z")
 -- Center search results
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
+
+-- Force colorscheme to be rose-pine
+vim.cmd("colorscheme rose-pine")
+vim.opt.termguicolors = true
+
+-- Run Black on file when Ctrl-b is run in normal mode
+vim.keymap.set("n", "<C-b>", ":!black %<cr>")
