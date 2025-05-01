@@ -151,51 +151,36 @@ eval "$(zoxide init zsh)"
 # Run a random chapter of 97 Things Every Programmer Should Know
 # $HOME/dev/dotfiles/97-things/qotd.sh
 $HOME/code/github.com/temataro/dotfiles/extra/lews-therin/humming.py
-alias ll='ls -alF --color'
-alias la='ls -lha --color'
-alias l='ls -CF --color'
-alias nand='cd ~/Code/NAND2Tetris/nand2tetris/projects && clear'
-alias c='clear'
-alias hat='ls -lhat --color'
-alias dsp='cd ~/Desktop/DSP && clear && ls -lhat'
+# --- replace ls with exa ---
+alias hat='exa -la --git --time=modified --git-repos'
+alias ls=exa
+alias hh='hat | head -n 6'
 alias sl='ls --color'
-alias yt-dlp="yt-dlp --list-formats"
+# ---                    ---
+
+alias c='clear'
 alias clera='clear'
-alias dotfiles='cd ~/Code/softwaretoolbelt/'
+alias celar='clear'
+alias yt-dlp="yt-dlp --list-formats"
 alias lgg='lazygit'
 alias vi='\vim'
 alias vim='nvim'
-# WORK ALIASES
-alias brf='bladeRF-cli'
-alias grc='gnuradio-companion'
-alias blast='~/Code/repos/radioblast/build/src/radioblast'
-alias ls='ls -lhat --color'
 alias tmd='tmux detach'
 alias tma='tmux attach'
-alias celar='clear'
-alias repos='cd ~/Code/repos && clear && ls'
-export MODULAR_HOME="/home/tataro/.modular"
-export PATH="/home/tataro/.modular/pkg/packages.modular.com_mojo/bin:$PATH"
-export PATH="/home/tataro/Code/repos/PocketSDR/bin:$PATH"
 alias open='xdg-open'
-alias clera='clear'
 alias venv='source ./venv/bin/activate || source ./.venv/bin/activate'
 alias grep='rg'
-export PATH="/home/tem/code/github.com/tiiuae/radioblast/build/src:/home/tataro/Code/repos/PocketSDR/bin:/home/tataro/.modular/pkg/packages.modular.com_mojo/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/home/Code/fpga_playground/icesugar/tools:/opt/quarto/bin/quarto:$PATH"
 alias quarto=/opt/quarto/bin/quarto
 alias docker=podman
-alias heshevo='pactl set-sink-port alsa_output.pci-0000_05_00.6.analog-stereo analog-output-speaker'
 alias gits='git status --column=always,nodense,auto'
 alias cat=batcat
-alias ls=l
-alias hh='ls -lhat | head -n 6'
 alias sduo=sudo
 alias zpool="sudo zpool"
 alias zfs="sudo zfs"
 alias ipy="ipython3"
-alias watchfast="watch -n 0.1 -d"
-alias watchfastls="watch -n 0.1 -d ls -Shlat"
-alias gls="git ls-files | xargs ls -lhat --color=auto"
+alias wf="watch -n 0.1 -d"
+alias wfls="watch -n 0.1 -d exa -la --git --time=modified"
+alias gls="git ls-files | xargs exa -la --git --time=modified --recurse"
 alias fzf="fzf --preview '/usr/bin/batcat --color=always {}' --height=50%"
 alias lg=lazygit
 
