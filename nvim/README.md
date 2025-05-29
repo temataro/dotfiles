@@ -10,12 +10,6 @@ within Neovim.
 Simply added extras into polish.lua from a baseline template of astro.nvim
 along with previous vimrc configs for style and QoL.
 
-## Requirements:
-    Neovim >= v0.10.0
-    You'll need to install lazyvim from a template and then `rm -fr
-    ~/.config/nvim && rm -fr ~/.local/{share/nvim,state/nvim}`... probably.
-    (To be clarified, but this procedure works for now)
-
 Capabilities:
   - Code formatting with clang-format
   - Full blackout mode for desert256 theme
