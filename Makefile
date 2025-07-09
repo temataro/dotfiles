@@ -173,12 +173,14 @@ fonts:
 	"
 	cd $(dotfiles_dir)
 	mkdir -p extra/fonts
+	rm -fr ./extra/fonts/*
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.3.0/SpaceMono.zip" -O ./extra/fonts/SpaceMono.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/JetBrainsMono.zip" -O ./extra/fonts/JetBrainsMono.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/MartianMono.zip" -O ./extra/fonts/MartianMono.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip" -O ./extra/fonts/FiraCode.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/0xProto.zip" -O ./extra/fonts/0xProto.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.zip" -O ./extra/fonts/Iosevka.zip
+	wget "https://www.ffonts.net/jsMath-cmr10.font.zip" -O ./extra/fonts/cmr10.zip
 	yes | unzip extra/fonts/SpaceMono.zip -d extra/fonts/SpaceMono
 	yes | unzip extra/fonts/JetBrainsMono.zip -d extra/fonts/JetBrainsMono
 	yes | unzip extra/fonts/MartianMono.zip -d extra/fonts/MartianMono
@@ -186,5 +188,5 @@ fonts:
 	yes | unzip extra/fonts/0xProto.zip -d extra/fonts/0xProto
 	yes | unzip extra/fonts/Iosevka.zip -d extra/fonts/Iosevka
 	git clone https://github.com/MarkGG8181/Clean-Fonts extra/fonts/marksfonts
+	yes | unzip extra/fonts/cmr10.zip -d extra/fonts/cmr10
 	sudo mv ./extra/fonts/* /usr/share/fonts
-	rm -fr ./extra/fonts/marksfonts
