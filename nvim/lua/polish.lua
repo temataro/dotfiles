@@ -29,6 +29,8 @@ vim.opt.shiftwidth = 4
 vim.opt.expandtab = true
 vim.opt.softtabstop = 4
 
+-- Show staged chunks in side gutter
+vim.opt.signcolumn = "yes"
 
 -- Always keeps 12 lines in view when scrolling up or down
 vim.opt.scrolloff = 12
