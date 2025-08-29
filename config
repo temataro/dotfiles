@@ -6,8 +6,9 @@
 #   rofi
 #   arandr
 #   i3status
-#   flameshot
-#   feh
+#   i3blocks
+#   dunst
+#   compton 
 #
 # Should you change your keyboard layout some time, delete
 # this file and re-run i3-config-wizard(1).
@@ -39,12 +40,12 @@ set_from_resource $white       color15 #000000
 
 set $mod Mod1
 # Color shemes for windows
-set $bgcolor    #aa3070f0
+set $bgcolor    $transparent
 set $in-bgcolor #181818
 set $text       #ffffff
 set $u-bgcolor  #ff0000
-set $indicator  #c9a3c1
-set $in-text    #969696
+set $indicator  $transparent
+set $in-text    $transparent
 #                       border          background      text            indicator (a line which shows where the next window will be placed)
 client.focused          $bgcolor        $bgcolor        $text           $indicator
 client.unfocused        $in-bgcolor     $in-bgcolor     $in-text        $in-bgcolor
@@ -52,7 +53,7 @@ client.focused_inactive $in-bgcolor     $in-bgcolor     $in-text        $in-bgco
 client.urgent           $u-bgcolor      $u-bgcolor      $text           $u-bgcolor
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
-font pango:JetBrainsMonoNerdFont 13
+font pango:JetBrainsMonoNerdFont 0
 
 # This font is widely installed, provides lots of unicode glyphs, right-to-left
 # text rendering and scalability on retina/hidpi displays (thanks to pango).
@@ -61,6 +62,7 @@ font pango:JetBrainsMonoNerdFont 13
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
+exec compton --blur-background
 exec_always --no-startup-id setxkbmap -option ctrl:nocaps
 exec_always --no-startup-id picom
 # they are included here as an example. Modify as you see fit.
@@ -72,7 +74,7 @@ exec --no-startup-id arandr
 
 # Display wallpaper.
 # TODO: export your /Pictures/wallpapers directory in any future bootstraps you do.
-exec_always feh --bg-fill ~/Pictures/lavender-field.jpg
+exec_always feh --bg-fill ~/Pictures/wallpapers/blue-eye-samurai.jpg
 #
 # Display A moving GIF as wallpaper:
 # exec --no-startup-id killall back4.sh
@@ -81,6 +83,7 @@ exec_always feh --bg-fill ~/Pictures/lavender-field.jpg
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
 exec --no-startup-id nm-applet
+bindsym $mod+Shift+w exec --no-startup-id $editor --class "__nmtui" -e "nmtui-connect"
 
 # Use pactl to adjust volume in PulseAudio.
 set $refresh_i3status killall -SIGUSR1 i3status
@@ -168,7 +171,6 @@ bindsym $mod+Shift+space floating toggle
 
 # change focus between tiling / floating windows
 bindsym $mod+space focus mode_toggle
-bindsym Mod1+Tab workspace back_and_forth
 
 # Screenshot with Flameshot
 bindsym --release $mod+Shift+s exec flameshot gui
@@ -180,9 +182,10 @@ bindsym $mod+a focus parent
 
 # Define names for default workspaces for which we configure key bindings later on.
 # We use variables to avoid repeating the names in multiple places.
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
+# icons courtesy of this guy: https://github.com/Airblader/dotfiles-manjaro
+set $ws1 " "
+set $ws2 " "
+set $ws3 " "
 set $ws4 "4"
 set $ws5 "5"
 set $ws6 "6"
@@ -190,18 +193,16 @@ set $ws7 "7"
 set $ws8 "8"
 set $ws9 "9"
 set $ws10 "10"
-
-# switch to workspace
-bindsym $mod+1 workspace number $ws1
-bindsym $mod+2 workspace number $ws2
-bindsym $mod+3 workspace number $ws3
-bindsym $mod+4 workspace number $ws4
-bindsym $mod+5 workspace number $ws5
-bindsym $mod+6 workspace number $ws6
-bindsym $mod+7 workspace number $ws7
-bindsym $mod+8 workspace number $ws8
-bindsym $mod+9 workspace number $ws9
-bindsym $mod+0 workspace number $ws10
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
 
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace number $ws1
@@ -263,34 +264,33 @@ mode "$mode_system"{
 }
 bindsym $mod+Escape mode "$mode_system"
 
-gaps inner 5
-gaps outer 4
+gaps inner 2
+gaps outer 1
 smart_gaps off
 smart_borders on
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
-
-# Requires i3blocks
 bar {
-    status_command i3status
-    font pango:JetBrainsMonoNerdFont, MartianMono 11
-    # tray_output             None
-    separator_symbol        " | "
+#    verbose yes
+    status_command i3blocks
+    i3bar_command i3bar -t
+    position top
+    font pango:SFMono, MartianMono 14
+    strip_workspace_numbers no
+    separator_symbol "■"
     workspace_buttons       yes
-    strip_workspace_numbers yes
-    position                top
-
+    tray_output primary
+    tray_padding 10
     colors {
-        separator #081419
-        background #a15f5f
-        statusline #181818
-        focused_workspace #fdf6e3 #6a7aa4 #fdf6e3
-        active_workspace #fdf6e3 #6c71c4 #fdf6e3
-        inactive_workspace #002b36 #586e75 #002b36
-        urgent_workspace #d33682 #d33682 #fdf6e3
+        statusline         #a15f5f
+        background         $transparent
+        separator          $transparent
 
-        statusline         $white
-        separator          $black
-  }
+# #                          BORDER       BACKGROUND   TEXT
+        focused_workspace   $transparent #a15f5f #fdf6e3
+        active_workspace    $transparent #6c71c4 #fdf6e3
+        inactive_workspace  $transparent #586e75 #002b36
+        urgent_workspace    $transparent #d33682 #fdf6e3
+    }
 }
