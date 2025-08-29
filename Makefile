@@ -53,7 +53,7 @@ endif
 # === __ === Packages === __ ===
 BASIC_COMMON       = git vim ripgrep cmake unzip curl arandr cowsay btop vlc
 PLUS               = kitty tmux zsh $(fetcher) octave
-TEM                = (fetcher) chromium-browser
+TEM                = fetcher chromium-browser exa zoxide
 # DEBIAN_SNAPS       = 'glow onefetch spotify neovim'
 
 all: basic
@@ -84,7 +84,7 @@ wise_choice:
 	╚══════╝╚═╝  ╚═╝ ╚═════╝╚══════╝╚══════╝╚══════╝╚══════╝╚═╝  ╚═══╝   ╚═╝        ╚═════╝╚═╝  ╚═╝ ╚═════╝ ╚═╝ ╚═════╝╚══════╝╚═╝ \n \
 	"
 
-tem: wise_choice basic basic_plus tmux kitty lazygit refresh uv fonts
+tem: wise_choice basic basic_plus tmux kitty refresh uv fonts zoxide
 	$(cmd) $(TEM)
 	$(cmd) $(distro_specific)
 
