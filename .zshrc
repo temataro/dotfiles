@@ -8,12 +8,12 @@ export ZSH="$HOME/.oh-my-zsh"
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
+# ZSH_THEME="ys"
 # ZSH_THEME="blinks"
-# ZSH_THEME="alanpeabody"
-ZSH_THEME="ys"
+ZSH_THEME="alanpeabody"
 # Launch tmux
 if command -v tmux &> /dev/null && [ -n "$PS1" ] && [[ ! "$TERM" =~ screen ]] && [[ ! "$TERM" =~ tmux ]] && [ -z "$TMUX" ]; then
-  tmux
+  exec tmux
 fi
 
 # Set list of themes to pick from when loading at random
@@ -85,7 +85,7 @@ source $ZSH/oh-my-zsh.sh
 # export MANPATH="/usr/local/man:$MANPATH"
 
 # You may need to manually set your language environment
-# export LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
 
 # Preferred editor for local and remote sessions
 if [[ -n $SSH_CONNECTION ]]; then
@@ -98,28 +98,25 @@ fi
 # github.com/o2sh/onefetch
 # Run onefetch whenever you cd into a repo folder.
 # git repository greeter
-# last_repository=
-# check_directory_for_new_repository() {
-# 	current_repository=$(git rev-parse --show-toplevel 2> /dev/null)
-#
-# 	if [ "$current_repository" ] && \
-# 	   [ "$current_repository" != "$last_repository" ]; then
-# 		onefetch
-# 	fi
-# 	last_repository=$current_repository
-# }
-# cd() {
-# 	builtin cd "$@"
-# 	check_directory_for_new_repository
-# }
+last_repository=
+check_directory_for_new_repository() {
+	current_repository=$(git rev-parse --show-toplevel 2> /dev/null)
+	
+	if [ "$current_repository" ] && \
+	   [ "$current_repository" != "$last_repository" ]; then
+		onefetch
+	fi
+	last_repository=$current_repository
+}
+cd() {
+	builtin cd "$@"
+	check_directory_for_new_repository
+}
 
 # Gem of a find from the kitty config doc monstrosity
 scroll-and-clear-screen() {
     printf '\n%.0s' {1..$LINES}
     zle clear-screen
-}
-gitwip() {
-    git commit -m "WIP: $1"
 }
 
 zle -N scroll-and-clear-screen
@@ -127,7 +124,7 @@ bindkey '^l' scroll-and-clear-screen
 
 # optional, greet also when opening shell directly in repository directory
 # adds time to startup
-# check_directory_for_new_repository
+check_directory_for_new_repository
 
 #
 # Compilation flags
@@ -147,45 +144,61 @@ export PATH=$PATH:"/home/Code/fpga_playground/icesugar/tools"
 #  Use Zoxide
 eval "$(zoxide init zsh)"
 
+# mkdir and cd into a directory at the same time
+
+function mkcd
+{
+	mkdir $1 && cd $1
+}
+
+function gitwip
+{
+	git commit -m "WIP: $1"
+}
 
 # Run a random chapter of 97 Things Every Programmer Should Know
 # $HOME/dev/dotfiles/97-things/qotd.sh
 $HOME/code/github.com/temataro/dotfiles/extra/lews-therin/humming.py
-# --- replace ls with exa ---
-alias hat='exa -la --git --time=modified --git-repos'
-alias ls=exa
-alias hh='hat | head -n 6'
-alias sl='ls --color'
-# ---                    ---
-
+# ---- replacing ls with exa ---
+alias hat="exa --group-directories-first -al --sort newest"
+# alias hat='ls -lhat --color'
+alias ll='ls -alF --color'
+alias la='ls -lha --color'
+alias l='ls -CF --color'
+alias ls=l
+alias hh='ls -lhat | head -n 6'
+alias gls="git ls-files | xargs ls -lhat --color=auto"
+# ---
 alias c='clear'
-alias clera='clear'
-alias celar='clear'
+alias sl='ls --color'
 alias yt-dlp="yt-dlp --list-formats"
+alias clera='clear'
 alias lgg='lazygit'
-alias vi='\vim'
 alias vim='nvim'
+alias vi='/usr/bin/vim'
+alias brf='bladeRF-cli'
+alias grc='gnuradio-companion'
+alias ls='ls -lhat --color'
 alias tmd='tmux detach'
 alias tma='tmux attach'
+alias celar='clear'
 alias open='xdg-open'
-alias venv='source ./venv/bin/activate || source ./.venv/bin/activate'
-alias grep='rg'
+alias clera='clear'
+alias venv='source ./venv/bin/activate'
 alias quarto=/opt/quarto/bin/quarto
 alias docker=podman
+alias zpool="sudo zpool"
 alias gits='git status --column=always,nodense,auto'
+alias grep='rg'
 alias cat=batcat
 alias sduo=sudo
-alias zpool="sudo zpool"
 alias zfs="sudo zfs"
-alias ipy="ipython3"
+alias szsh="source ~/.zshrc"
+alias rm="rm -i"
 alias wf="watch -n 0.1 -d"
-alias wfls="watch -n 0.1 -d exa -la --git --time=modified"
-alias gls="git ls-files | xargs exa -la --git --time=modified --recurse"
-alias fzf="fzf --preview '/usr/bin/batcat --color=always {}' --height=50%"
-alias lg=lazygit
+alias wfls="watch -n 0.1 -d hat"
+export LD_LIBRARY_PATH=/opt/cuda/lib64
+export PATH=/home/tem/.local/bin:/opt/cuda/bin:/usr/local/bin:/usr/bin:/usr/local/sbin:/usr/bin/site_perl:/usr/bin/vendor_perl:/usr/bin/core_perl:/opt/quarto/bin/quarto:/home/tem/.cargo/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/home/Code/fpga_playground/icesugar/tools:/home/Code/fpga_playground/icesugar/tools
+. "$HOME/.local/bin/env"
 
-. "$HOME/.cargo/env"
-
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+export PATH="$PATH:/home/tem/.modular/bin"
