@@ -180,6 +180,7 @@ fonts:
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/FiraCode.zip" -O ./extra/fonts/FiraCode.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/0xProto.zip" -O ./extra/fonts/0xProto.zip
 	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.2.1/Iosevka.zip" -O ./extra/fonts/Iosevka.zip
+	wget "https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/MPlus.zip" -O  ./extra/fonts/MPlus.zip
 	wget "https://www.ffonts.net/jsMath-cmr10.font.zip" -O ./extra/fonts/cmr10.zip
 	yes | unzip extra/fonts/SpaceMono.zip -d extra/fonts/SpaceMono
 	yes | unzip extra/fonts/JetBrainsMono.zip -d extra/fonts/JetBrainsMono
@@ -187,6 +188,7 @@ fonts:
 	yes | unzip extra/fonts/FiraCode.zip -d extra/fonts/FiraCode
 	yes | unzip extra/fonts/0xProto.zip -d extra/fonts/0xProto
 	yes | unzip extra/fonts/Iosevka.zip -d extra/fonts/Iosevka
+	yes | unzip extra/fonts/MPlus.zip -d extra/fonts/MPlus
 	git clone https://github.com/MarkGG8181/Clean-Fonts extra/fonts/marksfonts
 	yes | unzip extra/fonts/cmr10.zip -d extra/fonts/cmr10
 	sudo mv ./extra/fonts/* /usr/share/fonts
