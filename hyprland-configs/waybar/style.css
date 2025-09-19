@@ -1,0 +1,74 @@
+#waybar {
+	color: #ffffff;
+	background-color: rgba(0, 0, 0, 0.6);
+	min-height: 0;  /* size is determined via font size and paddings automatically */
+	border-radius: 4px;  /* I don't want rounded edges for the bar */
+	/*
+	Raleway doesn't seem to support tnum, so the width jumps while the clock is running, so I use
+	a monospace font for the bar
+	*/
+	font-family: "SF Pro Display";
+	font-size: 18pt;
+}
+/* set base padding for modules and workspace buttons */
+#workspaces button, .module {
+	padding: 10px 9px;
+}
+/* no padding for horizontal modules, because their child modules have their own */
+.module.horizontal {
+	padding: 3px;
+}
+/* all workspace buttons */
+#workspaces button {
+	border-radius: 5px;
+	/* prevents new workspaces being opaque briefly before animating to the target color */
+	background-color: rgba(0, 0, 0, 0);
+	/* nice color transitions for workspace buttons */
+	transition-property: background-color;
+	transition-duration: .4s;
+}
+/* workspace buttons except urgent ones when hovering */
+#workspaces button:hover, #workspaces button.focused:hover {
+	background-color: rgba(34, 128, 34, 0.8);
+}
+/* currently open workspace */
+#workspaces button.focused {
+	background-color: rgba(255, 255, 255, 1);
+}
+/* workspaces that have a notification or something similar */
+#workspaces button.urgent {
+	background-color: rgba(204, 170, 17, 0.8);
+}
+/* currently enabled sway mode (e.g. resizing mode), if any */
+#mode {
+	background-color: rgba(196, 71, 49, 0.8);
+}
+/* media player info */
+#mpris {
+	font-family: "SF Mono";
+}
+/* animation */
+@keyframes blink {
+	to {
+		background-color: rgba(196, 71, 49, 0.8);
+	}
+}
+#idle_inhibitor.activated, #custom-notifications.deactivated {
+	animation-name: blink;
+	animation-duration: 2s;
+	animation-timing-function: steps(16);
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+
+#battery {
+	background-color: inherit;
+}
+
+#battery.warning:not(.charging) {
+	animation-name: blink;
+	animation-duration: 0.6s;
+	animation-timing-function: steps(8);
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
