@@ -156,6 +156,19 @@ function gitwip
 	git commit -m "WIP: $1"
 }
 
+
+function source(){
+    d="$PWD"; while [ "$d" != "$HOME" ] && [ "$d" != "/" ]; do
+        for v in .venv venv env; do
+            if [ -f "$d/$v/bin/activate" ]; then . "$d/$v/bin/activate";
+                echo "Activated: $VIRTUAL_ENV";
+            return;
+            fi;
+        done;
+        d="$(dirname "$d")"; done; echo "No venv found up to ~"; 
+    }
+
+
 # Run a random chapter of 97 Things Every Programmer Should Know
 # $HOME/dev/dotfiles/97-things/qotd.sh
 $HOME/code/github.com/temataro/dotfiles/extra/lews-therin/humming.py
@@ -184,7 +197,6 @@ alias tma='tmux attach'
 alias celar='clear'
 alias open='xdg-open'
 alias clera='clear'
-alias venv='source ./venv/bin/activate'
 alias quarto=/opt/quarto/bin/quarto
 alias docker=podman
 alias zpool="sudo zpool"
