@@ -58,41 +58,38 @@
     "max-length": 50
   },
 
-  "clock": {
-        "format": "{:%A, %B %d, %Y (%R)}",
-        "format-alt": "{:%H:%M}  ",
-        "tooltip-format": "<tt><small>{calendar}</small></tt>",
-        "calendar": {
-                    "mode"          : "year",
-                    "mode-mon-col"  : 3,
-                    "weeks-pos"     : "right",
-                    "on-scroll"     : 1,
-                    "format": {
-                              "months":     "<span color='#ffead3'><b>{}</b></span>",
-                              "days":       "<span color='#faaaaa'><b>{}</b></span>",
-                              "weeks":      "<span color='#ffffff'><b>W{}</b></span>",
-                              "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
-                              "today":      "<span color='#228b22'><b><u>{}</u></b></span>"
-                              }
-                    },
-        "actions":  {
-                    "on-click-right": "mode",
-                    "on-scroll-up": "tz_up",
-                    "on-scroll-down": "tz_down",
-                    "on-scroll-up": "shift_up",
-                    "on-scroll-down": "shift_down"
-                    }
+"clock": {
+    "format": "{:%I:%M %p}",
+    "rotate": 0,
+    "format-alt": "{ %d·%m·%y}",
+    "tooltip-format": "<span>{calendar}</span>",
+    "calendar": {
+      "mode"          : "year",
+      "mode-mon-col"  : 3,
+      "weeks-pos"     : "right",
+      "on-scroll"     : 1,
+      "format": {
+          "months":   "<span foreground='#cacf85' font='monospace'><b>{:>2}</b></span>",
+          "days":     "<span foreground='#8cba80' font='monospace'><b>{:>2}</b></span>",
+          "weeks":    "<span foreground='#658e9c' font='monospace'><b>W{}</b></span>",
+          "weekdays": "<span foreground='#ad5382' font='monospace'><b>{:>2}</b></span>",
+          "today":    "<span foreground='#514663' font='monospace'><b><u>{:>2}</u></b></span>",
+
+    }
+  }
     },
 
-  "network": {
-    "format-wifi": "󰤢",
-    "format-ethernet": "󰈀 ",
-    "format-disconnected": "󰤠 ",
-    "interval": 5,
-    "tooltip-format": "{essid} ({signalStrength}%)",
-    "on-click": "nm-connection-editor"
-
- },
+"network": {
+        "tooltip": true,
+        "rotate": 0,
+        "format-ethernet": " ",
+        "tooltip-format": "Network: <big><b>{essid}</b></big>nSignal strength: <b>{signaldBm}dBm ({signalStrength}%)</b>nFrequency: <b>{frequency}MHz</b>nInterface: <b>{ifname}</b>",
+        "format-linked": " {ifname} (No IP)",
+        "format-disconnected": "󰖪 ",
+        "tooltip-format-disconnected": "Disconnected",
+        "format-alt": "<span foreground='#99ffdd'> {bandwidthDownBytes}</span> <span foreground='#ffcc66'> {bandwidthUpBytes}</span>",
+        "interval": 2
+},
 
   "cpu": {
     "interval": 1,
