@@ -1,7 +1,7 @@
 #waybar {
 	color: #ffffff;
 	background-color: rgba(0, 0, 0, 0.6);
-	min-height: 0;  /* size is determined via font size and paddings automatically */
+	min-height: 4px;  /* size is determined via font size and paddings automatically */
 	border-radius: 4px;  /* I don't want rounded edges for the bar */
 	/*
 	Raleway doesn't seem to support tnum, so the width jumps while the clock is running, so I use
