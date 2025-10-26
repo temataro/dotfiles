@@ -21,10 +21,9 @@ return {
     invert_intend_guides = true,
     inverse = true, -- invert background for search, diffs, statuslines and errors
     contrast = "", -- can be "hard", "soft" or empty string
-    palette_overrides = {bg = "#000000"},
     overrides = {},
     dim_inactive = true,
-    transparent_mode = false,
+    transparent_mode = true,
   }
 }
 
