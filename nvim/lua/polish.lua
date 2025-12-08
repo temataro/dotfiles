@@ -55,7 +55,7 @@ vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
 -- Force colorscheme to be rose-pine
-vim.cmd("colorscheme lunaperche")
+vim.cmd("colorscheme rose-pine-main")
 vim.opt.termguicolors = true
 
 -- Run Black on file when Ctrl-b is run in normal mode
