@@ -3,7 +3,7 @@
 # ============================================================================
 
 export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="alanpeabody"
+ZSH_THEME="ys"
 
 # Completions & history
 CASE_SENSITIVE="true"
@@ -49,7 +49,7 @@ export LANG=en_US.UTF-8
 if [[ -n $SSH_CONNECTION ]]; then
   export EDITOR='vim'
 else
-  export EDITOR='mvim'
+  export EDITOR='vim'
 fi
 
 # Auto-attach to tmux for interactive shells
@@ -136,6 +136,13 @@ progq() {
 progq
 
 # ============================================================================
+# Edit command buffer
+# ============================================================================
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
+
+# ============================================================================
 # Aliases
 # ============================================================================
 
@@ -177,7 +184,7 @@ alias rm='rm -i'
 
 # Little helpers
 alias wf='watch -n 0.1 -d'
-alias wfls='watch -n 0.1 -d hat'
+alias wfls='watch -n 0.1 -d ls -lhat'
 
 # ============================================================================
 # zoxide (better cd)
