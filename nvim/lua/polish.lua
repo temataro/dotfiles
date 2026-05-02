@@ -1,4 +1,4 @@
--- This will run last in the setup process and override anything set by plugins.
+-- This runs last and preserves the keymaps/options that used to live here.
 
 vim.opt.ruler = true
 vim.opt.guicursor = ""
@@ -30,6 +30,7 @@ vim.opt.undofile = true
 vim.opt.signcolumn = "yes"
 
 vim.g.mapleader = " "
+vim.g.maplocalleader = ","
 
 -- Move selected lines up and down
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv")
