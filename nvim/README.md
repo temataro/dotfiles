@@ -1,41 +1,33 @@
 # My Neovim Configuration
----
 
-Hello. Neovim finally does what I want it to how I want it to.
+Barebones Neovim configuration managed with `lazy.nvim`.
+Authored entirely using GPT5.5 with me as the Rick Rubin.
 
-Broken windows fixed!
-Moved over all conveniences from `~/.vimrc` file by sourcing it from
-within Neovim.
+## Structure
 
-Simply added extras into polish.lua from a baseline template of astro.nvim
-along with previous vimrc configs for style and QoL.
+- `init.lua` sets leaders, loads the ported Vim config, loads plugins, then runs `polish.lua`.
+- `lua/config/vimrc.lua` is the Lua port of the relevant `~/.vimrc` settings, keymaps, highlights, and autocmds.
+- `lua/polish.lua` keeps the existing Neovim-specific options and keymaps that should run last.
+- `lua/plugins/` contains only theme plugins and `nvim-tree`.
 
-Capabilities:
-  - Code formatting with clang-format
-  - Full blackout mode for desert256 theme
-  - A bottom status bar that looks quite nice (lualine)
-  - A toggleable sidebar for quick directory exploration
-  - A fuzzy finder popup window for searching within files and directories
-  - LSPs with help menus when you press `<C-K>`
-    - * caveat: you have to setup a clang format type autoformatter for nvim
-        to reach for
-  - Syntax highlighting with treesitter
-  - Decoupled and localized settings and plugin configurations organized into `./lua/{plugins,settings}`
-  - Garbage collect: Highlight and remove trailing whitespace characters
-  - Spell check
-  - Highlight past 80 characters
-  - Autocomplete file directories etc with cmp plugin
-  - Leader key help map so I can show others how things work and get them to use it
-  - LSP keyword view
-  - File tabs that can be quickly toggled through using hjkl
-  - Auto comment/uncomment leader key keymap
-  - Pop up Python interpreter
-  - Pop up terminal window
+## Plugins
 
-TODOs:
-  - Floating Python interpreter for quick numpy function help; etc
-  - Floating C++ REPL program (TODO: Make C++ repl program for basic playground-ing)
-  - Snippets for redundant code block generation: Quarto, Markdown (images, tables,...), Python, C, C++...
-  - Emoji popup window
+- `rose-pine/neovim` is the active theme, using `rose-pine-main` with a black `Normal` background.
+- `ellisonleao/gruvbox.nvim` is kept as an optional theme.
+- `projekt0n/github-nvim-theme` is kept as an optional theme.
+- `nvim-tree/nvim-tree.lua` provides the file explorer sidebar.
 
-Happy travels, space cowboys!
+## Keymaps
+
+- `<Leader>e` toggles the file explorer sidebar.
+- `gc` strips trailing whitespace.
+- `<C-K>` runs the existing clang-format script mapping.
+- `<C-b>` runs `uv tool run black %`.
+- Visual `J`/`K` move selected lines.
+- Normal `J` joins without moving the cursor.
+- `n`/`N` center search results.
+
+## Notes
+
+- This config no longer sources `vimrc.vim` or `~/.vimrc`; the relevant behavior has been ported to Lua.
+- Lazy plugin cloning uses `https://github.com:443/...` to avoid the repo's Git URL rewrite from HTTPS to SSH.
