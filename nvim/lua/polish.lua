@@ -46,4 +46,11 @@ vim.keymap.set("n", "N", "Nzzzv")
 -- Run Black on current file
 vim.keymap.set("n", "<C-b>", ":!uv tool run black %<cr>")
 
+vim.keymap.set("n", "<Leader>c", ":bd<cr>")
+vim.keymap.set("n", "<Leader>q", ":qa<cr>")
+vim.keymap.set("n", "<Leader>w", ":w<cr>")
+
+-- Show Symbol Outline with Aerial
+vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
+
 vim.cmd [[ set showtabline=0 ]]

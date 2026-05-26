@@ -16,9 +16,14 @@ Authored entirely using GPT5.5 with me as the Rick Rubin.
 - `ellisonleao/gruvbox.nvim` is kept as an optional theme.
 - `projekt0n/github-nvim-theme` is kept as an optional theme.
 - `nvim-tree/nvim-tree.lua` provides the file explorer sidebar.
+- `stevearc/aerial.nvim` provides the symbol (functions/variables) sidebar.
 
 ## Keymaps
 
+- `<Leader>s` toggles the symbol sidebar (aerial.nvim).
+- `<Leader>c` closes current buffer.
+- `<Leader>q` quits nvim.
+- `<Leader>w` writes current file.
 - `<Leader>e` toggles the file explorer sidebar.
 - `gc` strips trailing whitespace.
 - `<C-K>` runs the existing clang-format script mapping.
@@ -26,6 +31,8 @@ Authored entirely using GPT5.5 with me as the Rick Rubin.
 - Visual `J`/`K` move selected lines.
 - Normal `J` joins without moving the cursor.
 - `n`/`N` center search results.
+
+## TODOs
 
 ## Notes
 
