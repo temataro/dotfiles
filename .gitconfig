@@ -1,6 +1,6 @@
 [user]
 	name = Temesgen Ataro
-	email = temesgen.ataro@tii.ae
+	email = ataro.temesgen@gmail.com
 [push]
 	default = upstream
 [color]
@@ -23,10 +23,10 @@
 	gi = grep --break --heading --line-number --ignore-case
 	vee = log --decorate --cherry-mark --oneline --graph --boundary
 	dh = diff HEAD
-	dc = diff --cached
 	rhh = reset --hard HEAD
 	rc = rebase --continue
-	ca = commit --amend
+    ca = commit --amend
+    can = commit --amend --no-edit
 [merge]
 	conflictstyle = diff3
 	summary = true
@@ -37,8 +37,8 @@
 	fixes = Fixes: %h (\"%s\")
 [status]
 	submoduleSummary = true
-[url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+	[url "ssh://git@github.com/"]
+ 	insteadOf = https://github.com/
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
@@ -57,3 +57,7 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+[pull]
+	rebase = true
+[init]
+	defaultBranch = main
