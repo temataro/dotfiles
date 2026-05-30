@@ -17,6 +17,7 @@ Authored entirely using GPT5.5 with me as the Rick Rubin.
 - `projekt0n/github-nvim-theme` is kept as an optional theme.
 - `nvim-tree/nvim-tree.lua` provides the file explorer sidebar.
 - `stevearc/aerial.nvim` provides the symbol (functions/variables) sidebar.
+- `lewis6991/gitsigns.nvim` shows git chunk indicators in the signcolumn.
 
 ## Keymaps
 
@@ -31,6 +32,8 @@ Authored entirely using GPT5.5 with me as the Rick Rubin.
 - Visual `J`/`K` move selected lines.
 - Normal `J` joins without moving the cursor.
 - `n`/`N` center search results.
+- Git chunk aware sidebar (from gitsigns plugin)
+- Multi file support with switching using <C-l> or <C-j>
 
 ## TODOs
 
