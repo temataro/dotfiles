@@ -4,6 +4,8 @@
 
 # Typography
 
+font-family = "SFMono"
+
 # Synthesize bold/italic if unavailable
 # Options: true, false, no-bold, no-italic
 font-synthetic-style = true
@@ -12,6 +14,8 @@ font-synthetic-style = true
 
 # Theme
 theme = "Gruvbox Dark"
+
+background = "#000000"
 
 # Background opacity
 # Options: 0.0 to 1.0
@@ -146,15 +150,15 @@ keybind = ctrl+shift+v=paste_from_clipboard
 keybind = ctrl+shift+r=reload_config
 
 # Common UI
-keybind = ctrl+shift+f=search
+keybind = ctrl+shift+f=start_search
 keybind = ctrl+shift+p=toggle_command_palette
 keybind = ctrl+shift+backquote=toggle_quick_terminal
 
 # Tabs
 keybind = ctrl+shift+t=new_tab
-keybind = ctrl+shift+w=close_tab
-keybind = ctrl+shift+left=previous_tab
-keybind = ctrl+shift+right=next_tab
+keybind = ctrl+shift+w=close_tab:this
+keybind = ctrl+shift+arrow_left=previous_tab
+keybind = ctrl+shift+arrow_right=next_tab
 
 # Splits
 keybind = ctrl+shift+d=new_split:right
@@ -170,10 +174,10 @@ keybind = ctrl+shift+q=close_surface
 keybind = ctrl+shift+m=toggle_mouse_reporting
 keybind = ctrl+shift+o=toggle_background_opacity
 
-# Font size (use physical key codes to avoid layout issues)
-keybind = ctrl+shift+equal=increase_font_size
-keybind = ctrl+shift+minus=decrease_font_size
-keybind = ctrl+shift+digit_0=reset_font_size
+# Font size
+keybind = ctrl++=increase_font_size:1
+keybind = ctrl+-=decrease_font_size:1
+keybind = ctrl+0=reset_font_size
 
 # Local overrides (optional, not tracked)
 config-file = ?config.local
