@@ -5,7 +5,11 @@
     ./modules/home/tmux.nix
     ./modules/home/neovim.nix
     ./modules/home/terminals.nix
+    ./modules/home/chromium.nix
+    ./modules/home/app-configs.nix
     ./modules/home/packages.nix
+    ./modules/home/desktop.nix
+    ./modules/home/dev.nix
     ./modules/home/wm/i3.nix
     ./modules/home/wm/hyprland.nix
   ];

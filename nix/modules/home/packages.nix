@@ -9,6 +9,13 @@
     zoxide       # smart cd (also wired in zsh.nix)
     jq
     tree
+    ncdu         # disk usage TUI
+    lsof
+    rsync
+    visidata     # tabular data explorer
+    glow         # markdown renderer (config in app-configs.nix)
+    wiki-tui     # was a cargo install on Arch
+    starship     # prompt (config in app-configs.nix; not yet shell-enabled)
 
     # ── Git tools ────────────────────────────────────────────────────────────
     git-lfs
