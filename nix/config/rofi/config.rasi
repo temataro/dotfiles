@@ -1,0 +1,4 @@
+/* NixOS: rofi resolves bundled themes by name from its own share dir.
+   The original Arch config used the absolute path
+   "/usr/share/rofi/themes/dmenu.rasi", which does not exist on NixOS. */
+@theme "dmenu"
