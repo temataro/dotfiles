@@ -2,7 +2,7 @@
   programs.git = {
     enable    = true;
     userName  = "Temesgen Ataro";
-    userEmail = "atarotemesgen@gmail.com";
+    userEmail = "ataro.temesgen@gmail.com";
 
     aliases = {
       lol  = "log --decorate --pretty=oneline --abbrev-commit";

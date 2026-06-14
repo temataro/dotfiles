@@ -24,6 +24,7 @@ rsync -aHAX --info=progress2 \
   ~/.config/chromium ~/.config/qBittorrent ~/.local/share/qBittorrent \
   ~/.config/kicad ~/.config/gnuradio ~/.gnuradio ~/.wine \
   ~/.local/share/TelegramDesktop ~/.config/discord ~/.config/Proton \
+  ~/.claude ~/.claude.json \
   ~/Pictures \
   /mnt/backup/home-tem/
 
@@ -124,7 +125,39 @@ from this profile or from sync.
 
 ---
 
-## 6. Recommended cutover order
+## 6. Claude Code — split the program from the login
+
+The CLI binary and your config/login are migrated **differently**.
+
+**Program — do NOT copy.** On Arch it's the native installer at
+`~/.local/share/claude/versions/<ver>` (symlinked from `~/.local/bin/claude`).
+That binary requests the interpreter `/lib64/ld-linux-x86-64.so.2`, which does
+not exist on NixOS — so copying it produces a binary that won't execute. It is
+**reinstalled declaratively** instead: `claude-code` is in `modules/home/dev.nix`.
+(If you'd rather keep the auto-updating native build, enable
+`programs.nix-ld.enable = true` on NixOS to provide the missing linker.)
+
+**Config + login — copy these (distro-agnostic data):**
+
+| What | Path | Size | Notes |
+|---|---|---|---|
+| Main config | `~/.claude.json` | 60K | mode `600` |
+| Profile dir | `~/.claude/` | 37M | settings, CLAUDE.md, memory, projects, history, plugins, tasks |
+| Auth token | `~/.claude/.credentials.json` | 470B | mode `600` — preserve perms; token is account-bound so login should survive |
+
+```sh
+rsync -aHAX ~/.claude ~/.claude.json  /mnt/backup/home-tem/
+# on NixOS, restore into $HOME, then:
+chmod 600 ~/.claude.json ~/.claude/.credentials.json
+```
+
+Skip `~/.claude/cache`, `downloads`, `shell-snapshots` — regenerated. If the
+token doesn't carry over, just run `claude` and re-login; your settings/memory
+are intact regardless.
+
+---
+
+## 7. Recommended cutover order
 
 1. **Backup** everything in §0 to external media (verify the copy before wiping).
 2. Install NixOS; generate `hardware-configuration.nix` and drop it into
@@ -133,14 +166,15 @@ from this profile or from sync.
 4. Restore **keys/wifi** (§1), then log in / connect.
 5. Restore **Plex** state (§2) and `chown` it.
 6. Restore **browser + app** state (§3, §4) into your home dir.
-7. Re-login the token apps (Discord, Proton VPN).
-8. Sanity-check, then retire the Arch disk.
+7. Restore **Claude config** (§6); `claude-code` is already installed by the rebuild.
+8. Re-login the token apps (Discord, Proton VPN).
+9. Sanity-check, then retire the Arch disk.
 
 ---
 
 ## What is NOT migrated (regenerated automatically)
 
-- Package binaries — rebuilt by Nix.
-- Caches: `~/.cache`, browser caches, `~/.config/btop/btop.log`, shader caches.
+- Package binaries — rebuilt by Nix (incl. the Claude CLI — reinstalled via `claude-code`).
+- Caches: `~/.cache`, `~/.claude/cache`, browser caches, `~/.config/btop/btop.log`, shader caches.
 - Neovim plugins — Lazy re-installs on first launch.
 - Anything in `/nix/store` — content-addressed, rebuilt.

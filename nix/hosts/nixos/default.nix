@@ -5,7 +5,7 @@
   ];
 
   # TODO: replace with your machine's actual hostname
-  networking.hostName = "nixos";
+  networking.hostName = "belcher";
 
   nixpkgs.config.allowUnfree = true;
 
@@ -23,7 +23,7 @@
   users.users.tem = {
     isNormalUser = true;
     description  = "Temesgen Ataro";
-    extraGroups  = [ "wheel" "networkmanager" "audio" "video" "podman" ];
+    extraGroups  = [ "wheel" "networkmanager" "audio" "video" "podman" "dialout" ];
     shell        = pkgs.zsh;
   };
 

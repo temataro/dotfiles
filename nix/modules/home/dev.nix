@@ -32,9 +32,16 @@ in {
     # ── Other languages ──────────────────────────────────────────────────────
     rustup
     go
-    jdk            # jre-openjdk-headless
+    # jdk            # jre-openjdk-headless
     antlr4
     nodejs         # for @openai/codex etc. (install codex via npm or nodePackages)
+
+    # ── AI / CLI assistants ──────────────────────────────────────────────────
+    # Replaces the native-installer claude (~/.local/share/claude), whose binary
+    # hard-links /lib64/ld-linux-x86-64.so.2 and won't run on NixOS. Your config
+    # and login (~/.claude, ~/.claude.json) migrate separately — see MIGRATION.md.
+    # Verify availability in your channel: `nix search nixpkgs claude-code`.
+    claude-code
 
     # ── Embedded toolchains ──────────────────────────────────────────────────
     gcc-arm-embedded    # arm-none-eabi-{gcc,binutils,newlib}
@@ -66,8 +73,8 @@ in {
     xdot
 
     # ── GPU compute (unfree, large — enable deliberately) ─────────────────────
-    # cudatoolkit
-    # cudaPackages.nsight_systems
-    # (opencv with CUDA: opencv.override { enableCuda = true; })
+    cudatoolkit
+    cudaPackages.nsight_systems
+    (opencv.override { enableCuda = true; })   # large build; pulls in CUDA
   ];
 }
