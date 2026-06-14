@@ -9,8 +9,4 @@
   xdg.configFile."kitty/kitty.conf" = {
     source = "${dotfiles}/kitty.conf";
   };
-
-  xdg.configFile."alacritty/alacritty.toml" = {
-    source = "${dotfiles}/alacritty.toml";
-  };
 }
