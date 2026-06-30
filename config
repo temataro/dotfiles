@@ -115,7 +115,7 @@ tiling_drag modifier titlebar
 
 # start a terminal
 #   Start kitty
-bindsym $mod+Return exec ghostty
+bindsym $mod+Return exec --no-startup-id kitty
 #   Start Kitty in a floating window (so it can be transparent)
 bindsym $mod+Shift+Return exec --no-startup-id kitty --override background_opacity=0.45 --class floating
 
@@ -291,7 +291,7 @@ bar {
     status_command i3blocks
     i3bar_command i3bar -t
     position top
-    font pango:JetBrainsMono Nerd Font 11
+    font pango:JetBrainsMono Nerd Font 14
     strip_workspace_numbers no
     separator_symbol " · "
     workspace_buttons       yes
@@ -303,7 +303,7 @@ bar {
         separator  $rp_overlay
 
         #                   border       background   text
-        focused_workspace   $rp_iris     $rp_iris     $rp_base
+        focused_workspace   $rp_muted    $rp_iris     $rp_base
         active_workspace    $rp_pine     $rp_pine     $rp_text
         inactive_workspace  $rp_surface  $rp_surface  $rp_muted
         urgent_workspace    $rp_love     $rp_love     $rp_base

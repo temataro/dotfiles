@@ -97,7 +97,6 @@ deploy:
 	mkdir -p $(HOME)/.config/kitty   && cp $(dotfiles_dir)/kitty.conf $(HOME)/.config/kitty/kitty.conf
 	mkdir -p $(HOME)/.config/i3      && cp $(dotfiles_dir)/config $(HOME)/.config/i3/config
 	mkdir -p $(HOME)/.config/nvim    && rsync -a --exclude='.git' $(dotfiles_dir)/nvim/ $(HOME)/.config/nvim/
-	mkdir -p $(HOME)/.config/ghostty && rsync -a $(dotfiles_dir)/ghostty/ $(HOME)/.config/ghostty/
 
 neovim: deploy
 
@@ -109,7 +108,6 @@ refresh:
 	-cp $(HOME)/.config/kitty/kitty.conf $(dotfiles_dir)/kitty.conf
 	-cp $(HOME)/.config/i3/config $(dotfiles_dir)/config
 	-rsync -a --exclude='.git' $(HOME)/.config/nvim/ $(dotfiles_dir)/nvim/
-	-rsync -a $(HOME)/.config/ghostty/ $(dotfiles_dir)/ghostty/
 
 # === Individual tools =======================================================
 zoxide:
