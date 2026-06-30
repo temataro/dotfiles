@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Overview
 
-Personal dotfiles for an Arch Linux / Debian system running i3wm or Hyprland, with Neovim (AstroNvim-based), Zsh + Oh My Zsh, tmux, and kitty/alacritty as the terminal.
+Personal dotfiles for an Arch Linux / Debian system running i3wm or Hyprland, with Neovim (AstroNvim-based), Zsh (antidote + starship), tmux, and kitty/alacritty as the terminal.
 
 ## Structure
 
@@ -14,7 +14,9 @@ Personal dotfiles for an Arch Linux / Debian system running i3wm or Hyprland, wi
 | `astro.nvim/` | Older AstroNvim config (kept for reference) |
 | `hyprland-configs/` | Hyprland WM, waybar, swaylock, hyprpaper |
 | `config` | i3wm config (no extension — place at `~/.config/i3/config`) |
-| `.zshrc` | Zsh config with Oh My Zsh, aliases, helpers |
+| `.zshrc` | Zsh config (antidote plugins + starship prompt), aliases, helpers |
+| `.zsh_plugins.txt` | antidote plugin list (→ `~/.zsh_plugins.txt`) |
+| `starship.toml` | starship prompt config, rose-pine (→ `~/.config/starship.toml`) |
 | `.tmux.conf` | Tmux config |
 | `.gitconfig` | Git config |
 | `.vimrc` | Legacy Vim config (also sourced by Neovim via `nvim/vimrc.vim`) |
