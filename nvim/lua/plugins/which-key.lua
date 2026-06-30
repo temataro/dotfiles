@@ -6,6 +6,7 @@ return {
     spec = {
       { "<Leader>f", group = "find (telescope)" },
       { "<Leader>g", group = "git (hunks)" },
+      { "<Leader>l", group = "lsp" },
     },
   },
 }
