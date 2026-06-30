@@ -1,6 +1,14 @@
 # Custom i3 config built on top of the defaults
 # Added dependencies you'll have to install:
-#   sudo apt install -y i3lock-fancy picom brightnessctl rofi arandr i3status i3blocks dunst compton
+#   i3lock-fancy
+#   picom
+#   brightnessctl
+#   rofi
+#   arandr
+#   i3status
+#   i3blocks
+#   dunst
+#   compton
 #
 # Should you change your keyboard layout some time, delete
 # this file and re-run i3-config-wizard(1).
@@ -31,6 +39,9 @@ set_from_resource $white       color15 #000000
 # Please see https://i3wm.org/docs/userguide.html for a complete reference!
 
 set $mod Mod1
+
+# Lockscreen command (pixelated + clock/date).
+set $lockcmd $HOME/.local/bin/lockscreen
 # Color shemes for windows
 set $bgcolor    $transparent
 set $in-bgcolor #181818
@@ -54,19 +65,18 @@ font pango:JetBrainsMonoNerdFont 0
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
-exec compton --blur-background
 exec_always --no-startup-id setxkbmap -option ctrl:nocaps
 exec_always --no-startup-id picom
 # they are included here as an example. Modify as you see fit.
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock-fancy -i ~/Pictures/lavender-field.jpg
+exec --no-startup-id xss-lock --transfer-sleep-lock -- $lockcmd
 exec --no-startup-id arandr
 
 # Display wallpaper.
 # TODO: export your /Pictures/wallpapers directory in any future bootstraps you do.
-exec_always feh --bg-fill ~/Pictures/wallpapers/blue-eye-samurai.jpg
+exec_always feh --bg-fill ~/Pictures/wallpapers/entoto-hike.jpeg
 #
 # Display A moving GIF as wallpaper:
 # exec --no-startup-id killall back4.sh
@@ -85,8 +95,8 @@ bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ to
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
 # Brightness control
-bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 25-
-bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set 25+
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 10%-
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl set +10%
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
@@ -97,13 +107,14 @@ tiling_drag modifier titlebar
 
 # start a terminal
 #   Start kitty
-bindsym $mod+Return exec kitty
+bindsym $mod+Return exec ghostty
 #   Start Kitty in a floating window (so it can be transparent)
 bindsym $mod+Shift+Return exec --no-startup-id kitty --override background_opacity=0.45 --class floating
 
 for_window [class="floating"] floating enabled move position center
 #   Start Firefox in a floating window
-bindsym $mod+Shift+f exec --no-startup-id firefox --class floating
+bindsym $mod+Shift+f exec --no-startup-id nautilus
+bindsym $mod+Shift+b exec --no-startup-id chromium
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -200,13 +211,13 @@ bindsym $mod+0 workspace $ws10
 bindsym $mod+Shift+1 move container to workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2
 bindsym $mod+Shift+3 move container to workspace $ws3
-bindsym $mod+Shift+4 move container to workspace number $ws4
-bindsym $mod+Shift+5 move container to workspace number $ws5
-bindsym $mod+Shift+6 move container to workspace number $ws6
-bindsym $mod+Shift+7 move container to workspace number $ws7
-bindsym $mod+Shift+8 move container to workspace number $ws8
-bindsym $mod+Shift+9 move container to workspace number $ws9
-bindsym $mod+Shift+0 move container to workspace number $ws10
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
 
 # reload the configuration file
 bindsym $mod+Shift+c reload
@@ -244,7 +255,7 @@ bindsym $mod+r mode "resize"
 
 set $mode_system System (Shift+l) suspend, (Shift+e) lock, (Shift+h) hibernate, (Shift+s) shutdown, (Shift+r) reboot
 mode "$mode_system"{
-  bindsym Shift+e exec --no-startup-id i3lock
+  bindsym Shift+e exec --no-startup-id $lockcmd
   bindsym Shift+s exec --no-startup-id shutdown now
   bindsym Shift+$mod+t exec --no-startup-id reboot
   bindsym Shift+h exec --no-startup-id systemctl hibernate
@@ -275,8 +286,8 @@ bar {
     tray_output primary
     tray_padding 10
     colors {
-        statusline         #a15f5f
-        background         $transparent
+        statusline         #000000
+        background         #a15f5f
         separator          $transparent
 
 # #                          BORDER       BACKGROUND   TEXT
