@@ -84,7 +84,6 @@ CONFIGS := \
 # dir-style entries (rsync) kept in a second list:
 CONFIG_DIRS := \
   nvim:.config/nvim \
-  ghostty:.config/ghostty \
   hyprland-configs/hypr:.config/hypr \
   ...
 ```
