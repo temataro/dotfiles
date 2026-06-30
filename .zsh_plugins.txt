@@ -1,0 +1,5 @@
+# antidote plugin bundle. Loaded by ~/.zshrc via `antidote load`.
+# Order matters: syntax-highlighting MUST be last (it wraps existing widgets).
+zsh-users/zsh-autosuggestions
+zsh-users/zsh-completions
+zsh-users/zsh-syntax-highlighting

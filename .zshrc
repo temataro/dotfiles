@@ -1,67 +1,49 @@
 # ============================================================================
-# Oh My Zsh core
+# zsh — antidote (plugins) + starship (prompt). Migrated off oh-my-zsh.
+# Plugin list: ~/.zsh_plugins.txt   Prompt: ~/.config/starship.toml
 # ============================================================================
 
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="ys"
+# ----- History -----
+HISTFILE="$HOME/.zsh_history"
+HISTSIZE=50000
+SAVEHIST=50000                 # without this, zsh does NOT persist history
+setopt EXTENDED_HISTORY        # record timestamps
+setopt SHARE_HISTORY           # share history across running shells
+setopt HIST_IGNORE_DUPS        # drop consecutive duplicates
+setopt HIST_IGNORE_SPACE       # ignore commands that start with a space
+setopt HIST_REDUCE_BLANKS
+setopt INC_APPEND_HISTORY
 
-# Completions & history
-CASE_SENSITIVE="true"
-COMPLETION_WAITING_DOTS="true"
-DISABLE_UNTRACKED_FILES_DIRTY="true"
-HIST_STAMPS="dd/mm/yyyy"
-
-# Behavior tweaks
-zstyle ':omz:update' mode auto      # auto-update Oh My Zsh
-DISABLE_MAGIC_FUNCTIONS="true"
-DISABLE_LS_COLORS="true"
-
-# Plugins
-plugins=(git)
-
-source "$ZSH/oh-my-zsh.sh"
+# ----- Shell behavior -----
+bindkey -e                     # emacs keymap. REQUIRED: EDITOR=vim otherwise
+                               # makes zsh auto-select vi-mode and breaks ^l/^x^e
+setopt AUTO_CD                 # `foo/` == `cd foo/`
+setopt INTERACTIVE_COMMENTS    # allow `# comments` at the interactive prompt
+setopt NO_BEEP
+CASE_SENSITIVE=true            # (informational; default zsh completion is case-sensitive)
 
 # ============================================================================
 # Toolchain paths
 # ============================================================================
-
-# Quartus Prime Lite 20.1
-export QUARTUS_ROOT="$HOME/intelFPGA_lite/20.1/quartus"
-
-# CUDA toolkit
-export CUDA_ROOT="/usr/local/cuda"
-
-# FPGA and other tooling
+export QUARTUS_ROOT="$HOME/intelFPGA_lite/20.1/quartus"   # Quartus Prime Lite 20.1
+export CUDA_ROOT="/usr/local/cuda"                         # CUDA toolkit
 export PATH="$QUARTUS_ROOT/bin:$CUDA_ROOT/bin:$PATH"
 export PATH="$PATH:/home/Code/fpga_playground/icesugar/tools"   # iCESugar-nano FPGA
 export PATH="/home/tem/.opencode/bin:$PATH"                    # opencode
-
-# Compilation flags
+export PATH="$HOME/.local/bin:$PATH"                           # uv tools, starship, claude
 export ARCHFLAGS="-arch x86_64"
 
 # ============================================================================
-# Shell behavior & locale
+# Locale & editor
 # ============================================================================
-
 export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-if [[ -n $SSH_CONNECTION ]]; then
-  export EDITOR='vim'
-else
-  export EDITOR='vim'
-fi
-
-# Auto-attach to tmux for interactive shells
-if command -v tmux >/dev/null 2>&1 && [[ -z "$TMUX" ]] && [[ -t 0 ]]; then
-  tmux
-fi
+export EDITOR='vim'
 
 # ============================================================================
-# Keybindings
+# Custom ZLE widgets & keybindings
+# (defined before plugins so syntax-highlighting, loaded last, wraps them)
 # ============================================================================
-
-# Scroll full screen before clearing so history stays visible
+# Scroll a full screen before clearing so scrollback history stays visible
 scroll-and-clear-screen() {
   printf '\n%.0s' {1..$LINES}
   zle clear-screen
@@ -69,34 +51,96 @@ scroll-and-clear-screen() {
 zle -N scroll-and-clear-screen
 bindkey '^l' scroll-and-clear-screen
 
+# Edit the current command line in $EDITOR
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey '^x^e' edit-command-line
+
+# ============================================================================
+# Plugins (antidote)
+# ============================================================================
+if [[ ! -e $HOME/.antidote ]]; then        # bootstrap on a fresh machine
+  git clone --depth=1 https://github.com/mattmc3/antidote.git "$HOME/.antidote"
+fi
+source "$HOME/.antidote/antidote.zsh"
+antidote load                              # reads ~/.zsh_plugins.txt
+
+# ============================================================================
+# Completion (after antidote has extended $fpath)
+# ============================================================================
+autoload -Uz compinit
+() {
+  local dump="$HOME/.zcompdump"
+  local -a fresh=( ${dump}(Nmh-20) )       # dump modified < 20h ago?
+  if (( $#fresh )); then
+    compinit -C -d "$dump"                 # fast path: skip the security audit
+  else
+    compinit -d "$dump"                    # rebuild (also handles first run)
+  fi
+}
+# compile the dump in the background so the next startup is faster
+{ zcd="$HOME/.zcompdump"; [[ -s $zcd && ( ! -s $zcd.zwc || $zcd -nt $zcd.zwc ) ]] && zcompile "$zcd" } &!
+
+zstyle ':completion:*' menu select         # arrow-key completion menu
+
+# ============================================================================
+# Prompt (starship)
+# ============================================================================
+eval "$(starship init zsh)"
+
+# ============================================================================
+# zoxide (better cd)
+# ============================================================================
+command -v zoxide >/dev/null 2>&1 && eval "$(zoxide init zsh)"
+
+# ============================================================================
+# Auto-attach to tmux for interactive shells
+# ============================================================================
+if command -v tmux >/dev/null 2>&1 && [[ -z "$TMUX" ]] && [[ -t 0 ]]; then
+  tmux
+fi
+
+# ============================================================================
+# Git aliases (ported from the oh-my-zsh `git` plugin — common subset)
+# ============================================================================
+alias g='git'
+alias gst='git status'
+alias gss='git status -s'
+alias ga='git add'
+alias gaa='git add --all'
+alias gc='git commit -v'
+alias gcmsg='git commit -m'
+alias gca='git commit -v -a'
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias gb='git branch'
+alias gp='git push'
+alias gpf='git push --force-with-lease'
+alias gl='git pull'
+alias gf='git fetch'
+alias gd='git diff'
+alias gds='git diff --staged'
+alias glog='git log --oneline --decorate --graph'
+alias grhh='git reset --hard'
+alias gsta='git stash push'
+alias gstp='git stash pop'
+
 # ============================================================================
 # Git helpers
 # ============================================================================
-
-gitwip() {
-  git commit -m "WIP: $*"
-}
-
-# Pretty repo summary via onefetch (run manually as `gitgreet`)
-gitgreet() {
-  if command -v onefetch >/dev/null 2>&1; then
-    onefetch
-  else
-    echo "onefetch not installed"
-  fi
+gitwip() { git commit -m "WIP: $*"; }
+gitgreet() {  # pretty repo summary via onefetch (run manually)
+  if command -v onefetch >/dev/null 2>&1; then onefetch; else echo "onefetch not installed"; fi
 }
 
 # ============================================================================
-# Python virtualenv helper
+# Python virtualenv helper — walk up from $PWD to find and activate .venv
 # ============================================================================
-
 src() {
-   local d=$PWD
-
+  local d=$PWD
   while :; do
     if [[ -f "$d/.venv/bin/activate" ]]; then
       . "$d/.venv/bin/activate"
-      # If VIRTUAL_ENV is set, show it; otherwise show the directory
       if [[ -n "$VIRTUAL_ENV" ]]; then
         echo "Activated: $VIRTUAL_ENV"
       else
@@ -104,48 +148,21 @@ src() {
       fi
       return 0
     fi
-
-    # Stop once we've checked $HOME (or if we somehow hit /)
-    if [[ "$d" = "$HOME" || "$d" = "/" ]]; then
-      break
-    fi
-
-    # Go one directory up (zsh-specific shortcut for dirname)
+    [[ "$d" = "$HOME" || "$d" = "/" ]] && break
     d=${d:h}
   done
-
   echo "No .venv found from $PWD up to ~"
   return 1
 }
 
 # ============================================================================
-# Directory helpers
+# Directory helper
 # ============================================================================
-
-mkcd() {
-  mkdir -p -- "$1" && cd -- "$1"
-}
-
-# ============================================================================
-# Programming quote-of-the-day (manual)
-# ============================================================================
-
-progq() {
-  "$HOME/code/github.com/temataro/dotfiles/extra/lews-therin/humming.py"
-}
-progq
-
-# ============================================================================
-# Edit command buffer
-# ============================================================================
-autoload -Uz edit-command-line
-zle -N edit-command-line
-bindkey '^x^e' edit-command-line
+mkcd() { mkdir -p -- "$1" && cd -- "$1"; }
 
 # ============================================================================
 # Aliases
 # ============================================================================
-
 # Listing
 alias ls='ls -lhat --color'
 alias ll='ls -alF --color'
@@ -187,12 +204,8 @@ alias wf='watch -n 0.1 -d'
 alias wfls='watch -n 0.1 -d ls -lhat'
 alias dt="date +'%Y-%m-%d_%H-%M-%S'"
 
-
 # ============================================================================
-# zoxide (better cd)
+# Programming quote-of-the-day
 # ============================================================================
-
-if command -v zoxide >/dev/null 2>&1; then
-  eval "$(zoxide init zsh)"
-fi
-export PATH="$HOME/.local/bin:$PATH"
+progq() { "$HOME/code/github.com/temataro/dotfiles/extra/lews-therin/humming.py"; }
+progq
