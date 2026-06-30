@@ -4,7 +4,9 @@
 
 # Typography
 
-font-family = "SFMono"
+#font-family = SchureTechMono
+font-family = "ShureTechMono Nerd Font"
+
 
 # Synthesize bold/italic if unavailable
 # Options: true, false, no-bold, no-italic

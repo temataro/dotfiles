@@ -185,6 +185,8 @@ alias rm='rm -i'
 # Little helpers
 alias wf='watch -n 0.1 -d'
 alias wfls='watch -n 0.1 -d ls -lhat'
+alias dt="date +'%Y-%m-%d_%H-%M-%S'"
+
 
 # ============================================================================
 # zoxide (better cd)
@@ -193,3 +195,4 @@ alias wfls='watch -n 0.1 -d ls -lhat'
 if command -v zoxide >/dev/null 2>&1; then
   eval "$(zoxide init zsh)"
 fi
+export PATH="$HOME/.local/bin:$PATH"
