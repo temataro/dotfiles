@@ -1,0 +1,48 @@
+# rose-pine i3blocks. Deploys to ~/.config/i3blocks/config (overrides /etc).
+# Reuses the system scripts in /usr/share/i3blocks/. Per-block color= (i3blocks
+# truncates `label` to ~31 bytes, so NO long pango spans) + Nerd Font icons.
+# Reload after edits: pkill -SIGTERM i3blocks (or i3-msg restart).
+
+command=/usr/share/i3blocks/$BLOCK_NAME
+separator=false
+separator_block_width=16
+markup=none
+color=#e0def4
+
+[volume]
+label= 
+color=#9ccfd8
+instance=Master
+interval=once
+signal=10
+
+[memory]
+label= 
+color=#c4a7e7
+interval=30
+
+[disk]
+label= 
+color=#31748f
+interval=30
+
+[iface]
+label= 
+color=#9ccfd8
+interval=10
+
+[cpu_usage]
+label= 
+color=#f6c177
+interval=10
+
+[battery]
+label= 
+color=#ebbcba
+interval=30
+
+[time]
+label= 
+color=#c4a7e7
+command=date '+%a %d %b  %H:%M'
+interval=5

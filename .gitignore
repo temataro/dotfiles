@@ -1,0 +1,7 @@
+# Large font archives staged for manual install — not version-controlled (2GB+)
+extra/fonts/
+
+# Editor / OS cruft
+*.bak
+*.swp
+.DS_Store
