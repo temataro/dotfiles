@@ -18,6 +18,8 @@ Authored entirely using GPT5.5 with me as the Rick Rubin.
 - `nvim-tree/nvim-tree.lua` provides the file explorer sidebar.
 - `stevearc/aerial.nvim` provides the symbol (functions/variables) sidebar.
 - `lewis6991/gitsigns.nvim` shows git chunk indicators in the signcolumn.
+- `mengsig/nvime` is the AI-assisted coding plugin (provider defaults to `claude`; all maps live under `<Leader>n`). Needs the `claude` or `codex` CLI on `PATH`.
+- `sudormrfbin/cheatsheet.nvim` (+ telescope/plenary) provides the searchable cheatsheet; custom nvime cheats live in `cheatsheet.txt`.
 
 ## Keymaps
 
@@ -34,6 +36,8 @@ Authored entirely using GPT5.5 with me as the Rick Rubin.
 - `n`/`N` center search results.
 - Git chunk aware sidebar (from gitsigns plugin)
 - Multi file support with switching using <C-l> or <C-j>
+- `<Leader>?` opens the cheatsheet (type "nvime" to filter to AI-plugin maps).
+- `<Leader>n` is the nvime prefix; e.g. `<Leader>n<Space>` opens its dashboard.
 
 ## TODOs
 
