@@ -23,10 +23,13 @@
 	gi = grep --break --heading --line-number --ignore-case
 	vee = log --decorate --cherry-mark --oneline --graph --boundary
 	dh = diff HEAD
+	dc = diff --cached
 	rhh = reset --hard HEAD
 	rc = rebase --continue
-    ca = commit --amend
-    can = commit --amend --no-edit
+	ca = commit --amend
+	c = checkout
+    m = commit -m
+    rb = pull --rebase
 [merge]
 	conflictstyle = diff3
 	summary = true
@@ -38,7 +41,7 @@
 [status]
 	submoduleSummary = true
 [url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+ 	insteadOf = https://github.com/
 [color "diff-highlight"]
 	oldNormal = red bold
 	oldHighlight = red bold 52
@@ -57,7 +60,9 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
-[pull]
-	rebase = true
 [init]
 	defaultBranch = main
+[pull]
+	rebase = true
+[includeIf "gitdir:~/code/github.com/temataro/"]
+    path = ~/code/github.com/temataro/.gitconfig
