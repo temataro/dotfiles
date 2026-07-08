@@ -1,0 +1,135 @@
+#!/usr/bin/env bash
+
+# ─── claude-sbx ───────────────────────────────────────────────────────────────
+# Drop straight into a jailed Claude Code session on a repo.
+#
+# Usage:  claude-sbx [path/to/repo]             defaults to current directory
+#         claude-sbx [path/to/repo] --resume    open Claude's session picker
+#         claude-sbx [path/to/repo] --continue  resume the latest session
+#         claude-sbx <repo> --legacy-resume     resume old /workspace sessions
+#         claude-sbx <repo> bash                override: get a shell instead
+#
+# What it mounts from host (read-only unless noted):
+#   • the repo dir    → its same absolute path (rw — the blast radius)
+#   • ~/.claude       → /root/.claude      (rw — auth and sessions)
+#   • ~/.claude.json  → /root/.claude.json (rw — account/setup state)
+#   • $SSH_AUTH_SOCK  → /tmp/ssh-agent.sock (ro — SSH forwarding, no key in container)
+#
+# Git identity is passed as env vars (GIT_AUTHOR_* / GIT_COMMITTER_*) so Claude
+# can commit — no need to mount your .gitconfig. The container runs as root,
+# which in ROOTLESS podman maps to your unprivileged host user, so repo files
+# stay owned by you. Nothing else from your home directory is visible.
+# ─────────────────────────────────────────────────────────────────────────────
+set -euo pipefail
+
+repo_arg="$(pwd)"
+if (($# > 0)) && [[ "$1" != -* ]]; then
+    repo_arg="$1"
+    shift
+fi
+
+REPO="$(realpath "$repo_arg")"
+IMAGE="claude-dev:latest"
+
+if [[ ! -d "$REPO" ]]; then
+    echo "Error: '$REPO' is not a directory." >&2
+    exit 1
+fi
+
+repo_name="$(basename "$REPO")"
+CONTAINER_NAME="cc-${repo_name//[^[:alnum:]_.-]/-}"
+
+# Claude splits its persistent state across ~/.claude and ~/.claude.json. A
+# missing bind source would be created by Podman as a directory, so initialise
+# both paths ourselves before mounting them.
+CLAUDE_DIR="$HOME/.claude"
+CLAUDE_STATE="$HOME/.claude.json"
+
+if [[ ! -e "$CLAUDE_DIR" ]]; then
+    (umask 077; mkdir -p "$CLAUDE_DIR")
+elif [[ ! -d "$CLAUDE_DIR" ]]; then
+    echo "Error: '$CLAUDE_DIR' exists but is not a directory." >&2
+    exit 1
+fi
+
+if [[ ! -e "$CLAUDE_STATE" ]]; then
+    (umask 077; printf '{}\n' > "$CLAUDE_STATE")
+elif [[ ! -f "$CLAUDE_STATE" ]]; then
+    echo "Error: '$CLAUDE_STATE' exists but is not a regular file." >&2
+    exit 1
+fi
+
+# A leading option is appended to Claude; a non-option command overrides it.
+# This makes `claude-sbx <repo> --resume` concise while preserving the shell
+# escape hatch (`claude-sbx <repo> bash`).
+CONTAINER_REPO="$REPO"
+CONTAINER_CMD=(claude --dangerously-skip-permissions)
+if [[ "${1:-}" == "--legacy-resume" ]]; then
+    # Older launcher versions keyed every project to /workspace. Restore that
+    # path for one run so those mixed legacy transcripts can actually resume.
+    shift
+    CONTAINER_REPO="/workspace"
+    CONTAINER_CMD+=(--resume "$@")
+elif (($# > 0)); then
+    if [[ "$1" == -* ]]; then
+        CONTAINER_CMD+=("$@")
+    else
+        CONTAINER_CMD=("$@")
+    fi
+fi
+
+# ── Mounts ────────────────────────────────────────────────────────────────────
+# --mount uses CSV syntax. Quote the complete source/target fields and double
+# embedded quotes so valid paths containing commas are not split into options.
+repo_mount_path="${REPO//\"/\"\"}"
+if [[ "$CONTAINER_REPO" == "/workspace" ]]; then
+    REPO_MOUNT=("--mount" "type=bind,\"source=$repo_mount_path\",\"target=/workspace\"")
+else
+    REPO_MOUNT=("--mount" "type=bind,\"source=$repo_mount_path\",\"target=$repo_mount_path\"")
+fi
+
+MOUNTS=(
+    "${REPO_MOUNT[@]}"
+    "--volume" "$CLAUDE_DIR:/root/.claude"
+    "--volume" "$CLAUDE_STATE:/root/.claude.json"
+)
+
+# ── Git identity (env vars, not a mounted .gitconfig) ─────────────────────────
+GIT_ENV=()
+git_name="$(git -C "$REPO" config --get user.name 2>/dev/null || true)"
+git_email="$(git -C "$REPO" config --get user.email 2>/dev/null || true)"
+if [[ -n "$git_name" && -n "$git_email" ]]; then
+    GIT_ENV+=(
+        "-e" "GIT_AUTHOR_NAME=$git_name"
+        "-e" "GIT_AUTHOR_EMAIL=$git_email"
+        "-e" "GIT_COMMITTER_NAME=$git_name"
+        "-e" "GIT_COMMITTER_EMAIL=$git_email"
+    )
+else
+    echo "⚠  No host git user.name/user.email — Claude won't be able to commit." >&2
+    echo "   Fix: git config --global user.name '…' && git config --global user.email '…'" >&2
+fi
+
+# ── SSH agent forwarding ──────────────────────────────────────────────────────
+SSH_ARGS=()
+if [[ -n "${SSH_AUTH_SOCK:-}" ]] && [[ -S "$SSH_AUTH_SOCK" ]]; then
+    MOUNTS+=("--volume" "$SSH_AUTH_SOCK:/tmp/ssh-agent.sock:ro")
+    SSH_ARGS=("-e" "SSH_AUTH_SOCK=/tmp/ssh-agent.sock")
+else
+    echo "⚠  SSH_AUTH_SOCK not found — git push/pull won't work inside the container." >&2
+    echo "   Fix: eval \$(ssh-agent) && ssh-add ~/.ssh/id_ed25519" >&2
+fi
+
+# ── Run ───────────────────────────────────────────────────────────────────────
+# IS_SANDBOX=1 lets Claude Code's --dangerously-skip-permissions run as root
+# (it refuses otherwise). --security-opt=label=disable avoids SELinux friction.
+exec podman run -it --rm \
+    --name "$CONTAINER_NAME" \
+    --hostname "sandbox" \
+    --security-opt=label=disable \
+    -e IS_SANDBOX=1 \
+    "${GIT_ENV[@]}" \
+    "${MOUNTS[@]}" \
+    "${SSH_ARGS[@]}" \
+    -w "$CONTAINER_REPO" \
+    "$IMAGE" "${CONTAINER_CMD[@]}"
