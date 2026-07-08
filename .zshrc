@@ -198,6 +198,8 @@ alias gits='git status --column=always,nodense,auto'
 alias grep='rg'
 alias cat='batcat'
 alias rm='rm -i'
+alias claude="/home/tem/code/github.com/temataro/dotfiles/claude-jail/claude-sbx"
+
 
 # Little helpers
 alias wf='watch -n 0.1 -d'
