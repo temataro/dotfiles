@@ -72,6 +72,10 @@ font pango:JetBrainsMono Nerd Font 10
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
 exec_always --no-startup-id setxkbmap -option ctrl:nocaps
+# Fast keyboard autorepeat — stock 660ms/25cps feels mushy (esp. held hjkl).
+exec_always --no-startup-id xset r rate 250 50
+# Drive the eDP panel at its full refresh rate (harmless no-op elsewhere).
+exec --no-startup-id xrandr --output eDP-1 --rate 120
 exec_always --no-startup-id picom
 # they are included here as an example. Modify as you see fit.
 
