@@ -14,6 +14,8 @@ Personal dotfiles for an Arch Linux / Debian system running i3wm or Hyprland, wi
 | `astro.nvim/` | Older AstroNvim config (kept for reference) |
 | `hyprland-configs/` | Hyprland WM, waybar, swaylock, hyprpaper |
 | `config` | i3wm config (no extension — place at `~/.config/i3/config`) |
+| `picom.conf` | picom compositor config, latency-tuned (→ `~/.config/picom/picom.conf`) |
+| `keyd.conf` | keyd remaps: Copilot→R-Ctrl, Caps→Ctrl, F4→5 (→ `/etc/keyd/default.conf`, sudo) |
 | `.zshrc` | Zsh config (antidote plugins + starship prompt), aliases, helpers |
 | `.zsh_plugins.txt` | antidote plugin list (→ `~/.zsh_plugins.txt`) |
 | `starship.toml` | starship prompt config, rose-pine (→ `~/.config/starship.toml`) |
@@ -50,6 +52,8 @@ Files are manually copied to their destinations (no symlink manager like stow). 
 
 - `~/.zshrc`, `~/.tmux.conf`, `~/.vimrc`, `~/.gitconfig`
 - `~/.config/kitty/kitty.conf`
+- `~/.config/picom/picom.conf` ← `picom.conf`
+- `/etc/keyd/default.conf` ← `keyd.conf` (sudo; apply with `sudo systemctl restart keyd` — Ubuntu ships the CLI as `keyd.rvaiya`)
 - `~/.config/nvim/` ← contents of `nvim/`
 - `~/.config/i3/config` ← `config`
 - `~/.config/hypr/`, `~/.config/waybar/`, `~/.config/swaylock/` ← from `hyprland-configs/`
@@ -88,3 +92,18 @@ All remaining warnings/errors are pre-existing, not caused by our changes:
 - Add `cpp`, `markdown`, `bash`, `toml` to treesitter `ensure_installed` (many already installed by AstroNvim defaults)
 - README TODOs: floating Python REPL (`:terminal python3` in a float, no new plugin needed), snippets (LuaSnip already present), emoji picker (`telescope-emoji.nvim`)
 - Note: `~/.config/nvim` is a separate git repo — deploy dotfiles changes manually with `rsync -av --exclude='.git' ~/code/github.com/temataro/dotfiles/nvim/ ~/.config/nvim/`
+
+## Session 2 — New-laptop responsiveness rehaul (2026-07-29)
+
+Machine: ASUS Vivobook S16 S5606CA (Core Ultra 9 285H "Arrow Lake-H", 2880x1800@120 OLED), Ubuntu 25.04, X11 + i3 + picom. Felt sluggish vs the old Arch+i3 laptop. Probes showed hardware/power already perfect (EPP + platform profile + PPD all `performance`, turbo on). Real causes → fixes:
+
+- **Panel at 60Hz** with 120Hz available → i3 config now runs `xrandr --output eDP-1 --rate 120` at startup
+- **Keyboard autorepeat at X defaults** (660ms/25cps) → i3 config now runs `xset r rate 250 50`
+- **picom latency**: fading on (i3 workspace switch unmaps/remaps windows = ~120ms fade per switch), `inactive-opacity 0.92` + dual_kawase = constant blur of most of the 5MP frame → fading off, inactive-opacity 1.0, `unredir-if-possible` on. Blur kept (now only hits the floating kitty). Old values kept as comments for re-enable.
+- **kitty**: `input_delay 0`, `repaint_delay 2` (defaults stacked ~13ms per keystroke)
+- **i915 PSR2 selective-fetch bug** on ARL OLED — kernel log `Selective fetch area calculation failed in pipe A` (RH bug 2467676; still unfixed in kernels ≥6.16). Mitigation: kernel args `i915.enable_psr=0 i915.enable_panel_replay=0`; live test without reboot: `echo 0 | sudo tee /sys/kernel/debug/dri/0/i915_edp_psr_debug`
+- **Snap apps** (firefox, chromium, telegram-desktop, thunderbird, and nvim!) explain slow app launches vs native pacman on old laptop. De-snap still pending.
+
+S5606CA quirks (sourced): asus_nb_wmi WiFi soft-block fixed in kernel 6.15 (HWE bump worthwhile); RGB keyboard is HID LampArray (ITE5570) — standard asus-wmi tools can't drive it; Right Ctrl is a hardwired Copilot key firing a `leftmeta+leftshift+f23` chord.
+
+**Copilot key remap (keyd):** xev capture proved this unit *sustains* the chord while held (many units only tap it), so `keyd.conf` binds `leftmeta+leftshift+f23 = rightcontrol` — a true held Right Ctrl with the fake mods swallowed (keyd ≥2.4.3 chords; Ubuntu 25.04 ships 2.5.0). Same file carries capslock→ctrl and f4→5 (broken 5 key on one keyboard); the `setxkbmap ctrl:nocaps` line was removed from the i3 config — keyd owns all key remaps now (and works in TTYs, unlike X-level remaps). Install: `sudo apt install -y keyd && sudo mkdir -p /etc/keyd && sudo cp keyd.conf /etc/keyd/default.conf && sudo systemctl restart keyd && sudo systemctl enable keyd`. Ubuntu renames the CLI binary to `keyd.rvaiya` (`/usr/bin/keyd.rvaiya`) — `keyd reload`/`keyd monitor` from upstream docs won't resolve unless symlinked. Panic chord if input ever bricks: Backspace+Escape+Enter.

@@ -71,7 +71,8 @@ font pango:JetBrainsMono Nerd Font 10
 # Start XDG autostart .desktop files using dex. See also
 # https://wiki.archlinux.org/index.php/XDG_Autostart
 exec --no-startup-id dex --autostart --environment i3
-exec_always --no-startup-id setxkbmap -option ctrl:nocaps
+# Key remaps (caps->ctrl, Copilot chord->right ctrl, F4->5) live in keyd now
+# (system service, works in TTYs too — see keyd.conf). No setxkbmap/xmodmap.
 # Fast keyboard autorepeat — stock 660ms/25cps feels mushy (esp. held hjkl).
 exec_always --no-startup-id xset r rate 250 50
 # Drive the eDP panel at its full refresh rate (harmless no-op elsewhere).
