@@ -50,7 +50,8 @@ that belongs to the repo you supplied.
 ## What's inside
 
 git, ripgrep, the build toolchain (make/cmake/ninja/build-essential),
-python3 + uv, curl/wget/unzip/jq, openssh-client, and Node.js + Claude Code.
+python3 + uv, curl/wget/unzip/jq, openssh-client, usbutils, and
+Node.js + Claude Code.
 
 ## What it mounts
 
@@ -60,6 +61,7 @@ python3 + uv, curl/wget/unzip/jq, openssh-client, and Node.js + Claude Code.
 | `~/.claude`        | `/root/.claude`       | rw | credentials, settings, and session transcripts |
 | `~/.claude.json`   | `/root/.claude.json`  | rw | account, onboarding, and per-project state |
 | `$SSH_AUTH_SOCK`   | `/tmp/ssh-agent.sock` | ro | SSH forwarding for git push/pull (no key in container) |
+| `/dev/bus/usb`     | `/dev/bus/usb`        | rw | host USB devices (hotplug-aware; host udev permissions apply) |
 
 Git identity is passed as `GIT_AUTHOR_*` / `GIT_COMMITTER_*` env vars pulled from
 your host `git config`, so Claude can commit without mounting your `.gitconfig`.
@@ -109,7 +111,9 @@ The container can read and write the selected repo, `~/.claude`, and
 `~/.claude.json`. That profile contains your Claude credentials and all locally
 stored Claude session transcripts, not only those for the selected repo. The
 forwarded SSH agent can also authorize signatures even though the private key is
-not copied into the container.
+not copied into the container. Host USB devices are exposed too (`/dev/bus/usb`
+is bind-mounted, with your device-group memberships carried in), so Claude can
+talk to anything you can — SDRs, serial adapters, security keys included.
 
 These mounts are what make account and session reuse possible, but they are not
 protected from a malicious instruction in a repository. Because the container

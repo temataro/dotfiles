@@ -18,6 +18,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 #   python + uv ....... Python repos
 #   curl/wget/unzip/jq  general build & fetch utilities
 #   openssh-client .... git over SSH
+#   usbutils .......... lsusb, for the host USB devices the launcher passes in
 # bash ships in the base image (Claude Code shells out to it for subprocesses).
 RUN apt-get update && apt-get install -y --no-install-recommends \
     ca-certificates \
@@ -27,6 +28,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     python3 python3-pip python3-venv \
     curl wget unzip jq \
     openssh-client \
+    usbutils \
     && rm -rf /var/lib/apt/lists/*
 
 # ── Node.js LTS + Claude Code ─────────────────────────────────────────────────
