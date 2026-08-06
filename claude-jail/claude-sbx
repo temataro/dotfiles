@@ -14,6 +14,7 @@
 #   • ~/.claude       → /root/.claude      (rw — auth and sessions)
 #   • ~/.claude.json  → /root/.claude.json (rw — account/setup state)
 #   • $SSH_AUTH_SOCK  → /tmp/ssh-agent.sock (ro — SSH forwarding, no key in container)
+#   • /dev/bus/usb    → /dev/bus/usb       (rw — host USB devices)
 #
 # Git identity is passed as env vars (GIT_AUTHOR_* / GIT_COMMITTER_*) so Claude
 # can commit — no need to mount your .gitconfig. The container runs as root,
@@ -120,6 +121,17 @@ else
     echo "   Fix: eval \$(ssh-agent) && ssh-add ~/.ssh/id_ed25519" >&2
 fi
 
+# ── USB passthrough ───────────────────────────────────────────────────────────
+# Bind the whole bus (not per-device nodes) so hotplugged devices appear without
+# a container restart. Host udev permissions still apply; `keep-groups` carries
+# your supplementary groups (plugdev, dialout, …) into the container, which
+# rootless podman otherwise drops — without it group-gated device nodes are
+# unreadable inside.
+USB_ARGS=()
+if [[ -d /dev/bus/usb ]]; then
+    USB_ARGS=("--volume" "/dev/bus/usb:/dev/bus/usb" "--group-add" "keep-groups")
+fi
+
 # ── Run ───────────────────────────────────────────────────────────────────────
 # IS_SANDBOX=1 lets Claude Code's --dangerously-skip-permissions run as root
 # (it refuses otherwise). --security-opt=label=disable avoids SELinux friction.
@@ -131,5 +143,6 @@ exec podman run -it --rm \
     "${GIT_ENV[@]}" \
     "${MOUNTS[@]}" \
     "${SSH_ARGS[@]}" \
+    "${USB_ARGS[@]}" \
     -w "$CONTAINER_REPO" \
     "$IMAGE" "${CONTAINER_CMD[@]}"
