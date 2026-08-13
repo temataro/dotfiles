@@ -49,7 +49,7 @@ FONT_SRC     := $(dotfiles_dir)/extra/fonts
 FONT_DEST    := $(HOME)/.local/share/fonts
 
 # === Package sets ===
-BASIC_COMMON = git vim ripgrep cmake unzip curl arandr cowsay btop vlc $(BUILD_TOOLS)
+BASIC_COMMON = git vim ripgrep cmake unzip curl arandr cowsay btop vlc wl-clipboard xclip $(BUILD_TOOLS)
 PLUS         = kitty tmux zsh octave $(fetcher)
 TEM          = zoxide $(EXTRA)
 
