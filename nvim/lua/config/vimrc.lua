@@ -23,6 +23,7 @@ opt.wrap = false
 opt.showbreak = ""
 opt.fileformats = { "unix", "dos", "mac" }
 opt.encoding = "utf-8"
+opt.clipboard = "unnamedplus"
 opt.list = true
 opt.listchars = { tab = "»·" }
 

@@ -45,3 +45,4 @@ Authored entirely using GPT5.5 with me as the Rick Rubin.
 
 - This config no longer sources `vimrc.vim` or `~/.vimrc`; the relevant behavior has been ported to Lua.
 - Lazy plugin cloning uses `https://github.com:443/...` to avoid the repo's Git URL rewrite from HTTPS to SSH.
+- System clipboard yanks use `clipboard=unnamedplus`; install `xclip` so Neovim can copy to the desktop clipboard.
