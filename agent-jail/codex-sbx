@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# Thin wrapper: delegate to the shared agent-jail launcher. See agent-jail.
+#   claude-sbx [repo]                    new session, skip-permissions on
+#   claude-sbx [repo] --resume           open Claude's session picker
+#   claude-sbx [repo] --continue         resume the latest session
+#   claude-sbx <repo> --legacy-resume    resume old /workspace sessions
+#   claude-sbx <repo> bash               shell escape hatch
+set -euo pipefail
+exec "$(dirname "$(realpath "${BASH_SOURCE[0]}")")/agent-jail" codex "$@"
