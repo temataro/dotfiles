@@ -198,7 +198,9 @@ alias gits='git status --column=always,nodense,auto'
 alias grep='rg'
 alias cat='batcat'
 alias rm='rm -i'
-alias claude="/home/tem/code/github.com/temataro/dotfiles/claude-jail/claude-sbx"
+alias claude="/home/tem/code/github.com/temataro/dotfiles/agent-jail/claude-sbx"
+alias codex="/home/tem/code/github.com/temataro/dotfiles/agent-jail/codex-sbx"
+alias opencode="/home/tem/code/github.com/temataro/dotfiles/agent-jail/opencode-sbx"
 
 
 # Little helpers

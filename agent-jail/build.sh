@@ -1,16 +1,16 @@
 #!/usr/bin/env bash
 #
-# ─── claude-sandbox/build.sh ─────────────────────────────────────────────────
+# ─── agent-jail/build.sh ─────────────────────────────────────────────────────
 # One-time build (re-run after Dockerfile changes).
 # ─────────────────────────────────────────────────────────────────────────────
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-echo "Building claude-dev:latest ..."
+echo "Building agent-jail:latest ..."
 podman build \
-    -t claude-dev:latest \
+    -t agent-jail:latest \
     "$SCRIPT_DIR"
 
 echo ""
-echo "Image ready. Run:  claude-sbx [path/to/repo]"
+echo "Image ready. Run:  claude-sbx / codex-sbx / opencode-sbx [path/to/repo]"
