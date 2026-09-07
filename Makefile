@@ -71,7 +71,7 @@ define status
 endef
 
 .PHONY: all help basic basic_plus tem deploy refresh fonts uv lazygit \
-        zoxide zsh tmux kitty neovim update snaps wise_choice themes preview theme check plan
+        zoxide zsh tmux kitty neovim update snaps wise_choice themes preview theme check plan desktop-deps
 
 all: help
 
@@ -80,6 +80,7 @@ help:
 	@echo "  themes                  list coordinated desktop palettes"
 	@echo "  preview                 build a browser gallery in build/themes/"
 	@echo "  theme THEME=ember       apply ember, tide, or paper (with backups)"
+	@echo "  desktop-deps            install i3/kitty/glass desktop dependencies"
 	@echo "  check                   test theme generation and backups"
 	@echo "  plan                    show full setup commands without running them"
 	@echo "  basic basic_plus tem    aggregate setups"
@@ -91,6 +92,9 @@ help:
 
 themes:
 	@$(PYTHON) scripts/theme.py list
+
+desktop-deps:
+	$(INSTALL) i3-wm kitty picom feh rofi dunst i3blocks i3status
 
 preview:
 	@$(PYTHON) scripts/theme.py preview

@@ -18,10 +18,10 @@ from scripts import theme
 class ThemeTests(unittest.TestCase):
     def test_preserves_bindings_and_transparency(self):
         original = (theme.ROOT / "config").read_text()
-        bindings = [line for line in original.splitlines() if line.strip().startswith("bind")]
+        bindings = [line for line in original.splitlines() if line.strip().startswith("bind") and "background_opacity=" not in line]
         for name in theme.PALETTES:
             rendered = theme.render(name)
-            self.assertEqual(bindings, [line for line in rendered["i3/config"].splitlines() if line.strip().startswith("bind")])
+            self.assertEqual(bindings, [line for line in rendered["i3/config"].splitlines() if line.strip().startswith("bind") and "background_opacity=" not in line])
             self.assertIn("#00000000", rendered["i3/config"])
             self.assertIn("font_size         22", rendered["kitty/kitty.conf"])
 
@@ -33,6 +33,7 @@ class ThemeTests(unittest.TestCase):
             for name in theme.PALETTES:
                 for relative in theme.FILES.values():
                     self.assertTrue((output / name / relative).is_file())
+                self.assertEqual((output / name / "dotfiles/wallpaper.png").read_bytes(), (theme.ROOT / f"themes/wallpapers/{name}.png").read_bytes())
                 if shutil.which("i3"):
                     subprocess.run(["i3", "-C", "-c", str(output / name / "i3/config")], check=True, capture_output=True)
 
@@ -46,6 +47,7 @@ class ThemeTests(unittest.TestCase):
             saved = list(backups.iterdir())[0]
             self.assertEqual((saved / "kitty/kitty.conf").read_text(), "original\n")
             theme.apply("paper", config, backups)
+            self.assertEqual((config / "dotfiles/wallpaper.png").read_bytes(), (theme.ROOT / "themes/wallpapers/paper.png").read_bytes())
             self.assertEqual(len(list(backups.iterdir())), 2)
             self.assertIn("#f5f0e7", (config / "kitty/kitty.conf").read_text())
             self.assertEqual((saved / "kitty/kitty.conf").read_text(), "original\n")

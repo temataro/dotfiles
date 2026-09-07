@@ -1,27 +1,37 @@
 # Desktop configuration architecture
 
-Root `config` and `kitty.conf`, plus `rofi/`, `i3blocks/`, and `dunst/`, remain
-the source of desktop behavior. Their existing Rosé Pine colors define the
-palette roles. Existing installation and copy-based deployment targets remain
-in `Makefile`.
+Root `config` and `kitty.conf`, plus `rofi/`, `i3blocks/`, and `dunst/`, supply
+the base behavior. `scripts/theme.py` maps their Rosé Pine colors into the
+selected palette, then applies shared glass styling. Navigation remains in
+one source; generated configs are not edited or committed.
 
-`themes/palettes.json` defines three ordered palettes: base, surface, overlay,
-muted text, text, red, gold, rose, green, blue, and focus accent.
-`scripts/theme.py` substitutes exact six-digit colors in those five source
-configs. It also maps kitty's extra background and selection shades; eight-digit
-transparent colors stay intact. Behavioral settings are not generated.
+`themes/palettes.json` holds descriptions, terminal opacity, and these ordered
+color roles: base, surface, overlay, muted text, text, red, gold, rose, green,
+blue, and focus accent. Exact six-digit substitution preserves eight-digit
+transparent colors. Source palette changes require updating the base mapping.
 
-`make preview` renders all palettes under ignored `build/themes/` and produces
-an HTML gallery with CSS illustrations. `make theme THEME=<name>` renders one
-palette in memory, backs up existing destination files, and writes the configs.
-The script does not install packages or reload running applications. Backups
-are per invocation; installation is not an atomic transaction across files.
+Glass styling changes gaps and borders, kitty typography and padding, and
+launcher/bar alpha. `themes/glass/picom.conf` supplies a separate compositor
+profile; the old latency-focused baseline remains available. Kitty controls
+background alpha; picom provides blur, corners, and shadows. Text and ordinary
+applications are not globally dimmed. Fullscreen windows skip blur and rounding.
 
-`make check` exercises rendering, keybinding preservation, invalid CLI inputs,
-and backups in temporary directories. It validates every i3 variant when i3
-is installed. CI runs these checks instead of invoking package installation.
+`themes/wallpapers/` contains original generated artwork and its provenance.
+Rendering writes explicit destination paths in i3 for picom and wallpaper.
+Preview generation writes configs and images into ignored `build/themes/`.
+The HTML gallery uses CSS from `themes/glass/preview.css`; its opacity sliders
+affect only the illustration.
 
-Palette substitution depends on the baseline colors: changing the source
-palette requires updating the mappings in `scripts/theme.py`. Keeping one
-behavioral source avoids three diverging copies of the desktop configuration.
-The legacy refresh command rejects generated configs to protect this baseline.
+Applying backs up all existing destinations before writing six configs and
+one PNG. Backups are per invocation; writes are not one atomic transaction.
+The installer does not restart processes. An i3 login starts picom once;
+i3 restarts reapply wallpaper without spawning another compositor.
+
+Tests cover rendering, navigation preservation, artwork deployment, repeat
+backups, invalid inputs, and i3 validation when available. The desktop stack
+was also rendered in isolated Xvfb with picom GLX. CI runs portable tests
+without installing desktop packages.
+
+Legacy `deploy` still copies baseline configs. `refresh` rejects generated
+i3/kitty configs to protect the source palette. Both use `$HOME/.config`;
+the theme installer respects XDG paths.
