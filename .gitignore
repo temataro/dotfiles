@@ -5,3 +5,5 @@ extra/fonts/
 *.bak
 *.swp
 .DS_Store
+build/
+__pycache__/

@@ -1,0 +1,14 @@
+{
+  "ember": {
+    "description": "Warm charcoal, terracotta borders, and sage accents",
+    "colors": ["#211e1b", "#2b2723", "#39322c", "#b1a397", "#eee0ce", "#e88980", "#e5b46c", "#d6a38b", "#9fb58a", "#9ec3bb", "#db9976"]
+  },
+  "tide": {
+    "description": "Deep ocean blue with sea-glass focus and lavender highlights",
+    "colors": ["#111d28", "#192a38", "#263c4c", "#9baebb", "#dceaf0", "#f08c96", "#e9c484", "#c6a2cf", "#8fbd9d", "#a3b9ea", "#79c8c0"]
+  },
+  "paper": {
+    "description": "Warm ivory with ink text, forest green, and muted plum",
+    "colors": ["#f5f0e7", "#eae3d7", "#dcd2c2", "#70665b", "#302e2a", "#a33c45", "#896017", "#965b47", "#456547", "#345f83", "#674c78"]
+  }
+}
