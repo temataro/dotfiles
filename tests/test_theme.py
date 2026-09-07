@@ -33,7 +33,6 @@ class ThemeTests(unittest.TestCase):
             for name in theme.PALETTES:
                 for relative in theme.FILES.values():
                     self.assertTrue((output / name / relative).is_file())
-                self.assertEqual((output / name / "dotfiles/wallpaper.png").read_bytes(), (theme.ROOT / f"themes/wallpapers/{name}.png").read_bytes())
                 if shutil.which("i3"):
                     subprocess.run(["i3", "-C", "-c", str(output / name / "i3/config")], check=True, capture_output=True)
 
@@ -47,7 +46,6 @@ class ThemeTests(unittest.TestCase):
             saved = list(backups.iterdir())[0]
             self.assertEqual((saved / "kitty/kitty.conf").read_text(), "original\n")
             theme.apply("paper", config, backups)
-            self.assertEqual((config / "dotfiles/wallpaper.png").read_bytes(), (theme.ROOT / "themes/wallpapers/paper.png").read_bytes())
             self.assertEqual(len(list(backups.iterdir())), 2)
             self.assertIn("#f5f0e7", (config / "kitty/kitty.conf").read_text())
             self.assertEqual((saved / "kitty/kitty.conf").read_text(), "original\n")

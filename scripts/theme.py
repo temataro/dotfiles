@@ -76,9 +76,7 @@ map ctrl+shift+alt+0 set_background_opacity default
     i3 = i3.replace("background_opacity=0.45", f"background_opacity={opacity}")
     i3 = i3.replace("font pango:JetBrainsMono Nerd Font 14", "font pango:JetBrainsMono Nerd Font 11")
     i3 = i3.replace("background $rp_base", f"background {colors[0]}cc")
-    wallpaper = shlex.quote(str(config_dir / "dotfiles/wallpaper.png"))
     compositor = shlex.quote(str(config_dir / "picom/picom.conf"))
-    i3 = re.sub(r"^exec_always feh .*$", f"exec_always --no-startup-id feh --no-fehbg --bg-fill {wallpaper}", i3, flags=re.M)
     # Start once at login, not another compositor on every i3 restart.
     i3 = i3.replace("exec_always --no-startup-id picom", f"exec --no-startup-id picom --config {compositor}")
     output["i3/config"] = i3
@@ -99,12 +97,9 @@ def preview(destination):
             path = destination / name / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(contents)
-        wallpaper = destination / name / "dotfiles/wallpaper.png"
-        wallpaper.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copy2(ROOT / f"themes/wallpapers/{name}.png", wallpaper)
         base, surface, overlay, muted, text, red, gold, rose, green, blue, accent = palette["colors"]
         swatches = "".join(f'<span style="background:{color}" title="{color}"></span>' for color in palette["colors"])
-        cards.append(f'''<article style="--base:{base};--surface:{surface};--overlay:{overlay};--muted:{muted};--text:{text};--accent:{accent};--green:{green};--glass:{palette['opacity']};--wallpaper:url('{name}/dotfiles/wallpaper.png')">
+        cards.append(f'''<article style="--base:{base};--surface:{surface};--overlay:{overlay};--muted:{muted};--text:{text};--accent:{accent};--green:{green};--glass:{palette['opacity']}">
 <header><strong>{name.upper()}</strong><span>01 &nbsp; 02 &nbsp; 03</span><span>Tue 08 Sep &nbsp; 14:32</span></header>
 <div class="desktop"><div class="terminal"><div class="title">~/research — kitty</div><p><em>tem@workstation</em> ~/research</p><p>❯ git status --short<br><span style="color:{green}"> M analysis.py</span></p><p><span style="color:{blue}">def</span> explore(signal):<br>&nbsp; &nbsp; <span style="color:{blue}">return</span> signal.mean()</p><p>❯ <span style="background:{accent}">&nbsp;</span></p></div><div class="launcher"><small>APPLICATIONS</small><p class="selected">Kitty terminal</p><p>Firefox</p><p>Files</p></div></div>
 <footer><div><small>0{len(cards) + 1} / GLASS STUDIES</small><h2>{name.title()}</h2><p>{html.escape(palette['description'])}</p></div><div><label>Background opacity <output>{palette['opacity']:.0%}</output><input aria-label="{name} background opacity" type="range" min="50" max="100" value="{palette['opacity'] * 100:.0f}" oninput="this.closest('article').style.setProperty('--glass',this.value/100);this.previousElementSibling.value=this.value+'%'"></label><div class="swatches">{swatches}</div><code>make theme THEME={name}</code></div></footer></article>''')
@@ -122,7 +117,6 @@ explore opacity. These are illustrations; sliders do not edit your configs.</p>
 
 def apply(name, config_dir, backup_root):
     rendered = {relative: text.encode() for relative, text in render(name, config_dir).items()}
-    rendered["dotfiles/wallpaper.png"] = (ROOT / f"themes/wallpapers/{name}.png").read_bytes()
     # Back up the entire affected set before writing any live config.
     backup = backup_root / datetime.now().strftime("%Y%m%d-%H%M%S-%f")
     backup.mkdir(parents=True)
@@ -137,7 +131,7 @@ def apply(name, config_dir, backup_root):
         live.parent.mkdir(parents=True, exist_ok=True)
         live.write_bytes(contents)
     print(f"Applied {name} to {config_dir}. Backup: {backup}")
-    print("Log out and back into i3 to load the compositor, wallpaper, and bar together.")
+    print("Log out and back into i3 to load the compositor and bar together.")
     print("For existing kitty windows: Ctrl+Shift+F5 reloads the config.")
     print("Glass strength: Ctrl+Shift+Alt+Up/Down; Ctrl+Shift+Alt+0 resets it.")
 

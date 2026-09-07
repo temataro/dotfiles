@@ -17,11 +17,12 @@ make check              # isolated rendering and backup tests
 make plan               # show full setup commands without running them
 ```
 
-The gallery uses the actual wallpapers with interactive opacity sliders.
-It is an illustration, not an exact screenshot; sliders do not edit configs.
+The gallery has interactive opacity sliders. It is an illustration, not an
+exact screenshot; sliders do not edit configs.
 Each theme adds translucent kitty backgrounds, picom blur, 16px corners, broad
-soft shadows, 18px inner gaps, 12px outer gaps, a translucent bar and launcher,
-and original artwork. Single windows retain gaps. Text stays opaque.
+soft shadows, 18px inner gaps, 12px outer gaps, and a translucent bar and
+launcher. Single windows retain gaps. Text stays opaque. Your wallpaper stays
+exactly as your base i3 config sets it.
 
 Kitty uses JetBrainsMono Nerd Font (already installed here), keeps your font
 size, and gains padding and a beam cursor. Navigation shortcuts stay intact.
@@ -31,7 +32,7 @@ Dependencies: Python 3, i3 4.22+, kitty, picom 10+ with GLX, feh, rofi, i3blocks
 i3status, and dunst. `make desktop-deps` installs desktop packages using apt
 or pacman. No new packages were needed on this machine.
 
-`make theme` copies six configs plus the wallpaper into
+`make theme` copies six configs into
 `${XDG_CONFIG_HOME:-$HOME/.config}`. Local edits in those six live configs are
 replaced, so bring wanted edits into the repo first. Existing files are backed
 up under `${XDG_STATE_HOME:-$HOME/.local/state}/dotfiles/theme-backups/<timestamp>/`.

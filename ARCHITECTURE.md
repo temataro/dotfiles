@@ -16,19 +16,18 @@ profile; the old latency-focused baseline remains available. Kitty controls
 background alpha; picom provides blur, corners, and shadows. Text and ordinary
 applications are not globally dimmed. Fullscreen windows skip blur and rounding.
 
-`themes/wallpapers/` contains original generated artwork and its provenance.
-Rendering writes explicit destination paths in i3 for picom and wallpaper.
-Preview generation writes configs and images into ignored `build/themes/`.
+Rendering writes an explicit destination path in i3 for picom. It deliberately
+preserves the base i3 wallpaper command. Preview generation writes configs into
+ignored `build/themes/`.
 The HTML gallery uses CSS from `themes/glass/preview.css`; its opacity sliders
 affect only the illustration.
 
-Applying backs up all existing destinations before writing six configs and
-one PNG. Backups are per invocation; writes are not one atomic transaction.
-The installer does not restart processes. An i3 login starts picom once;
-i3 restarts reapply wallpaper without spawning another compositor.
+Applying backs up all existing destinations before writing six configs. Backups
+are per invocation; writes are not one atomic transaction.
+The installer does not restart processes. An i3 login starts picom once.
 
-Tests cover rendering, navigation preservation, artwork deployment, repeat
-backups, invalid inputs, and i3 validation when available. The desktop stack
+Tests cover rendering, navigation preservation, repeat backups, invalid inputs,
+and i3 validation when available. The desktop stack
 was also rendered in isolated Xvfb with picom GLX. CI runs portable tests
 without installing desktop packages.
 

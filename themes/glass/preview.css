@@ -1,7 +1,7 @@
 /* =============================================================================
  * preview.css — Atmospheric, interactive previews of the glass desktop themes.
  *
- * The same wallpaper assets ship with the generated desktop configurations.
+ * Palette gradients visualize the translucent desktop surface.
  * Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
  * SPDX-License-Identifier: Apache-2.0
  * ============================================================================= */
@@ -14,7 +14,7 @@ h1 { font: 400 clamp(40px, 6vw, 76px)/1.15 Georgia, serif; letter-spacing: -2px;
 article { background: var(--base); color: var(--text); overflow: hidden; border: 1px solid #ffffff18; border-radius: 20px; box-shadow: 0 24px 80px #0005; }
 header { display: flex; justify-content: space-between; gap: 12px; font: 11px monospace; background: color-mix(in srgb, var(--base) 80%, transparent); padding: 14px 24px; }
 header strong { color: var(--accent); }
-.desktop { position: relative; min-height: 540px; padding: 72px 7%; background: var(--wallpaper) center / cover; }
+.desktop { position: relative; min-height: 540px; padding: 72px 7%; background: radial-gradient(circle at 85% 15%, var(--accent), transparent 35%), radial-gradient(circle at 10% 100%, var(--green), transparent 42%), var(--surface); }
 .terminal { width: 73%; min-height: 360px; padding: 28px; border: 1px solid var(--accent); border-radius: 16px; font: 15px/1.9 'JetBrainsMono Nerd Font', monospace; }
 .terminal, .launcher { background: color-mix(in srgb, var(--base) calc(var(--glass) * 100%), transparent); backdrop-filter: blur(12px); box-shadow: 0 22px 48px #0005; }
 .launcher { position: absolute; top: 152px; right: 7%; width: 28%; padding: 24px; border: 1px solid var(--accent); border-radius: 18px; font-size: 14px; }
