@@ -1,3 +1,10 @@
+# =============================================================================
+# makefile.yml — Check desktop theme generation without installing packages.
+#
+# Runs isolated theme tests and verifies deployment recipe expansion.
+# Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+# =============================================================================
 name: Makefile CI
 
 on:
@@ -14,5 +21,7 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Install dependencies
-      run: make
+    - name: Check themes and Makefile
+      run: |
+        make check
+        make --dry-run deploy

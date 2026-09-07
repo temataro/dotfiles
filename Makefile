@@ -1,3 +1,10 @@
+# =============================================================================
+# Makefile — Install tools and manage personal desktop configurations.
+#
+# Theme previews and help are safe defaults; installation uses explicit targets.
+# Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+# =============================================================================
 #              █████╗ ███████╗███████╗ █████╗ ██╗   ██╗
 #             ██╔══██╗██╔════╝██╔════╝██╔══██╗██║   ██║
 #             ███████║█████╗  ███████╗███████║██║   ██║
@@ -41,12 +48,16 @@ else ifeq ($(PKG),pacman)
   fetcher     := fastfetch
   EXTRA       := bat eza chromium fastfetch brightnessctl blueman
 else
-  $(error No supported package manager found - need apt or pacman)
+  INSTALL = $(error Package installation requires apt or pacman)
+  UPDATE = $(error Package updates require apt or pacman)
 endif
 
 dotfiles_dir := $(CURDIR)
 FONT_SRC     := $(dotfiles_dir)/extra/fonts
 FONT_DEST    := $(HOME)/.local/share/fonts
+PYTHON       ?= python3
+THEME        ?=
+.DEFAULT_GOAL := help
 
 # === Package sets ===
 BASIC_COMMON = git vim ripgrep cmake unzip curl arandr cowsay btop vlc wl-clipboard xclip $(BUILD_TOOLS)
@@ -60,18 +71,38 @@ define status
 endef
 
 .PHONY: all help basic basic_plus tem deploy refresh fonts uv lazygit \
-        zoxide zsh tmux kitty neovim update snaps wise_choice
+        zoxide zsh tmux kitty neovim update snaps wise_choice themes preview theme check plan
 
-all: basic
+all: help
 
 help:
 	@echo "Targets:"
+	@echo "  themes                  list coordinated desktop palettes"
+	@echo "  preview                 build a browser gallery in build/themes/"
+	@echo "  theme THEME=ember       apply ember, tide, or paper (with backups)"
+	@echo "  check                   test theme generation and backups"
+	@echo "  plan                    show full setup commands without running them"
 	@echo "  basic basic_plus tem    aggregate setups"
 	@echo "  deploy refresh          configs <-> repo"
 	@echo "  fonts uv lazygit zoxide  individual tools"
 	@echo "  zsh tmux kitty neovim   individual app setup"
 	@echo "  update snaps            system update / snap apps"
 	@echo "Detected package manager: $(PKG)"
+
+themes:
+	@$(PYTHON) scripts/theme.py list
+
+preview:
+	@$(PYTHON) scripts/theme.py preview
+
+theme:
+	@$(PYTHON) scripts/theme.py apply "$(THEME)"
+
+check:
+	@$(PYTHON) -m unittest discover -s tests -v
+
+plan:
+	@$(MAKE) --dry-run tem
 
 basic:
 	$(call status,Installing common base packages)
@@ -103,6 +134,9 @@ neovim: deploy
 # === Refresh: live locations -> repo (reverse of deploy) ====================
 # Guarded with '-' so a config that doesn't exist on this box doesn't abort it.
 refresh:
+	@if grep -q '^# Generated theme:' "$(HOME)/.config/i3/config" "$(HOME)/.config/kitty/kitty.conf" 2>/dev/null; then \
+		echo "Restore baseline configs from your theme backup before make refresh."; exit 1; \
+	fi
 	$(call status,Copying live configs back into this repo)
 	-cp $(HOME)/.zshrc $(HOME)/.tmux.conf $(HOME)/.vimrc $(HOME)/.gitconfig $(dotfiles_dir)/
 	-cp $(HOME)/.config/kitty/kitty.conf $(dotfiles_dir)/kitty.conf
@@ -149,10 +183,8 @@ tmux:
 	fi
 
 kitty:
-	$(call status,Installing kitty and applying theme)
+	$(call status,Installing kitty)
 	$(INSTALL) kitty
-	# NOTE: `kitty +kitten themes` is interactive; pick "Mayukai" from the list.
-	-kitty +kitten themes Mayukai
 
 snaps:
 	$(call status,Installing snap apps)
