@@ -13,5 +13,15 @@
     "description": "Frosted ivory glass over soft porcelain folds",
     "opacity": 0.87,
     "colors": ["#f5f0e7", "#eae3d7", "#dcd2c2", "#70665b", "#302e2a", "#a33c45", "#896017", "#965b47", "#456547", "#345f83", "#674c78"]
+  },
+  "gruvbox": {
+    "description": "Warm retro contrast: gruvbox dark greys with orange focus",
+    "opacity": 0.85,
+    "colors": ["#282828", "#32302f", "#3c3836", "#928374", "#ebdbb2", "#fb4934", "#fabd2f", "#d3869b", "#b8bb26", "#83a598", "#fe8019"]
+  },
+  "nord": {
+    "description": "Cold minimalism: nord polar night surfaces with frost accents",
+    "opacity": 0.82,
+    "colors": ["#2e3440", "#3b4252", "#434c5e", "#7b88a1", "#eceff4", "#bf616a", "#ebcb8b", "#d08770", "#a3be8c", "#81a1c1", "#88c0d0"]
   }
 }

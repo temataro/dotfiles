@@ -24,4 +24,6 @@ jobs:
     - name: Check themes and Makefile
       run: |
         make check
+        make deps
         make --dry-run deploy
+        make --dry-run desktop-deps

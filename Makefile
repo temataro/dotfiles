@@ -57,12 +57,60 @@ FONT_SRC     := $(dotfiles_dir)/extra/fonts
 FONT_DEST    := $(HOME)/.local/share/fonts
 PYTHON       ?= python3
 THEME        ?=
+FINISH       ?= glass
+TEST_HOME    := $(dotfiles_dir)/build/test-home
 .DEFAULT_GOAL := help
 
 # === Package sets ===
 BASIC_COMMON = git vim ripgrep cmake unzip curl arandr cowsay btop vlc wl-clipboard xclip $(BUILD_TOOLS)
 PLUS         = kitty tmux zsh octave $(fetcher)
 TEM          = zoxide $(EXTRA)
+
+# === Desktop dependencies ===================================================
+# One row per command that the i3 config, the i3blocks config, the lockscreen
+# binding, or the theme tooling runs directly, with its apt and pacman package.
+# Only direct callers are listed; whatever those packages pull in themselves is
+# the package manager's business. '-' means the distro has no package for the
+# command: those are reported under `make deps` instead of being replaced with
+# a lookalike package, because a substitute would change behavior silently.
+#                       command:apt:pacman
+DESKTOP_REQUIREMENTS := \
+  python3:python3:python \
+  i3:i3-wm:i3-wm \
+  i3bar:i3-wm:i3-wm \
+  i3-nagbar:i3-wm:i3-wm \
+  i3blocks:i3blocks:i3blocks \
+  i3status:i3status:i3status \
+  kitty:kitty:kitty \
+  picom:picom:picom \
+  rofi:rofi:rofi \
+  dunst:dunst:dunst \
+  feh:feh:feh \
+  dex:dex:dex \
+  xset:x11-xserver-utils:xorg-xset \
+  xrandr:x11-xserver-utils:xorg-xrandr \
+  xss-lock:xss-lock:xss-lock \
+  i3lock-fancy:i3lock-fancy:- \
+  flameshot:flameshot:flameshot \
+  nm-applet:network-manager-gnome:network-manager-applet \
+  nmtui:network-manager:networkmanager \
+  pactl:pulseaudio-utils:libpulse \
+  amixer:alsa-utils:alsa-utils \
+  acpi:acpi:acpi \
+  brightnessctl:brightnessctl:brightnessctl \
+  nautilus:nautilus:nautilus \
+  chromium:chromium:chromium \
+  fc-cache:fontconfig:fontconfig \
+  pkill:procps:procps-ng \
+  date:coreutils:coreutils \
+  systemctl:systemd:systemd
+
+ifeq ($(PKG),apt)
+  PKG_FIELD := 2
+else
+  PKG_FIELD := 3
+endif
+DESKTOP_PKGS := $(sort $(filter-out -,$(foreach r,$(DESKTOP_REQUIREMENTS),$(word $(PKG_FIELD),$(subst :, ,$(r))))))
 
 # === Reusable status banner ===
 # Usage: $(call status,Some message)   -- no commas in the message (call splits on them).
@@ -71,16 +119,18 @@ define status
 endef
 
 .PHONY: all help basic basic_plus tem deploy refresh fonts uv lazygit \
-        zoxide zsh tmux kitty neovim update snaps wise_choice themes preview theme check plan desktop-deps
+        zoxide zsh tmux kitty neovim update snaps wise_choice themes preview theme check plan \
+        desktop-deps deps deps-manual
 
 all: help
 
 help:
 	@echo "Targets:"
-	@echo "  themes                  list coordinated desktop palettes"
+	@echo "  themes                  list palettes and finishes"
 	@echo "  preview                 build a browser gallery in build/themes/"
-	@echo "  theme THEME=ember       apply ember, tide, or paper (with backups)"
-	@echo "  desktop-deps            install i3/kitty/glass desktop dependencies"
+	@echo "  theme THEME=x FINISH=y  apply a palette with backups (see: make themes)"
+	@echo "  deps                    report desktop commands this config needs"
+	@echo "  desktop-deps            install the packages 'make deps' names"
 	@echo "  check                   test theme generation and backups"
 	@echo "  plan                    show full setup commands without running them"
 	@echo "  basic basic_plus tem    aggregate setups"
@@ -89,21 +139,59 @@ help:
 	@echo "  zsh tmux kitty neovim   individual app setup"
 	@echo "  update snaps            system update / snap apps"
 	@echo "Detected package manager: $(PKG)"
+	@echo "Theme default: FINISH=$(FINISH)"
 
 themes:
 	@$(PYTHON) scripts/theme.py list
 
+# Read-only audit: what the desktop configs call, and what is missing here.
+deps:
+	@printf '%-14s %-8s %s\n' COMMAND STATUS PACKAGE
+	@for r in $(DESKTOP_REQUIREMENTS); do \
+		cmd=$${r%%:*}; rest=$${r#*:}; apt=$${rest%%:*}; pac=$${rest##*:}; \
+		case "$(PKG)" in apt) pkg=$$apt;; pacman) pkg=$$pac;; *) pkg="(no apt/pacman)";; esac; \
+		[ "$$pkg" = "-" ] && pkg="none - install manually"; \
+		command -v "$$cmd" >/dev/null 2>&1 && s=ok || s=MISSING; \
+		printf '%-14s %-8s %s\n' "$$cmd" "$$s" "$$pkg"; \
+	done
+	@$(MAKE) --no-print-directory deps-manual
+
+# Everything the table above cannot cover: no package, or another target.
+deps-manual:
+	@echo ""
+	@echo "The table lists direct commands only; transitive dependencies come"
+	@echo "with those packages. Outside 'make desktop-deps':"
+	@echo "  ~/.local/bin/lockscreen   custom i3lock-fancy wrapper; \$$lockcmd and"
+	@echo "                            xss-lock both call it. Not kept in this repo,"
+	@echo "                            and not installed by any target here."
+	@echo "  /usr/share/i3blocks/*     status scripts used by i3blocks/config."
+	@echo "                            Debian ships them with i3blocks; Arch does not"
+	@echo "                            (i3blocks-contrib from the AUR, or copy by hand)."
+	@echo "  i3lock-fancy on Arch      AUR only; no pacman package is substituted."
+	@echo "  Nerd fonts                JetBrainsMono (bar, rofi, dunst) and"
+	@echo "                            ShureTechMono (kitty) come from 'make fonts',"
+	@echo "                            which downloads releases rather than packages."
+	@echo "  Wallpaper                 ~/Pictures/wallpapers/entoto-hike.jpeg."
+
 desktop-deps:
-	$(INSTALL) i3-wm kitty picom feh rofi dunst i3blocks i3status
+	$(call status,Installing desktop packages named by make deps)
+	$(INSTALL) $(DESKTOP_PKGS)
+	@$(MAKE) --no-print-directory deps-manual
 
 preview:
 	@$(PYTHON) scripts/theme.py preview
 
 theme:
-	@$(PYTHON) scripts/theme.py apply "$(THEME)"
+	@$(PYTHON) scripts/theme.py apply "$(THEME)" --finish "$(FINISH)"
 
+# Tests keep their HOME, temp files, XDG dirs, and bytecode caches inside
+# build/. Nothing here needs a display: no test starts a graphical program.
 check:
-	@$(PYTHON) -m unittest discover -s tests -v
+	@mkdir -p $(TEST_HOME) $(dotfiles_dir)/build/tmp
+	@PYTHONDONTWRITEBYTECODE=1 HOME=$(TEST_HOME) TMPDIR=$(dotfiles_dir)/build/tmp \
+		XDG_CONFIG_HOME=$(TEST_HOME)/.config XDG_STATE_HOME=$(TEST_HOME)/.local/state \
+		XDG_CACHE_HOME=$(TEST_HOME)/.cache XDG_DATA_HOME=$(TEST_HOME)/.local/share \
+		$(PYTHON) -m unittest discover -s tests -v
 
 plan:
 	@$(MAKE) --dry-run tem

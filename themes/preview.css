@@ -1,7 +1,8 @@
 /* =============================================================================
- * preview.css — Atmospheric, interactive previews of the glass desktop themes.
+ * preview.css — Atmospheric, interactive previews of the desktop themes.
  *
- * Palette gradients visualize the translucent desktop surface.
+ * Palette gradients visualize the desktop surface; `.flat` cards illustrate
+ * the minimal finish, where surfaces are opaque and nothing is blurred.
  * Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
  * SPDX-License-Identifier: Apache-2.0
  * ============================================================================= */
@@ -31,6 +32,12 @@ footer p { color: var(--muted); min-height: 0; line-height: 1.5; }
 label { display: block; font-size: 12px; color: var(--muted); }
 output { float: right; color: var(--text); }
 input { display: block; width: 100%; accent-color: var(--accent); margin: 18px 0; cursor: pointer; }
+.finish { letter-spacing: 2px; color: var(--muted); }
+.note { color: var(--muted); font-size: 12px; margin: 12px 0 0; }
+/* Minimal finish: square edges, opaque panels, no blur and no drop shadow. */
+.flat { border-radius: 0; }
+.flat .terminal, .flat .launcher { background: var(--base); backdrop-filter: none; box-shadow: none; border-radius: 0; }
+.flat .launcher p { border-radius: 0; }
 .swatches { display: flex; margin: 18px 0; border-radius: 4px; overflow: hidden; }
 .swatches span { height: 12px; flex: 1; }
 code { font-size: 12px; }
