@@ -29,16 +29,17 @@ Personal dotfiles for an Arch Linux / Debian system running i3wm or Hyprland, wi
 
 ## Neovim Architecture (`nvim/`)
 
-- `init.lua` — bootstraps Lazy.nvim, sources `vimrc.vim` (which re-exports `~/.vimrc`), then loads `lazy_setup`, `statusline`, and `polish`
-- `lua/lazy_setup.lua` — configures Lazy.nvim with AstroNvim v5 as the base distribution
+Plain lazy.nvim config (no AstroNvim — the old distro config is parked in `astro.nvim/` for reference). Requires Neovim 0.11+ (native `vim.lsp.config`/`vim.lsp.enable`, `winborder`).
+
+- `init.lua` — sets leaders, loads `config.vimrc`, `config.transparency`, `lazy_setup`, then `polish`
+- `lua/config/vimrc.lua` — Lua port of the old `~/.vimrc` (options, `gc` strip-whitespace, clang-format `<C-K>`, overlength/trailing-whitespace highlights); `~/.vimrc` is no longer sourced
+- `lua/config/transparency.lua` — strips backgrounds from core highlight groups on startup and on every `ColorScheme`
 - `lua/polish.lua` — **authoritative** place for vim options and keymaps; runs last so it overrides anything set by plugins
-- `lua/statusline.lua` — custom hand-rolled statusline with git hunk counts via gitsigns
-- `lua/community.lua` — AstroCommunity imports (currently disabled)
-- `lua/plugins/` — plugin specs: `astrocore.lua` (features + buffer mappings), `astrolsp.lua` (LSP config), `astroui.lua` (colorscheme + highlight overrides), `mason.lua`, `treesitter.lua`, `render-markdown.lua`, colorschemes (`rose-pine.lua`, `gruvbox.lua`), `user.lua` (presence, lsp_signature, dashboard)
-- `vimrc.vim` — re-exports `~/.vimrc` into Neovim's runtime path
+- `lua/lazy_setup.lua` — lazy.nvim bootstrap; clones over `https://github.com:443/...` to bypass the repo's HTTPS→SSH URL rewrite
+- `lua/plugins/` — one spec per plugin: themes (`rose-pine` active + transparent, `gruvbox`, `github-theme`), `lualine` (statusline + buffer tabline), `devicons`, `nvim-tree`, `aerial`, `gitsigns`, `telescope`, `comment` (mini.comment on `<Leader>/`), `lsp` (mason + native vim.lsp: lua_ls, clangd; ruff + jedi via uv tools when on PATH), `cmp`, `treesitter` (pinned to `master` branch), `dashboard` (dashboard-nvim + milli splash), `cheatsheet`, `which-key`
 - `.stylua.toml` — StyLua formatter config for Lua files
 
-**Colorscheme:** `rose-pine-main` set in `astroui.lua`. Background forced to `#000000` via highlight override in the same file.
+**Colorscheme:** `rose-pine-main`, transparent background via `config/transparency.lua` (terminal theme shows through — no black `Normal` override).
 **Leader key:** `<Space>` | **Local leader:** `,`
 
 ## Formatting

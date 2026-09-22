@@ -76,9 +76,6 @@ vim.keymap.set("n", "<Leader>c", ":bd<cr>")
 vim.keymap.set("n", "<Leader>q", ":qa<cr>")
 vim.keymap.set("n", "<Leader>w", ":w<cr>")
 
--- Show Symbol Outline with Aerial
-vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
-
 -- Buffer navigation
 vim.keymap.set("n", "<C-l>", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<C-j>", ":bprev<CR>", { desc = "Prev buffer" })
