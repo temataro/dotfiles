@@ -1,6 +1,5 @@
 -- This runs last and preserves the keymaps/options that used to live here.
 
-vim.opt.ruler = true
 vim.opt.guicursor = ""
 
 vim.opt.hlsearch = false
@@ -69,5 +68,3 @@ vim.keymap.set("n", "<C-l>", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<C-j>", ":bprev<CR>", { desc = "Prev buffer" })
 vim.keymap.set("n", "<Leader>L", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<Leader>H", ":bprev<CR>", { desc = "Prev buffer" })
-
-vim.cmd [[ set showtabline=0 ]]
