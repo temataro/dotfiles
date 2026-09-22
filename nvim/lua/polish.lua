@@ -43,8 +43,19 @@ vim.keymap.set("n", "J", "mzJ`z")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
 
--- Run Black on current file
-vim.keymap.set("n", "<C-b>", ":!uv tool run black %<cr>")
+-- Format current file: black for Python, clang-format for C/C++
+vim.keymap.set("n", "<C-b>", function()
+  local ft = vim.bo.filetype
+  if ft == "python" then
+    vim.cmd "!uv tool run black %"
+  elseif ft == "c" or ft == "cpp" then
+    vim.cmd "!clang-format -i %"
+  else
+    vim.notify("<C-b>: no formatter for filetype " .. ft, vim.log.levels.WARN)
+    return
+  end
+  vim.cmd "edit" -- reload the buffer; both formatters rewrite the file on disk
+end, { desc = "Format file (black / clang-format)" })
 
 vim.keymap.set("n", "<Leader>c", ":bd<cr>")
 vim.keymap.set("n", "<Leader>q", ":qa<cr>")
