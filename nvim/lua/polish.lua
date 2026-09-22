@@ -56,5 +56,7 @@ vim.keymap.set("n", "<leader>a", "<cmd>AerialToggle!<CR>")
 -- Buffer navigation
 vim.keymap.set("n", "<C-l>", ":bnext<CR>", { desc = "Next buffer" })
 vim.keymap.set("n", "<C-j>", ":bprev<CR>", { desc = "Prev buffer" })
+vim.keymap.set("n", "<Leader>L", ":bnext<CR>", { desc = "Next buffer" })
+vim.keymap.set("n", "<Leader>H", ":bprev<CR>", { desc = "Prev buffer" })
 
 vim.cmd [[ set showtabline=0 ]]
