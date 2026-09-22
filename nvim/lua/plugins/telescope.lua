@@ -12,7 +12,7 @@ return {
     { "<Leader>fh", "<Cmd>Telescope help_tags<CR>", desc = "Help tags" },
     { "<Leader>fr", "<Cmd>Telescope oldfiles<CR>", desc = "Recent files" },
     { "<Leader>fw", "<Cmd>Telescope grep_string<CR>", desc = "Grep word under cursor" },
-    { "<Leader>/", "<Cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Search in buffer" },
+    { "<Leader>fs", "<Cmd>Telescope current_buffer_fuzzy_find<CR>", desc = "Search in buffer" },
   },
   opts = {
     defaults = {
