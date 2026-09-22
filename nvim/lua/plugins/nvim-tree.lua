@@ -14,16 +14,16 @@ return {
       width = 32,
     },
     git = {
-      enable = false,
+      enable = true,
     },
     renderer = {
       group_empty = true,
       icons = {
         show = {
-          file = false,
-          folder = false,
+          file = true,
+          folder = true,
           folder_arrow = true,
-          git = false,
+          git = true,
         },
       },
     },

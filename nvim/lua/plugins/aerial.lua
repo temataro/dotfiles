@@ -77,7 +77,6 @@ return {
     highlight_on_hover = false,
     highlight_on_jump = 300,
     autojump = false,
-    icons = {},
 
     ignore = {
       unlisted_buffers = false,
