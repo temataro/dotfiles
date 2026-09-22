@@ -28,6 +28,22 @@ vim.opt.undofile = true
 
 vim.opt.signcolumn = "yes"
 
+-- Rounded borders on every float (LSP hover, diagnostics, cmp docs)
+vim.o.winborder = "rounded"
+
+vim.diagnostic.config {
+  severity_sort = true,
+  float = { border = "rounded" },
+  signs = {
+    text = {
+      [vim.diagnostic.severity.ERROR] = "",
+      [vim.diagnostic.severity.WARN] = "",
+      [vim.diagnostic.severity.INFO] = "",
+      [vim.diagnostic.severity.HINT] = "",
+    },
+  },
+}
+
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 
