@@ -5,6 +5,11 @@ the base behavior. `scripts/theme.py` maps their Rosé Pine colors into the
 selected palette, then applies a finish. Navigation remains in one source;
 generated configs are not edited or committed.
 
+`.tmux.conf` owns tmux behavior, bindings, and plugins. It conditionally loads
+`~/.config/tmux/theme.conf`; the theme renderer writes that presentation-only
+layer beside its other XDG configs. This keeps a base tmux usable before a theme
+exists and keeps theme changes from duplicating or changing bindings.
+
 `themes/palettes.json` holds descriptions, terminal opacity, and these ordered
 color roles: base, surface, overlay, muted text, text, red, gold, rose, green,
 blue, and focus accent. Exact six-digit substitution preserves eight-digit
@@ -43,7 +48,7 @@ generation writes configs into ignored `build/themes/<finish>/<palette>/` and a
 gallery built from `themes/preview.css`; card counts and commands come from the
 data, not from prose. The opacity sliders affect only the illustration.
 
-Applying backs up all existing destinations before writing six configs. Backups
+Applying backs up all existing destinations before writing seven configs. Backups
 are per invocation; writes are not one atomic transaction. The installer does
 not restart processes. Invalid palettes and finishes are rejected by argparse
 and by assertions in `render`, before any file is touched.
@@ -58,7 +63,7 @@ as manual steps rather than replaced by a different package. Fonts are out of
 that scope by design: `make fonts` downloads Nerd Font releases directly.
 
 Tests cover every palette/finish combination: bindings, non-visual i3
-directives, i3blocks modules, kitty mappings and font size, wallpaper and device
+directives, i3blocks modules, tmux presentation, kitty mappings and font size, wallpaper and device
 commands, finish-specific styling, repeat backups, invalid inputs, and `i3 -C`
 parsing when i3 is available. Nothing starts a graphical program or a display
 server. They keep HOME, TMPDIR, XDG directories, and bytecode caches inside

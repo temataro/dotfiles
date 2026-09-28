@@ -129,6 +129,16 @@ class RenderTests(unittest.TestCase):
                     if not line.startswith("color="):
                         self.assertIn(line, blocks)
 
+    def test_tmux_theme_has_no_keybindings_and_keeps_status_features(self):
+        for name, finish in combinations():
+            with self.subTest(theme=name, finish=finish):
+                tmux = theme.render(name, finish=finish)["tmux/theme.conf"]
+                self.assertIsNone(re.search(r"^bind", tmux, re.MULTILINE))
+                self.assertIn("status-right", tmux)
+                self.assertIn("pane-active-border-style", tmux)
+                self.assertIn("mode-style", tmux)
+                self.assertIn(f'@dotfiles_theme "{name}"', tmux)
+
 
 class MinimalFinishTests(unittest.TestCase):
     def test_surfaces_are_opaque_and_compact(self):
@@ -186,6 +196,20 @@ class PreviewTests(unittest.TestCase):
                 if shutil.which("i3"):
                     subprocess.run(["i3", "-C", "-c", str(output / finish / name / "i3/config")],
                                    check=True, capture_output=True, env=child_env(Path(directory)))
+                if shutil.which("tmux"):
+                    socket = f"theme-{name}-{finish}"
+                    env = child_env(Path(directory))
+                    env["TMUX_TMPDIR"] = str(output)
+                    try:
+                        subprocess.run(["tmux", "-L", socket, "-f", "/dev/null",
+                                        "new-session", "-d", "-s", "parse"],
+                                       check=True, capture_output=True, env=env)
+                        subprocess.run(["tmux", "-L", socket, "source-file",
+                                        str(output / finish / name / "tmux/theme.conf")],
+                                       check=True, capture_output=True, env=env)
+                    finally:
+                        subprocess.run(["tmux", "-L", socket, "kill-server"],
+                                       capture_output=True, env=env)
 
 
 class InstallTests(unittest.TestCase):
@@ -195,9 +219,13 @@ class InstallTests(unittest.TestCase):
             config, backups = root / "config", root / "backups"
             (config / "kitty").mkdir(parents=True)
             (config / "kitty/kitty.conf").write_text("original\n")
+            (config / "tmux").mkdir()
+            (config / "tmux/theme.conf").write_text("original tmux theme\n")
             theme.apply("ember", config, backups, "glass")
             saved = list(backups.iterdir())[0]
             self.assertEqual((saved / "kitty/kitty.conf").read_text(), "original\n")
+            self.assertEqual((saved / "tmux/theme.conf").read_text(), "original tmux theme\n")
+            self.assertTrue((config / "tmux/theme.conf").is_file())
             theme.apply("nord", config, backups, "minimal")
             self.assertEqual(len(list(backups.iterdir())), 2)
             self.assertIn("#2e3440", (config / "kitty/kitty.conf").read_text())

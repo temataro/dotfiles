@@ -101,8 +101,16 @@ GLX, use `backend = "xrender"` and `blur-method = "none"`. The minimal finish
 ships `themes/minimal/picom.conf`, which has no blur to begin with, and leaves
 kitty's opacity controls out because its kitty background is opaque.
 
-Tmux, Neovim, and shell prompt colors remain unchanged. Apps that paint an
-explicit terminal background can cover the glass; use their transparent/default
+Tmux follows the selected palette too: it has a session tile, quiet inactive
+windows, an accent active window, visible pane focus, copy-mode selection, and
+activity/bell colors. The generated layer has presentation settings only; all
+tmux key bindings and plugins remain in `.tmux.conf`. Run `prefix + r` from a
+tmux session after applying a theme. `make deploy` installs the loader line in
+`.tmux.conf`; this is included in `make tem`, so a new machine can use
+`make tem` followed by `make theme THEME=nord FINISH=glass`.
+
+Neovim and shell prompt colors remain unchanged. Apps that paint an explicit
+terminal background can cover the glass; use their transparent/default
 background option when desired. Fullscreen windows skip blur and rounding;
 kitty's own background alpha still applies.
 

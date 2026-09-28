@@ -28,6 +28,7 @@ FILES = {
     "rofi/config.rasi": "rofi/config.rasi",
     "i3blocks/config": "i3blocks/config",
     "dunst/dunstrc": "dunst/dunstrc",
+    "themes/tmux.conf": "tmux/theme.conf",
 }
 # A finish is styling only: every palette works with every finish, and both
 # finishes keep the same bindings, bar modules, wallpaper, and font sizes.
@@ -122,6 +123,13 @@ background_opacity 1.0
     rofi = rofi.replace("border-radius:    12px", "border-radius:    4px")
     output["rofi/config.rasi"] = rofi
     output["dunst/dunstrc"] = output["dunst/dunstrc"].replace("transparency = 8", "transparency = 0").replace("corner_radius = 12", "corner_radius = 4")
+    output["tmux/theme.conf"] += """
+# Minimal finish: compact, solid status tiles.
+set -g status-style "bg=#191724,fg=#908caa"
+set -g window-status-separator ""
+set -g status-left "#[fg=#191724,bg=#c4a7e7,bold] #S #[default]"
+set -g pane-border-lines single
+"""
     return output
 
 
@@ -146,8 +154,15 @@ def render(name, config_dir=None, finish=DEFAULT_FINISH):
             marker = f"/* Generated theme: {name} ({finish}) */\n"
         output[destination] = marker + text
     if FINISHES[finish]["opaque"]:
-        return minimal(output, config_dir)
-    return glass(output, colors, terminal_opacity(name, finish), config_dir)
+        output = minimal(output, config_dir)
+    else:
+        output = glass(output, colors, terminal_opacity(name, finish), config_dir)
+    output["tmux/theme.conf"] += f"""
+# {finish.title()} finish marker; tmux uses this after the base config.
+set -g @dotfiles_theme "{name}"
+set -g @dotfiles_finish "{finish}"
+"""
+    return output
 
 
 def card(index, name, palette, finish):
@@ -214,6 +229,7 @@ def apply(name, config_dir, backup_root, finish=DEFAULT_FINISH):
     print("hand (pkill -u \"$(id -u)\" -x picom, then start it again) — reloading")
     print("i3 re-runs the command but the second instance just exits.")
     print("For existing kitty windows: Ctrl+Shift+F5 reloads the config.")
+    print("Reload tmux from a session with prefix + r.")
     if not FINISHES[finish]["opaque"]:
         print("Glass strength: Ctrl+Shift+Alt+Up/Down; Ctrl+Shift+Alt+0 resets it.")
 
