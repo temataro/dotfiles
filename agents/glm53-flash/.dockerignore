@@ -1,0 +1,5 @@
+.env
+secrets
+generated
+results
+__pycache__
