@@ -51,6 +51,7 @@ No speculative speed or fidelity claims are made for this baseline.
 | `glm53-flash/configure-omp.py` | Renders an ignored standalone OMP profile from private settings |
 | `glm53-flash/omp.sh` | Launches that profile while preserving the caller's project directory |
 | `glm53-flash/.env.example` | Placeholder-only cluster configuration |
+| `glm53-flash/monitoring/` | Local Grafana dashboard, Prometheus storage, and passive two-node metrics collector |
 
 One vLLM rank runs on each Spark. Tensor-parallel collectives and rendezvous use
 the dedicated QSFP/RoCE fabric; clients use the head's LAN API. Each node stores
@@ -141,6 +142,36 @@ Results and raw NCCL logs stay in ignored `results/`.
 These checks establish wiring and basic correctness, not reliable long-horizon
 autonomy. Before leaving an agent unattended, replay representative logs with
 known outcomes, test its DSP code, and constrain writable paths and tools.
+
+## Serving dashboard
+
+The Grafana dashboard runs on the client computer at
+`http://127.0.0.1:3000/d/dgx-spark-serving/dgx-spark-serving`. Start it with
+`bash glm53-flash/monitoring/dashboard.sh up` from `agents/`; append `status`
+or `down` to inspect or stop the stack. Run `up` after a workstation reboot if
+the containers did not start.
+
+The collector reads the head over SSH and reads the worker through the head's
+existing fabric SSH path. It mounts `~/.ssh/id_ed25519` and
+`~/.ssh/known_hosts` read-only into its rootless container. The local
+`monitoring/.env` stores private SSH targets and cluster interface names; it is
+ignored by Git. `monitoring/.env.example` documents its fields. The collector
+only reads `/proc`, `nvidia-smi`, Docker state, fabric counters, and the model's
+existing `/metrics` endpoint. It sends no generation requests and does not
+restart either model container.
+
+Grafana, Prometheus, and the collector listen on loopback only. Grafana opens
+without a login as a read-only viewer, so this dashboard is intended for use on
+the workstation itself. Prometheus retains up to 14 days or 2 GB of local
+history under ignored `monitoring/generated/` data. Panels show output token
+rate, TTFT and decode latency, queued/running requests, KV/prefix cache,
+GPU load/temperature/power, unified system memory, container health, API
+errors, and QSFP/RoCE traffic. GB10 unified memory appears as system RAM; it is
+not reported as a separate GPU-memory allocation. RoCE port and OS network
+interface counters are shown separately because they can differ. Collection
+history starts when Prometheus first runs. These panels measure serving
+performance and infrastructure health, not answer quality or long-horizon
+agent reliability.
 
 ## oh-my-pi
 

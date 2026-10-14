@@ -1,0 +1,148 @@
+{
+  "uid": "dgx-spark-serving",
+  "title": "DGX Spark model serving",
+  "description": "Passive performance and health metrics for the two-Spark GLM endpoint. This dashboard does not evaluate response quality.",
+  "schemaVersion": 41,
+  "version": 1,
+  "refresh": "15s",
+  "time": { "from": "now-6h", "to": "now" },
+  "annotations": { "list": [] },
+  "panels": [
+    {
+      "id": 1, "type": "timeseries", "title": "Generation throughput",
+      "description": "Aggregate generated tokens per second.",
+      "gridPos": { "x": 0, "y": 0, "w": 12, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "ops", "min": 0 }, "overrides": [] },
+      "targets": [{ "expr": "sum(rate(vllm:generation_tokens_total{model_name=\"glm-5.3-flash\"}[1m]))", "legendFormat": "generated tokens/s", "refId": "A" }]
+    },
+    {
+      "id": 2, "type": "timeseries", "title": "Time to first token",
+      "description": "Request TTFT percentiles.",
+      "gridPos": { "x": 12, "y": 0, "w": 12, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "ms" }, "overrides": [] },
+      "targets": [
+        { "expr": "histogram_quantile(0.50, sum by (le) (rate(vllm:time_to_first_token_seconds_bucket{model_name=\"glm-5.3-flash\"}[5m]))) * 1000", "legendFormat": "p50", "refId": "A" },
+        { "expr": "histogram_quantile(0.95, sum by (le) (rate(vllm:time_to_first_token_seconds_bucket{model_name=\"glm-5.3-flash\"}[5m]))) * 1000", "legendFormat": "p95", "refId": "B" }
+      ]
+    },
+    {
+      "id": 3, "type": "timeseries", "title": "Inter-token latency",
+      "description": "Decode latency between generated tokens, p50 and p95.",
+      "gridPos": { "x": 0, "y": 8, "w": 12, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "ms" }, "overrides": [] },
+      "targets": [
+        { "expr": "histogram_quantile(0.50, sum by (le) (rate(vllm:inter_token_latency_seconds_bucket{model_name=\"glm-5.3-flash\"}[5m]))) * 1000", "legendFormat": "p50", "refId": "A" },
+        { "expr": "histogram_quantile(0.95, sum by (le) (rate(vllm:inter_token_latency_seconds_bucket{model_name=\"glm-5.3-flash\"}[5m]))) * 1000", "legendFormat": "p95", "refId": "B" }
+      ]
+    },
+    {
+      "id": 4, "type": "timeseries", "title": "Active and queued requests",
+      "gridPos": { "x": 12, "y": 8, "w": 12, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "short", "min": 0 }, "overrides": [] },
+      "targets": [
+        { "expr": "sum(vllm:num_requests_running{model_name=\"glm-5.3-flash\"})", "legendFormat": "running", "refId": "A" },
+        { "expr": "sum(vllm:num_requests_waiting{model_name=\"glm-5.3-flash\"})", "legendFormat": "waiting", "refId": "B" }
+      ]
+    },
+    {
+      "id": 5, "type": "timeseries", "title": "KV cache use",
+      "description": "vLLM exports this as a fraction from 0 to 1.",
+      "gridPos": { "x": 0, "y": 16, "w": 8, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "percentunit", "min": 0, "max": 1 }, "overrides": [] },
+      "targets": [{ "expr": "max(vllm:kv_cache_usage_perc{model_name=\"glm-5.3-flash\"})", "legendFormat": "KV cache", "refId": "A" }]
+    },
+    {
+      "id": 6, "type": "timeseries", "title": "Prefix cache hit ratio",
+      "description": "Token-weighted hits divided by lookup tokens. No value appears before the first lookup.",
+      "gridPos": { "x": 8, "y": 16, "w": 8, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "percentunit", "min": 0, "max": 1 }, "overrides": [] },
+      "targets": [{ "expr": "sum(rate(vllm:prefix_cache_hits_total{model_name=\"glm-5.3-flash\"}[5m])) / sum(rate(vllm:prefix_cache_queries_total{model_name=\"glm-5.3-flash\"}[5m]))", "legendFormat": "hit ratio", "refId": "A" }]
+    },
+    {
+      "id": 7, "type": "timeseries", "title": "End-to-end request latency",
+      "gridPos": { "x": 16, "y": 16, "w": 8, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "s" }, "overrides": [] },
+      "targets": [
+        { "expr": "histogram_quantile(0.50, sum by (le) (rate(vllm:e2e_request_latency_seconds_bucket{model_name=\"glm-5.3-flash\"}[5m])))", "legendFormat": "p50", "refId": "A" },
+        { "expr": "histogram_quantile(0.95, sum by (le) (rate(vllm:e2e_request_latency_seconds_bucket{model_name=\"glm-5.3-flash\"}[5m])))", "legendFormat": "p95", "refId": "B" }
+      ]
+    },
+    {
+      "id": 8, "type": "timeseries", "title": "GPU utilization",
+      "gridPos": { "x": 0, "y": 24, "w": 8, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "percent", "min": 0, "max": 100 }, "overrides": [] },
+      "targets": [{ "expr": "dgx_gpu_utilization_percent", "legendFormat": "{{node}} GPU {{gpu}}", "refId": "A" }]
+    },
+    {
+      "id": 9, "type": "timeseries", "title": "Unified memory",
+      "description": "GB10 uses unified system memory; it does not report a separate VRAM allocation.",
+      "gridPos": { "x": 8, "y": 24, "w": 8, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "bytes" }, "overrides": [] },
+      "targets": [
+        { "expr": "dgx_memory_bytes{kind=\"used\"}", "legendFormat": "{{node}} used", "refId": "A" },
+        { "expr": "dgx_memory_bytes{kind=\"available\"}", "legendFormat": "{{node}} available", "refId": "B" },
+        { "expr": "dgx_memory_bytes{kind=\"swap_used\"}", "legendFormat": "{{node}} swap used", "refId": "C" }
+      ]
+    },
+    {
+      "id": 10, "type": "timeseries", "title": "GPU temperature and power",
+      "gridPos": { "x": 16, "y": 24, "w": 8, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [
+        { "matcher": { "id": "byName", "options": "Temperature" }, "properties": [{ "id": "unit", "value": "celsius" }] },
+        { "matcher": { "id": "byName", "options": "Power" }, "properties": [{ "id": "unit", "value": "watt" }] }
+      ] },
+      "targets": [
+        { "expr": "dgx_gpu_temperature_celsius", "legendFormat": "{{node}} Temperature", "refId": "Temperature" },
+        { "expr": "dgx_gpu_power_watts", "legendFormat": "{{node}} Power", "refId": "Power" }
+      ]
+    },
+    {
+      "id": 11, "type": "timeseries", "title": "QSFP and RoCE traffic",
+      "description": "RoCE counters show RDMA bytes; interface counters show OS network bytes and can differ.",
+      "gridPos": { "x": 0, "y": 32, "w": 12, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "Bps" }, "overrides": [] },
+      "targets": [
+        { "expr": "rate(dgx_roce_port_bytes_total[1m])", "legendFormat": "{{node}} RoCE {{direction}}", "refId": "A" },
+        { "expr": "rate(dgx_fabric_interface_bytes_total[1m])", "legendFormat": "{{node}} interface {{direction}}", "refId": "B" }
+      ]
+    },
+    {
+      "id": 12, "type": "timeseries", "title": "Cluster service health",
+      "description": "Container state and restarts, SSH collector reachability, and model metrics endpoint reachability.",
+      "gridPos": { "x": 12, "y": 32, "w": 12, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "short" }, "overrides": [] },
+      "targets": [
+        { "expr": "dgx_container_running", "legendFormat": "{{node}} container running", "refId": "A" },
+        { "expr": "dgx_container_restarts", "legendFormat": "{{node}} container restarts", "refId": "B" },
+        { "expr": "dgx_collector_up", "legendFormat": "{{node}} collector reachable", "refId": "C" },
+        { "expr": "dgx_model_metrics_up", "legendFormat": "model metrics reachable", "refId": "D" }
+      ]
+    },
+    {
+      "id": 13, "type": "timeseries", "title": "Model API server errors",
+      "description": "5xx responses on model API handlers. Metrics scraping is excluded.",
+      "gridPos": { "x": 0, "y": 40, "w": 12, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "reqps", "min": 0 }, "overrides": [] },
+      "targets": [{ "expr": "sum by (status) (rate(http_requests_total{status=~\"5..\", handler=~\"/v1/.*\"}[5m]))", "legendFormat": "HTTP {{status}}", "refId": "A" }]
+    },
+    {
+      "id": 14, "type": "timeseries", "title": "Prompt and generated token rates",
+      "gridPos": { "x": 12, "y": 40, "w": 12, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "ops", "min": 0 }, "overrides": [] },
+      "targets": [
+        { "expr": "sum(rate(vllm:prompt_tokens_total{model_name=\"glm-5.3-flash\"}[1m]))", "legendFormat": "prompt tokens/s", "refId": "A" },
+        { "expr": "sum(rate(vllm:generation_tokens_total{model_name=\"glm-5.3-flash\"}[1m]))", "legendFormat": "generated tokens/s", "refId": "B" }
+      ]
+    },
+    {
+      "id": 15, "type": "timeseries", "title": "Request queue time",
+      "description": "Time spent waiting for a model slot, p50 and p95.",
+      "gridPos": { "x": 0, "y": 48, "w": 12, "h": 8 },
+      "fieldConfig": { "defaults": { "unit": "ms" }, "overrides": [] },
+      "targets": [
+        { "expr": "histogram_quantile(0.50, sum by (le) (rate(vllm:request_queue_time_seconds_bucket{model_name=\"glm-5.3-flash\"}[5m]))) * 1000", "legendFormat": "p50", "refId": "A" },
+        { "expr": "histogram_quantile(0.95, sum by (le) (rate(vllm:request_queue_time_seconds_bucket{model_name=\"glm-5.3-flash\"}[5m]))) * 1000", "legendFormat": "p95", "refId": "B" }
+      ]
+    }
+  ]
+}

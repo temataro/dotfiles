@@ -1,0 +1,11 @@
+# =============================================================================
+# Containerfile — Package the passive SSH metrics collector.
+# It contains no cluster credentials; SSH files are mounted read-only at runtime.
+# Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+# =============================================================================
+FROM docker.io/library/python:3.12-alpine
+RUN apk add --no-cache openssh-client
+WORKDIR /app
+COPY exporter.py /app/exporter.py
+ENTRYPOINT ["python3", "/app/exporter.py"]

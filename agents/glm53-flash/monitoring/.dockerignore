@@ -1,0 +1,4 @@
+.env
+generated/
+grafana/
+__pycache__/

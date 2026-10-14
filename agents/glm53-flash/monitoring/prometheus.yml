@@ -1,0 +1,15 @@
+# =============================================================================
+# prometheus.yml — Scrape the local passive DGX metrics collector.
+# The collector proxies the model's existing unauthenticated /metrics page.
+# Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+# =============================================================================
+global:
+  scrape_interval: 15s
+  scrape_timeout: 10s
+  evaluation_interval: 15s
+
+scrape_configs:
+  - job_name: dgx-cluster
+    static_configs:
+      - targets: [127.0.0.1:9108]
