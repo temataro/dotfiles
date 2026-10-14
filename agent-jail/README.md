@@ -1,8 +1,9 @@
 # agent-jail
 
 A jail for terminal coding agents — [Claude Code](https://claude.com/claude-code),
-[OpenAI Codex CLI](https://developers.openai.com/codex/cli), and
-[OpenCode](https://opencode.ai) — a minimal container with only what the agents
+[OpenAI Codex CLI](https://developers.openai.com/codex/cli),
+[OpenCode](https://opencode.ai), and [oh-my-pi](https://github.com/can1357/oh-my-pi)
+— a minimal container with only what the agents
 need to read, build, test, and commit code. Not a human dev environment: no
 shells, editors, or quality-of-life tooling.
 
@@ -10,7 +11,7 @@ The repo you point it at is the only project filesystem the container can see.
 Each agent's profile/state directory is mounted so logins and sessions survive;
 no other home-directory files are exposed.
 
-One shared image holds all three CLIs; the launcher picks which agent to boot.
+One shared image holds all four CLIs; the launcher picks which agent to boot.
 
 ## Usage
 
@@ -19,6 +20,7 @@ One shared image holds all three CLIs; the launcher picks which agent to boot.
 ./claude-sbx ~/code/some-repo                 # Claude Code session, skip-permissions on
 ./codex-sbx  ~/code/some-repo                 # Codex session, approvals+sandbox bypassed
 ./opencode-sbx ~/code/some-repo               # OpenCode session, permissions skipped
+./omp-sbx ~/code/some-repo                    # oh-my-pi with the private GLM profile
 
 # Session resume (mapped per agent):
 ./claude-sbx   <repo> --resume                # Claude's session picker
@@ -27,6 +29,8 @@ One shared image holds all three CLIs; the launcher picks which agent to boot.
 ./codex-sbx    <repo> --continue              # `codex resume --last`
 ./opencode-sbx <repo> --continue              # `-c`, continue last session
 ./opencode-sbx <repo> --resume <session-id>   # `-s <id>` (no launch-time picker)
+./omp-sbx      <repo> --continue              # latest OMP session in this repo
+./omp-sbx      <repo> --resume                # OMP session picker
 
 ./claude-sbx   <repo> --legacy-resume         # choose an old /workspace Claude session
 ./codex-sbx    <repo> bash                    # override: get a shell instead of the agent
@@ -36,14 +40,14 @@ The repo defaults to the current directory. Any leading option is forwarded to
 the agent (`--resume`/`--continue` are translated per-agent); a non-option
 command replaces the default entirely — that is the shell escape hatch.
 
-The `.zshrc` aliases `claude`, `codex`, and `opencode` to these launchers, so
+The `.zshrc` aliases `claude`, `codex`, `opencode`, and `omp` to these launchers, so
 typing e.g. `opencode` anywhere on the host drops you into the jailed version.
 
 ## What's inside
 
 git, ripgrep, the build toolchain (make/cmake/ninja/build-essential),
 python3 + uv, curl/wget/unzip/jq, openssh-client, usbutils,
-Node.js + all three agent CLIs.
+Node.js + all four agent CLIs; OMP also uses pinned Bun 1.3.14.
 
 ## What it mounts
 
@@ -55,6 +59,9 @@ Node.js + all three agent CLIs.
 | `~/.codex`         | `/root/.codex`        | rw | codex: auth.json, config.toml, sessions |
 | `~/.config/opencode`     | `/root/.config/opencode`      | rw | opencode: opencode.json config |
 | `~/.local/share/opencode` | `/root/.local/share/opencode` | rw | opencode: auth.json, sessions, snapshots |
+| private generated OMP profile | `/root/.omp/agent` | rw | omp: GLM config, sessions and state |
+| private GLM API-token file | `/run/secrets/dgx-glm` | ro | omp: token loaded inside the container |
+| `~/.claude/CLAUDE.md` and `~/.claude/skills` | same absolute host paths | ro | omp: instructions and skills, without Claude credentials |
 | `$SSH_AUTH_SOCK`   | `/tmp/ssh-agent.sock` | ro | SSH forwarding for git push/pull (no key in container) |
 | `/dev/bus/usb`     | `/dev/bus/usb`        | rw | host USB devices (hotplug-aware; host udev permissions apply) |
 
@@ -62,9 +69,15 @@ Only the mounts for the agent being launched are applied. Git identity is passed
 as `GIT_AUTHOR_*` / `GIT_COMMITTER_*` env vars pulled from your host `git
 config`, so agents can commit without mounting your `.gitconfig`.
 
+OMP uses the ignored profile and token under `../agents/glm53-flash` by default;
+set `OMP_DGX_DIR` to use another deployment directory. The selected Claude root
+can be changed with `OMP_CLAUDE_DIR`; regenerate the profile when changing it.
+The endpoint and token are never baked into the image. GLM setup details and
+OMP settings are documented in [agents/README.md](../agents/README.md).
+
 ### Session identity
 
-Sessions are tied to the absolute working-directory path for all three agents.
+Sessions are tied to the absolute working-directory path for all four agents.
 The repo is therefore mounted at its original host path inside the container,
 not renamed to a shared `/workspace`: host and sandbox runs share the same
 project identity, and different repos never mix histories. Normal startup

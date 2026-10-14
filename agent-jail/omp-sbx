@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+# =============================================================================
+# omp-sbx — Run oh-my-pi with the private GLM profile inside agent-jail.
+# Uses the shared jail launcher; supports native --resume and --continue flags.
+# Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+# =============================================================================
+set -euo pipefail
+exec "$(dirname "$(realpath "${BASH_SOURCE[0]}")")/agent-jail" omp "$@"

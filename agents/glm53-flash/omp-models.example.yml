@@ -1,0 +1,33 @@
+# =============================================================================
+# omp-models.example.yml — oh-my-pi provider template for the GLM cluster.
+# Set the private endpoint in your generated ~/.omp/agent/models.yml.
+# Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+# =============================================================================
+providers:
+  dgx-glm:
+    baseUrl: http://HEAD_LAN_ADDRESS:8000/v1
+    api: openai-completions
+    apiKey: GLM_API_KEY
+    authHeader: true
+    models:
+      - id: glm-5.3-flash
+        name: GLM-5.3-Flash (two Sparks)
+        reasoning: true
+        supportsTools: true
+        tokenizer: glm5
+        input: [text]
+        contextWindow: 262144
+        maxTokens: 32768
+        cost: {input: 0, output: 0, cacheRead: 0, cacheWrite: 0}
+        compat:
+          supportsStore: false
+          supportsDeveloperRole: false
+          supportsReasoningEffort: false
+          requiresReasoningContentForToolCalls: true
+          reasoningContentField: reasoning_content
+          maxTokensField: max_tokens
+          extraBody:
+            chat_template_kwargs:
+              reasoning_effort: max
+              clear_thinking: false

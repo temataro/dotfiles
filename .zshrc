@@ -1,5 +1,7 @@
 # ============================================================================
 # zsh — antidote (plugins) + starship (prompt). Migrated off oh-my-zsh.
+# Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
 # Plugin list: ~/.zsh_plugins.txt   Prompt: ~/.config/starship.toml
 # ============================================================================
 
@@ -201,6 +203,7 @@ alias rm='rm -i'
 alias claude="/home/tem/code/github.com/temataro/dotfiles/agent-jail/claude-sbx"
 alias codex="/home/tem/code/github.com/temataro/dotfiles/agent-jail/codex-sbx"
 alias opencode="/home/tem/code/github.com/temataro/dotfiles/agent-jail/opencode-sbx"
+alias omp="$HOME/code/github.com/temataro/dotfiles/agent-jail/omp-sbx"
 
 
 # Little helpers

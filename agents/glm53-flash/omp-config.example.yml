@@ -1,0 +1,30 @@
+# =============================================================================
+# omp-config.example.yml — Small local-model profile with explicit skill sources.
+# configure-omp.py supplies private Claude paths and links the user instructions.
+# Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+# =============================================================================
+modelRoles:
+  default: dgx-glm/glm-5.3-flash:max
+  smol: dgx-glm/glm-5.3-flash:max
+  slow: dgx-glm/glm-5.3-flash:max
+  plan: dgx-glm/glm-5.3-flash:max
+enabledProviders: []
+disabledProviders:
+  - claude
+  - claude-plugins
+  - omp-plugins
+  - agent-plugins
+  - skillshare
+  - omp-managed
+providers:
+  cacheWarming: off
+  streamFirstEventTimeoutSeconds: 1800
+  streamIdleTimeoutSeconds: 300
+skills:
+  enableAgentsUser: false
+  customDirectories: [] # filled by configure-omp.py, including nested skill roots
+task:
+  maxConcurrency: 1
+  maxRecursionDepth: 1
+  speculativeLaunch: false

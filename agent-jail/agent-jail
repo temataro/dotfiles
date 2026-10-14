@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
-# ─── agent-jail/agent-jail ───────────────────────────────────────────────────
+# =============================================================================
+# agent-jail — Launch coding agents in a rootless Podman sandbox.
+# Shares the selected repository and only the launched agent's required state.
+# Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+# =============================================================================
 # Shared launcher for the jailed coding agents. Not called directly — use the
-# thin wrappers: claude-sbx / codex-sbx / opencode-sbx [path/to/repo].
+# thin wrappers: claude-sbx / codex-sbx / opencode-sbx / omp-sbx [path/to/repo].
 #
 #   <agent>-sbx [repo]                new session, permissions skipped
 #   claude-sbx  [repo] --resume       Claude's session picker
@@ -16,7 +21,7 @@
 set -euo pipefail
 
 usage() {
-    echo "usage: agent-jail {claude|codex|opencode} [path/to/repo] [args...]" >&2
+    echo "usage: agent-jail {claude|codex|opencode|omp} [path/to/repo] [args...]" >&2
     exit 1
 }
 
@@ -28,6 +33,19 @@ repo_arg="$(pwd)"
 if (($# > 0)) && [[ "$1" != -* ]]; then
     repo_arg="$1"
     shift
+fi
+
+if [[ "$AGENT" == omp ]]; then
+    forwarded=()
+    while (($#)); do
+        case "$1" in
+        --cwd) repo_arg="${2:?--cwd needs a project directory}"; shift 2 ;;
+        --cwd=*) repo_arg="${1#--cwd=}"; shift ;;
+        --) forwarded+=("$@"); break ;;
+        *) forwarded+=("$1"); shift ;;
+        esac
+    done
+    set -- "${forwarded[@]}"
 fi
 
 REPO="$(realpath "$repo_arg")"
@@ -47,6 +65,7 @@ ensure_file() {
 }
 
 STATE_MOUNTS=()
+AGENT_ENV=()
 CONTAINER_REPO="$REPO"
 
 case "$AGENT" in
@@ -74,6 +93,29 @@ codex)
     elif (($# > 0)) && [[ "$1" == "--resume" ]]; then
         shift; set -- resume "$@"
     fi
+    ;;
+omp)
+    SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+    OMP_DGX_DIR="${OMP_DGX_DIR:-$SCRIPT_DIR/../agents/glm53-flash}"
+    OMP_DGX_DIR="$(realpath "$OMP_DGX_DIR")"
+    OMP_PROFILE="$OMP_DGX_DIR/generated/omp"
+    [[ -r "$OMP_PROFILE/models.yml" ]] || python3 "$OMP_DGX_DIR/configure-omp.py"
+    [[ -s "$OMP_DGX_DIR/secrets/api-key" ]] || { echo 'Missing GLM API key in the private deployment directory.' >&2; exit 1; }
+    STATE_MOUNTS=("--volume" "$OMP_PROFILE:/root/.omp/agent"
+                  "--volume" "$OMP_DGX_DIR/secrets/api-key:/run/secrets/dgx-glm:ro"
+                  "--volume" "$OMP_DGX_DIR/secrets/api-key:$OMP_DGX_DIR/secrets/api-key:ro")
+    # Preserve the generated profile's absolute instruction/skill references.
+    # Do not expose Claude credentials or writable host instruction files.
+    CLAUDE_ROOT="$(realpath "${OMP_CLAUDE_DIR:-$HOME/.claude}")"
+    if [[ -f "$CLAUDE_ROOT/CLAUDE.md" ]]; then
+        STATE_MOUNTS+=("--volume" "$CLAUDE_ROOT/CLAUDE.md:$CLAUDE_ROOT/CLAUDE.md:ro")
+    fi
+    if [[ -d "$CLAUDE_ROOT/skills" ]]; then
+        STATE_MOUNTS+=("--volume" "$CLAUDE_ROOT/skills:$CLAUDE_ROOT/skills:ro")
+    fi
+    AGENT_ENV=(-e PI_CODING_AGENT_DIR=/root/.omp/agent)
+    CONTAINER_CMD=(omp --auto-approve)
+    CONTAINER_NAME="omp-${repo_name//[^[:alnum:]_.-]/-}"
     ;;
 opencode)
     OC_CONFIG="$HOME/.config/opencode"; OC_DATA="$HOME/.local/share/opencode"
@@ -103,6 +145,10 @@ if (($# > 0)); then
     else
         CONTAINER_CMD=("$@")
     fi
+fi
+
+if [[ "$AGENT" == omp ]]; then
+    CONTAINER_CMD=(bash -c 'export GLM_API_KEY="$(</run/secrets/dgx-glm)"; exec "$@"' -- "${CONTAINER_CMD[@]}")
 fi
 
 # ── Repo mount (at its host path, so session identity matches) ────────────────
@@ -149,6 +195,7 @@ exec podman run -it --rm \
     --hostname "sandbox" \
     --security-opt=label=disable \
     -e IS_SANDBOX=1 \
+    "${AGENT_ENV[@]}" \
     "${GIT_ENV[@]}" \
     "${MOUNTS[@]}" \
     "${SSH_ARGS[@]}" \

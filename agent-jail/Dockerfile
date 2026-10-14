@@ -1,10 +1,15 @@
-# ─── agent-jail/Dockerfile ───────────────────────────────────────────────────
-# A jail for coding agents (Claude Code, Codex, OpenCode) — NOT a human dev
+# =============================================================================
+# Dockerfile — Shared runtime for rootless coding-agent sandboxes.
+# Installs agent CLIs and the tools needed to build and test the mounted repo.
+# Copyright (c) 2026 Temesgen Ataro <ataro.temesgen@gmail.com>
+# SPDX-License-Identifier: Apache-2.0
+# =============================================================================
+# A jail for coding agents (Claude Code, Codex, OpenCode, oh-my-pi) — NOT a human dev
 # environment. Only what the agents need to read, build, test, and commit
 # code. No shells, editors, or quality-of-life tooling for humans.
 #
 # Build:  ./build.sh
-# Launch: claude-sbx / codex-sbx / opencode-sbx [path/to/repo]
+# Launch: claude-sbx / codex-sbx / opencode-sbx / omp-sbx [path/to/repo]
 # ─────────────────────────────────────────────────────────────────────────────
 
 FROM docker.io/library/ubuntu:24.04
@@ -31,13 +36,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     usbutils \
     && rm -rf /var/lib/apt/lists/*
 
-# ── Node.js LTS + the three agent CLIs ───────────────────────────────────────
-# One shared image: the launcher picks which agent to boot. All three are npm
+# ── Node.js LTS + agent CLIs ────────────────────────────────────────────────
+# One shared image: the launcher picks which agent to boot. All four are npm
 # packages, so a single Node layer covers them.
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/* \
     && npm install -g @anthropic-ai/claude-code @openai/codex opencode-ai
+
+# OMP uses a Bun shebang. Keep both versions aligned with the GLM client profile.
+RUN npm install -g bun@1.3.14 @oh-my-pi/pi-coding-agent@18.10.4 \
+    && bun --version && omp --version
 
 # ── uv (system-wide via UV_INSTALL_DIR) ───────────────────────────────────────
 RUN curl -LsSf https://astral.sh/uv/install.sh | env UV_INSTALL_DIR=/usr/local/bin sh
